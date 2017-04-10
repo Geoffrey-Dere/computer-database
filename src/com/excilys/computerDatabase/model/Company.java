@@ -7,7 +7,7 @@ package com.excilys.computerDatabase.model ;
  */
 public class Company {
 
-	private long id ;
+	private final long id ;
 	private String name ;
 
 	public Company(long id, String name) {
