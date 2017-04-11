@@ -3,6 +3,7 @@ package com.excilys.computerDatabase.persistence;
 import java.util.Optional;
 
 import com.excilys.computerDatabase.model.Company;
+import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.persistence.mysql.MysqlDAOFactory;
 
 public abstract class DaoFactory {
@@ -12,6 +13,7 @@ public abstract class DaoFactory {
 	private static DaoFactory currentDAOFactory = null;
 	
 	public abstract DAO<Company> getCompanyDAO();
+	public abstract DAO<Computer> getComputerDAO();
 
 	public static DaoFactory getDaoFactory(){
 		
