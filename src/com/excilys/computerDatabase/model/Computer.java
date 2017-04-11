@@ -18,23 +18,17 @@ public class Computer {
 		this.name = name ;
 	}
 
-	public Computer(long id, String name, LocalDate introduced){
+	public Computer(long id, String name, LocalDate introduced) throws DateException{
 		this.id = id ;
-		this.name = name ;
-		this.introduced = introduced ;	
+		this.name = name ;	
+		setIntroduced(introduced);	
 	}
 
-	public Computer(long id, String name, LocalDate introduced2, LocalDate discontinued2) throws DateException{
+	public Computer(long id, String name, LocalDate introduced, LocalDate discontinued) throws DateException{
 		this.id = id ;
 		this.name = name ;
-		this.introduced = introduced2 ;	
-		this.discontinued = discontinued2 ;
-
-		if(this.introduced == null && this.discontinued != null ) 
-			throw new DateException("Computer : introduced is null but not discontinued");
-
-		if(this.introduced.compareTo(this.discontinued) >= 0)
-			throw new DateException("Computer : the date it was discontinued must be greater than the one he was introduced");
+		setIntroduced(introduced);
+		setDiscontinued(discontinued);		
 	}
 
 	public LocalDate getDiscontinued() {
@@ -43,7 +37,7 @@ public class Computer {
 
 	public void setDiscontinued(LocalDate discontinued) throws DateException {
 
-		if(this.introduced.compareTo(discontinued) >= 0)
+		if(this.introduced == null || this.introduced.compareTo(discontinued) >= 0)
 			throw new DateException("Computer : the date it was discontinued must be greater than the one he was introduced");
 
 		this.discontinued = discontinued;
@@ -53,7 +47,7 @@ public class Computer {
 
 	public void setIntroduced(LocalDate introduced) throws DateException {
 
-		if( introduced.compareTo(this.discontinued) >= 0)
+		if( this.discontinued != null && introduced.compareTo(this.discontinued) >= 0)
 			throw new DateException("Computer : the date it was discontinued must be greater than the one he was introduced");
 
 		this.introduced = introduced;
