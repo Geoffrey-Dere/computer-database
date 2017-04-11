@@ -5,7 +5,7 @@ import com.excilys.computerDatabase.model.exception.DateException;
 
 public class Computer {
 
-	private final long id ; 
+	private long id ; 
 
 	/**
 	 * the name of the computer
@@ -23,18 +23,34 @@ public class Computer {
 	 */
 	private LocalDate discontinued = null ;
 
-
+	
 	public Computer(long id, String name){
 		this.id = id ;
 		this.name = name ;
 	}
+	
+	public Computer(String name){
+		this.name = name ;
+		System.out.println(this.id);
+	}
 
+	public Computer(String name, LocalDate introduced) throws DateException{
+		this.name = name ;	
+		setIntroduced(introduced);	
+	}
+	
 	public Computer(long id, String name, LocalDate introduced) throws DateException{
 		this.id = id ;
 		this.name = name ;	
 		setIntroduced(introduced);	
 	}
 
+	public Computer(String name, LocalDate introduced, LocalDate discontinued) throws DateException{
+		this.name = name ;
+		setIntroduced(introduced);
+		setDiscontinued(discontinued);		
+	}
+	
 	public Computer(long id, String name, LocalDate introduced, LocalDate discontinued) throws DateException{
 		this.id = id ;
 		this.name = name ;
@@ -75,6 +91,11 @@ public class Computer {
 
 	public long getId() {
 		return id;
+	}
+	
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getName() {
