@@ -106,4 +106,12 @@ public class Computer {
 		return this.id == company.id ;	
 	}
 
+	
+	public String toString(){
+		StringBuilder sb = new StringBuilder("Computer(");
+		sb.append(id).append(",").append(name).append(",").
+		append(introduced).append(",").append(discontinued).append(")");
+		return sb.toString();
+		
+	}
 }
