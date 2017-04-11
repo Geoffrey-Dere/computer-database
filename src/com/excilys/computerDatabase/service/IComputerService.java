@@ -1,8 +1,8 @@
 package com.excilys.computerDatabase.service;
 
 import java.util.List;
+import java.util.Optional;
 
-import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
 
 public interface IComputerService {
@@ -18,7 +18,7 @@ public interface IComputerService {
 	 * @param id, the id
 	 * @return the computer or null if no one have this id  
 	 */
-	public Company getCompany (long id);
+	public Optional<Computer> getComputer (long id);
 	
 	
 	/**

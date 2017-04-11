@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.persistence.DAO;
@@ -38,7 +39,7 @@ public class CompanyDAO extends DAO<Company> {
 	}
 
 	@Override
-	public Company find(long id) {
+	public Optional<Company> find(long id) {
 
 		try {
 			PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID);
@@ -47,12 +48,12 @@ public class CompanyDAO extends DAO<Company> {
 			ResultSet result = statement.executeQuery();
 
 			if (result.next())
-				return new Company(result.getLong("id"), result.getString("name"));
+				return Optional.of(new Company(result.getLong("id"), result.getString("name")));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	@Override

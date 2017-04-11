@@ -1,5 +1,6 @@
 package com.excilys.computerDatabase.model.exception;
 
+@SuppressWarnings("serial")
 public class DateException extends Exception {
 
 	public DateException() {

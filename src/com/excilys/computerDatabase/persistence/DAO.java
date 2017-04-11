@@ -2,6 +2,7 @@ package com.excilys.computerDatabase.persistence;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class DAO<T> {
 
@@ -36,7 +37,7 @@ public abstract class DAO<T> {
 	 * @param id, the id 
 	 * @return T, the object that is returned
 	 */
-	public abstract T find(long id);
+	public abstract Optional<T> find(long id);
 
 
 	/**

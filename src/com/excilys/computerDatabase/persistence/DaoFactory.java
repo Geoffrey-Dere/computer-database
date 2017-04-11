@@ -1,5 +1,7 @@
 package com.excilys.computerDatabase.persistence;
 
+import java.util.Optional;
+
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.persistence.mysql.MysqlDAOFactory;
 
@@ -19,13 +21,13 @@ public abstract class DaoFactory {
 		return currentDAOFactory;
 	}
 
-	public static DaoFactory getFactory(int choice){
+	public static Optional<DaoFactory> getFactory(int choice){
 		switch(choice){
 		case MYSQL_FACTORY :
 			currentDAOFactory = MysqlDAOFactory.getInstance();
-			return currentDAOFactory ;
+			return Optional.of(currentDAOFactory) ;
 		default:
-			return null ;
+			return Optional.empty() ;
 		}
 	}
 }

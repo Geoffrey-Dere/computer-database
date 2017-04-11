@@ -21,8 +21,7 @@ public class CompanyService implements ICompanyService {
 
 	@Override
 	public Optional<Company> getCompany(long id) {	
-		Company company = DaoFactory.getDaoFactory().getCompanyDAO().find(id);
-		return Optional.ofNullable(company);
+		return DaoFactory.getDaoFactory().getCompanyDAO().find(id);
 	}
 
 }

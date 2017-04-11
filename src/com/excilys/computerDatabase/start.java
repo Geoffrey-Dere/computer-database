@@ -1,14 +1,15 @@
 package com.excilys.computerDatabase ;
 
+import com.excilys.computerDatabase.persistence.DaoFactory;
+
 public class start {
 
 	public start() {
-		// TODO Auto-generated constructor stub
+
 	}
 
-	
 	public static void main(String[] args){
-		System.out.println("Start !");
+		DaoFactory.getFactory(DaoFactory.MYSQL_FACTORY);
 	}
-	
+
 }
