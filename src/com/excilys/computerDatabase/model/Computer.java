@@ -10,7 +10,7 @@ public class Computer {
 	/**
 	 * the name of the computer
 	 */
-	private final String name ;
+	private String name ;
 
 	/**
 	 * the date that the computer was introduced, can be null
@@ -23,12 +23,12 @@ public class Computer {
 	 */
 	private LocalDate discontinued = null ;
 
-	
+
 	public Computer(long id, String name){
 		this.id = id ;
 		this.name = name ;
 	}
-	
+
 	public Computer(String name){
 		this.name = name ;
 		System.out.println(this.id);
@@ -38,7 +38,7 @@ public class Computer {
 		this.name = name ;	
 		setIntroduced(introduced);	
 	}
-	
+
 	public Computer(long id, String name, LocalDate introduced) throws DateException{
 		this.id = id ;
 		this.name = name ;	
@@ -50,7 +50,7 @@ public class Computer {
 		setIntroduced(introduced);
 		setDiscontinued(discontinued);		
 	}
-	
+
 	public Computer(long id, String name, LocalDate introduced, LocalDate discontinued) throws DateException{
 		this.id = id ;
 		this.name = name ;
@@ -74,6 +74,14 @@ public class Computer {
 
 		this.discontinued = discontinued;
 	}
+	
+	public void setDate(LocalDate intro, LocalDate discon) throws DateException {
+		if(intro.compareTo(discon) >= 0)
+			throw new DateException("Computer : the date it was discontinued must be greater than the one he was introduced");
+	
+		this.introduced = intro ;
+		this.discontinued = discon ;
+	}
 
 
 	/**
@@ -92,7 +100,7 @@ public class Computer {
 	public long getId() {
 		return id;
 	}
-	
+
 
 	public void setId(long id) {
 		this.id = id;
@@ -105,7 +113,7 @@ public class Computer {
 	public LocalDate getIntroduced() {
 		return introduced;
 	}
-	
+
 	/**
 	 * function equals for Computer class <br/>
 	 * 2 objects are equal if they have the same name and id
@@ -127,12 +135,16 @@ public class Computer {
 		return this.id == company.id ;	
 	}
 
-	
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String toString(){
 		StringBuilder sb = new StringBuilder("Computer(");
-		sb.append(id).append(",").append(name).append(",").
-		append(introduced).append(",").append(discontinued).append(")");
+		sb.append(id).append(" , ").append(name).append(" , ").
+		append(introduced).append(" , ").append(discontinued).append(")");
 		return sb.toString();
-		
+
 	}
 }

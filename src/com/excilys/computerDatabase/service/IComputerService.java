@@ -45,4 +45,6 @@ public interface IComputerService {
 	 */
 	public boolean removeComputer(Computer c);
 	
+	public boolean removeComputer(int id);
+	
 }

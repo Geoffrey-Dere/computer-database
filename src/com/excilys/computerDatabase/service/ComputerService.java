@@ -38,4 +38,9 @@ public class ComputerService implements IComputerService {
 		return DaoFactory.getDaoFactory().getComputerDAO().delete(c);
 	}
 
+	@Override
+	public boolean removeComputer(int id) {
+		return DaoFactory.getDaoFactory().getComputerDAO().delete(new Computer(id,""));
+	}
+
 }
