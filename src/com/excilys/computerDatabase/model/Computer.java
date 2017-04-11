@@ -86,5 +86,26 @@ public class Computer {
 	public LocalDate getIntroduced() {
 		return introduced;
 	}
+	
+	/**
+	 * function equals for Computer class <br/>
+	 * 2 objects are equal if they have the same name and id
+	 */
+	@Override
+	public boolean equals(Object obj) {
+
+		if(obj == null)
+			return false;
+
+		if(this.getClass() != obj.getClass())
+			return false;
+
+		Computer company = (Computer) obj ;
+
+		if (this.name != null ? !this.name.equals(company.name) : company.name != null)
+			return false ;
+
+		return this.id == company.id ;	
+	}
 
 }

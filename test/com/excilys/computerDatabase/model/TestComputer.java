@@ -45,5 +45,33 @@ public class TestComputer {
 		computer.setDiscontinued(discontinued);
 		assertEquals(computer.getDiscontinued(), discontinued);
 	}
+	
+	@Test
+	public void testEquals() throws DateException{
+		
+		Computer c1 = new Computer(1, "name",
+				LocalDate.of(2010, 02, 02),
+				LocalDate.of(2020, 02, 02));
+		
+		Computer c2 = new Computer(1, "name",
+				LocalDate.of(2010, 03, 03),
+				LocalDate.of(2020, 04, 04));
+		
+		assertEquals(c1, c2);
+	}
+	
+	@Test
+	public void testNotEquals() throws DateException{
+		
+		Computer c1 = new Computer(1, "name",
+				LocalDate.of(2010, 02, 02),
+				LocalDate.of(2020, 02, 02));
+		
+		Computer c2 = new Computer(2, "name2",
+				LocalDate.of(2010, 03, 03),
+				LocalDate.of(2020, 04, 04));
+		
+		assertNotEquals(c1, c2);
+	}
 
 }
