@@ -38,4 +38,11 @@ public interface IComputerService {
 	public boolean updateComputer(Computer c);
 	
 	
+	/**
+	 * delete a computer on the database 
+	 * @param c, the computer
+	 * @return true if the computer has been updated and false otherwise
+	 */
+	public boolean removeComputer(Computer c);
+	
 }

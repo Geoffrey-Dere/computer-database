@@ -24,14 +24,18 @@ public class ComputerService implements IComputerService {
 
 	@Override
 	public boolean addComputer(Computer c) {
-		// TODO Auto-generated method stub
-		return false;
+		return DaoFactory.getDaoFactory().getComputerDAO().create(c);
 	}
 
 	@Override
 	public boolean updateComputer(Computer c) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public boolean removeComputer(Computer c) {
+		return DaoFactory.getDaoFactory().getComputerDAO().delete(c);
 	}
 
 }
