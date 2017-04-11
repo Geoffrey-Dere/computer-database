@@ -36,7 +36,7 @@ public class CommandLine {
 		printMenu();		
 		while(run){
 
-			System.out.print("choice : " );
+			System.out.print("your choice : " );
 			choix = scanner.next();
 
 			switch (choix){
@@ -173,6 +173,8 @@ public class CommandLine {
 		System.out.println("| '2' : display all computer");
 		System.out.println("| '3' : display one company");
 		System.out.println("| '4' : display one computer");
+		System.out.println("| '5' : delete one computer");
+		System.out.println("| '6' : update one computer");
 		System.out.println("------------------------");
 	}
 }
