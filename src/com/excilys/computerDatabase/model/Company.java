@@ -7,7 +7,14 @@ package com.excilys.computerDatabase.model ;
  */
 public class Company {
 
+	/**
+	 * the id of the company
+	 */
 	private final long id ;
+
+	/**
+	 * the name of the company
+	 */
 	private String name ;
 
 	public Company(long id, String name) {
@@ -23,6 +30,10 @@ public class Company {
 		return name;
 	}
 
+	/**
+	 * function equals for Company class <br/>
+	 * 2 objects 'Company' are equal if they have the same name and id
+	 */
 	@Override
 	public boolean equals(Object obj) {
 
