@@ -1,4 +1,4 @@
-package com.excilys.computerDatabase.persistence;
+package com.excilys.computerDatabase.persistence.mysql;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.computerDatabase.model.Company;
+import com.excilys.computerDatabase.persistence.DAO;
 
-public class CompanyDAO extends DAO {
+public class CompanyDAO extends DAO<Company> {
 
 	private static final String SQL_FIND_ALL = "select * from company ;" ;
 	private static final String SQL_FIND_BY_ID = "select * from company where id = ? ;";
@@ -19,25 +20,25 @@ public class CompanyDAO extends DAO {
 	}
 
 	@Override
-	public boolean create(Object obj) {
+	public boolean create(Company obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean delete(Object obj) {
+	public boolean delete(Company obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean update(Object obj) {
+	public boolean update(Company obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public Object find(int id) {
+	public Company find(long id) {
 
 		try {
 			PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID);

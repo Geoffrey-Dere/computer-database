@@ -1,8 +1,12 @@
-package com.excilys.computerDatabase.persistence;
+package com.excilys.computerDatabase.persistence.mysql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import com.excilys.computerDatabase.model.Company;
+import com.excilys.computerDatabase.persistence.DAO;
+import com.excilys.computerDatabase.persistence.DaoFactory;
 
 public class MysqlDAOFactory extends DaoFactory {
 
@@ -13,7 +17,7 @@ public class MysqlDAOFactory extends DaoFactory {
 	private static MysqlDAOFactory instance = null ;
 	private Connection connection = null;
 
-	static MysqlDAOFactory getInstance(){
+	public static MysqlDAOFactory getInstance(){
 		if(instance == null)
 			instance = new MysqlDAOFactory();
 		return instance ;
@@ -30,7 +34,7 @@ public class MysqlDAOFactory extends DaoFactory {
 	}
 
 	@Override
-	public DAO getCompanyDAO() {
+	public DAO<Company> getCompanyDAO() {
 		return new CompanyDAO(connection);
 	}
 
