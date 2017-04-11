@@ -3,7 +3,7 @@ package com.excilys.computerDatabase.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import com.excilys.computerDatabase.exception.DateException;
+import com.excilys.computerDatabase.model.exception.DateException;
 
 public class Computer {
 

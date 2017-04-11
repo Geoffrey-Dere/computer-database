@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.excilys.computerDatabase.exception.DateException;
+import com.excilys.computerDatabase.model.exception.DateException;
 
 public class TestComputer {
 

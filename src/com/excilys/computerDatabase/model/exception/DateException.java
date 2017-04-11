@@ -1,4 +1,4 @@
-package com.excilys.computerDatabase.exception;
+package com.excilys.computerDatabase.model.exception;
 
 public class DateException extends Exception {
 
