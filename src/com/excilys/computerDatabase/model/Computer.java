@@ -147,4 +147,14 @@ public class Computer {
 		return sb.toString();
 
 	}
+
+	@Override
+	public int hashCode() {
+		return introduced.hashCode() + this.discontinued.hashCode() + name.hashCode();
+	}
+	
+	
+	
+	
+	
 }

@@ -58,5 +58,10 @@ public class Company {
 
 		return sb.toString();
 	}	
+	
+	@Override
+	public int hashCode() {
+		return name.hashCode() + (int) id;
+	}
 
 }
