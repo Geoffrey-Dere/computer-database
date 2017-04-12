@@ -1,4 +1,4 @@
-package com.excilys.computerDatabase.persistence.mysql;
+package com.excilys.computerDatabase.persistence;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,9 +15,8 @@ import java.util.Optional;
 
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.model.exception.DateException;
-import com.excilys.computerDatabase.persistence.DAO;
 
-public class ComputerDAO extends DAO<Computer>{
+public class ComputerDAO implements DAO<Computer>{
 
 	private static final String SQL_FIND_ALL = "select * from computer;" ;
 	private static final String SQL_FIND_BY_ID = "select * from computer where id = ? ;";
@@ -26,14 +25,13 @@ public class ComputerDAO extends DAO<Computer>{
 			"VALUES(?,?,?);";
 	private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ? WHERE id = ?";
 
-	public ComputerDAO(Connection connection) {
-		super(connection);
-	}
+	private ConnectionManager connectionManager = ConnectionManager.getInstance();
 
 	@Override
 	public boolean create(Computer obj) {
 
 		try {
+			Connection connection = connectionManager.getConnection();
 			PreparedStatement statement = connection.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, obj.getName());
 			statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced()));
@@ -45,16 +43,12 @@ public class ComputerDAO extends DAO<Computer>{
 				obj.setId(rs.getInt(1));
 				return true;
 			}
-
 			return false;
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+
 		}
-
-
-
 		return false;
 	}
 
@@ -62,15 +56,14 @@ public class ComputerDAO extends DAO<Computer>{
 	public boolean delete(Computer obj) {
 
 		try {
+			Connection connection = connectionManager.getConnection();
 			PreparedStatement statement = connection.prepareStatement(SQL_DELETE);
 			statement.setLong(1, obj.getId());
 			return statement.execute();
-
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new ExceptionDAO("error deleting computer ", e);
 		}
-
-		return false;
 	}
 
 
@@ -79,6 +72,7 @@ public class ComputerDAO extends DAO<Computer>{
 	public boolean update(Computer obj) {
 		{
 			try {
+				Connection connection = connectionManager.getConnection();
 				PreparedStatement statement = connection.prepareStatement(SQL_UPDATE);
 				statement.setString(1, obj.getName());
 				statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced()));
@@ -87,8 +81,8 @@ public class ComputerDAO extends DAO<Computer>{
 
 			} catch (SQLException e) {
 				e.printStackTrace();
+				throw new ExceptionDAO("error updating computer ", e);
 			}
-			return false ;
 		}
 	}
 
@@ -97,6 +91,7 @@ public class ComputerDAO extends DAO<Computer>{
 	public Optional<Computer> find(long id) {
 
 		try {
+			Connection connection = connectionManager.getConnection();
 			PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID);
 			statement.setString(1, String.valueOf(id));
 
@@ -112,6 +107,7 @@ public class ComputerDAO extends DAO<Computer>{
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new ExceptionDAO("error to find computer ", e);
 		}
 		return Optional.empty();
 	}
@@ -122,6 +118,7 @@ public class ComputerDAO extends DAO<Computer>{
 		List<Computer> res= new ArrayList<>();
 
 		try {
+			Connection connection = connectionManager.getConnection();
 			PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL);
 			ResultSet result = statement.executeQuery();
 
@@ -138,6 +135,7 @@ public class ComputerDAO extends DAO<Computer>{
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new ExceptionDAO("error to find  all computers", e);
 		}
 		return res;
 	}
@@ -170,9 +168,9 @@ public class ComputerDAO extends DAO<Computer>{
 
 		} catch(DateException e){
 			e.printStackTrace();
+			throw new ExceptionDAO("error to create computer", e);
 
 		}
-		return Optional.empty();
 	}
 
 

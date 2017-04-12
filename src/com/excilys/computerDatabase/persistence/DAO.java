@@ -1,16 +1,9 @@
 package com.excilys.computerDatabase.persistence;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class DAO<T> {
-
-	protected Connection connection = null;
-
-	public DAO(Connection connection) {
-		this.connection = connection ;		
-	}
+public interface DAO<T> {
 
 	/**
 	 * Method of creation

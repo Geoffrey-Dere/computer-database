@@ -1,4 +1,4 @@
-package com.excilys.computerDatabase.persistence.mysql;
+package com.excilys.computerDatabase.persistence;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,16 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 import com.excilys.computerDatabase.model.Company;
-import com.excilys.computerDatabase.persistence.DAO;
 
-public class CompanyDAO extends DAO<Company> {
+public class CompanyDAO implements DAO<Company> {
 
 	private static final String SQL_FIND_ALL = "select * from company ;" ;
 	private static final String SQL_FIND_BY_ID = "select * from company where id = ? ;";
 
-	public CompanyDAO(Connection connection) {
-		super(connection);
-	}
+	private ConnectionManager connectionManager = ConnectionManager.getInstance();
 
 	@Override
 	public boolean create(Company obj) {
@@ -42,6 +39,7 @@ public class CompanyDAO extends DAO<Company> {
 	public Optional<Company> find(long id) {
 
 		try {
+			Connection connection = connectionManager.getConnection();
 			PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID);
 			statement.setString(1, String.valueOf(id));
 
@@ -52,7 +50,11 @@ public class CompanyDAO extends DAO<Company> {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new ExceptionDAO("error find one companie", e);
+		} finally {
+			connectionManager.close();
 		}
+
 		return Optional.empty();
 	}
 
@@ -60,6 +62,8 @@ public class CompanyDAO extends DAO<Company> {
 	public List<Company> findAll() {
 
 		List<Company> list = new ArrayList<>();
+
+		Connection connection = connectionManager.getConnection();
 
 		try(PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL)){
 
@@ -70,6 +74,9 @@ public class CompanyDAO extends DAO<Company> {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new ExceptionDAO("error find all companies", e);
+		} finally {
+			connectionManager.close();
 		}
 
 		return list;
