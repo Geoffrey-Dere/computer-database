@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.computerDatabase.model.Company;
+import com.excilys.computerDatabase.model.Company.BuilderCompany;
 
 
 public abstract class MapperCompany {
@@ -19,7 +20,7 @@ public abstract class MapperCompany {
 		long id = res.getLong(ID);
 		String name = res.getString(NAME);
 
-		return new Company(id, name);
+		return new BuilderCompany(name).id(id).build();
 	}
 
 	public static List<Company >  mapListCompany (ResultSet res) throws SQLException{

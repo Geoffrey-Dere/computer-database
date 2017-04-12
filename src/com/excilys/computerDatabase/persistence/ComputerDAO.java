@@ -8,13 +8,12 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.excilys.computerDatabase.mapper.MapperComputer;
 import com.excilys.computerDatabase.model.Computer;
-import com.excilys.computerDatabase.model.exception.DateException;
 
 public class ComputerDAO implements DAO<Computer>{
 
@@ -25,7 +24,7 @@ public class ComputerDAO implements DAO<Computer>{
 			"VALUES(?,?,?);";
 	private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ? WHERE id = ?";
 
-	private ConnectionManager connectionManager = ConnectionManager.getInstance();
+	private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 
 	@Override
 	public boolean create(Computer obj) {
@@ -59,7 +58,10 @@ public class ComputerDAO implements DAO<Computer>{
 			Connection connection = connectionManager.getConnection();
 			PreparedStatement statement = connection.prepareStatement(SQL_DELETE);
 			statement.setLong(1, obj.getId());
-			return statement.execute();
+			boolean success = statement.execute();
+			connection.close();
+			return success ;
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ExceptionDAO("error deleting computer ", e);
@@ -77,7 +79,9 @@ public class ComputerDAO implements DAO<Computer>{
 				statement.setString(1, obj.getName());
 				statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced()));
 				statement.setTimestamp(3, timeFromDateLocal(obj.getDiscontinued()));
-				return statement.execute();
+				boolean success = statement.execute();
+				connection.close();
+				return success ;
 
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -94,17 +98,14 @@ public class ComputerDAO implements DAO<Computer>{
 			Connection connection = connectionManager.getConnection();
 			PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID);
 			statement.setString(1, String.valueOf(id));
+			ResultSet res = statement.executeQuery();
+			connection.close();
 
-			ResultSet result = statement.executeQuery();
-
-			if (result.next()){
-
-				Optional<Timestamp> introduced = Optional.ofNullable(result.getTimestamp("introduced"));
-				Optional<Timestamp> discontinued = Optional.ofNullable(result.getTimestamp("discontinued"));
-
-				return CreateComputer(result.getLong("id"), result.getString("name"), 
-						introduced, discontinued);
+			if (res.next()){
+				Computer computer = MapperComputer.mapToComputer(res);
+				return Optional.of(computer);
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ExceptionDAO("error to find computer ", e);
@@ -115,73 +116,29 @@ public class ComputerDAO implements DAO<Computer>{
 	@Override
 	public List<Computer> findAll() {
 
-		List<Computer> res= new ArrayList<>();
-
 		try {
 			Connection connection = connectionManager.getConnection();
 			PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL);
 			ResultSet result = statement.executeQuery();
+			connection.close();
 
-			while(result.next()){
+			return MapperComputer.mapListComputer(result);
 
-				Optional<Timestamp> introduced = Optional.ofNullable(result.getTimestamp("introduced"));
-				Optional<Timestamp> discontinued = Optional.ofNullable(result.getTimestamp("discontinued"));
-
-				Optional<Computer> tmp = CreateComputer(result.getLong("id"), result.getString("name"), 
-						introduced, discontinued);
-
-				if(tmp.isPresent())
-					res.add(tmp.get());			
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ExceptionDAO("error to find  all computers", e);
-		}
-		return res;
+		} 
 	}
 
 
-	private Optional<Computer> CreateComputer(long id, String name,
-			Optional<Timestamp> introduced, Optional <Timestamp> disc){
-
-		try {
-
-			if(disc.isPresent()){
-				LocalDate discon = disc.get().toLocalDateTime().toLocalDate();
-
-				LocalDate intro ;
-				intro = introduced.isPresent() ?  introduced.get().toLocalDateTime().toLocalDate()
-						: discon.minusDays(1);
-
-				if(intro.equals(discon))
-					intro = discon.minusDays(1);
-
-				return Optional.of(new Computer(id, name, intro, discon));	
-			}
-
-			if(introduced.isPresent()){
-				LocalDate intro = introduced.get().toLocalDateTime().toLocalDate();
-				return Optional.of(new Computer(id, name, intro));
-			}
-
-			return Optional.of(new Computer(id, name));
-
-		} catch(DateException e){
-			e.printStackTrace();
-			throw new ExceptionDAO("error to create computer", e);
-
-		}
-	}
-
-
-	private Timestamp timeFromDateLocal(LocalDate d){
+	private Timestamp timeFromDateLocal(LocalDate localDate){
 
 		Timestamp t = null ;
 
-		if(d == null)
+		if(localDate == null)
 			return null;
 
-		Date date = Date.from(d.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+		Date date = Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 		t = new Timestamp(date.getTime());
 		return t;
 	}

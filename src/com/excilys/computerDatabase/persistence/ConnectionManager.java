@@ -4,18 +4,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConnectionManager {
+public enum ConnectionManager {
+	
+	INSTANCE;
 
 	private static final String URL = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
 	private static final String USER = "admincdb";
 	private static final String PASSWORD = "qwerty1234";
 
-	private static ConnectionManager instance = new ConnectionManager() ;
 	private Connection connection = null;
 
-	public static ConnectionManager getInstance(){
-		return instance ;
-	}
 	
 	private ConnectionManager(){
 	}

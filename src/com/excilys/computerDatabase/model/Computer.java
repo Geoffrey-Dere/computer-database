@@ -24,38 +24,11 @@ public class Computer {
 	private LocalDate discontinued = null ;
 
 
-	public Computer(long id, String name){
-		this.id = id ;
-		this.name = name ;
-	}
-
-	public Computer(String name){
-		this.name = name ;
-		System.out.println(this.id);
-	}
-
-	public Computer(String name, LocalDate introduced) throws DateException{
-		this.name = name ;	
-		setIntroduced(introduced);	
-	}
-
-	public Computer(long id, String name, LocalDate introduced) throws DateException{
-		this.id = id ;
-		this.name = name ;	
-		setIntroduced(introduced);	
-	}
-
-	public Computer(String name, LocalDate introduced, LocalDate discontinued) throws DateException{
-		this.name = name ;
-		setIntroduced(introduced);
-		setDiscontinued(discontinued);		
-	}
-
-	public Computer(long id, String name, LocalDate introduced, LocalDate discontinued) throws DateException{
-		this.id = id ;
-		this.name = name ;
-		setIntroduced(introduced);
-		setDiscontinued(discontinued);		
+	private Computer(BuilderComputer builder){
+		this.id = builder.id ;
+		this.name = builder.name;
+		this.introduced = builder.introduced ;
+		this.discontinued = builder.discontinued ;
 	}
 
 	public LocalDate getDiscontinued() {
@@ -65,20 +38,12 @@ public class Computer {
 	/**
 	 * Set the date that it was discontinued
 	 * @param discontinued, the date
-	 * @throws DateException if the date it was introduced is null or greater that the date it was discontinued
 	 */
 	public void setDiscontinued(LocalDate discontinued) throws DateException {
-
-		if(this.introduced == null || this.introduced.compareTo(discontinued) >= 0)
-			throw new DateException("Computer : the date it was discontinued must be greater than the one he was introduced");
-
 		this.discontinued = discontinued;
 	}
-	
+
 	public void setDate(LocalDate intro, LocalDate discon) throws DateException {
-		if(intro.compareTo(discon) >= 0)
-			throw new DateException("Computer : the date it was discontinued must be greater than the one he was introduced");
-	
 		this.introduced = intro ;
 		this.discontinued = discon ;
 	}
@@ -87,13 +52,8 @@ public class Computer {
 	/**
 	 * set the date that it was introduced 
 	 * @param introduced, the date
-	 * @throws DateException, exception if the date it was discontinued is greater that the date it was introduced
 	 */
-	public void setIntroduced(LocalDate introduced) throws DateException {
-
-		if( this.discontinued != null && introduced.compareTo(this.discontinued) >= 0)
-			throw new DateException("Computer : the date it was discontinued must be greater than the one he was introduced");
-
+	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
 
@@ -152,9 +112,37 @@ public class Computer {
 	public int hashCode() {
 		return introduced.hashCode() + this.discontinued.hashCode() + name.hashCode();
 	}
-	
-	
-	
-	
-	
+
+
+	public static class BuilderComputer{
+
+		private long id ;
+		private String name ; 
+		private LocalDate introduced ;
+		private LocalDate discontinued ;
+
+		public BuilderComputer(String name){
+			this.name = name ;
+		}
+
+		public BuilderComputer id(long id){
+			this.id = id ;
+			return this ;
+		}
+		
+		public BuilderComputer introduced(LocalDate introduced){
+			this.introduced = introduced ;
+			return this ;
+		}
+
+		public BuilderComputer discontinued(LocalDate discontinued){
+			this.discontinued = discontinued ;
+			return this ;
+		}
+
+		public Computer build(){
+			return new Computer(this);
+		}
+
+	}
 }

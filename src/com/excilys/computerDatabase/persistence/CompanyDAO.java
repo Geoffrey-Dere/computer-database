@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.excilys.computerDatabase.mapper.MapperCompany;
+import com.excilys.computerDatabase.mapper.MapperComputer;
 import com.excilys.computerDatabase.model.Company;
 
 public class CompanyDAO implements DAO<Company> {
@@ -15,7 +17,7 @@ public class CompanyDAO implements DAO<Company> {
 	private static final String SQL_FIND_ALL = "select * from company ;" ;
 	private static final String SQL_FIND_BY_ID = "select * from company where id = ? ;";
 
-	private ConnectionManager connectionManager = ConnectionManager.getInstance();
+	private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 
 	@Override
 	public boolean create(Company obj) {
@@ -42,11 +44,12 @@ public class CompanyDAO implements DAO<Company> {
 			Connection connection = connectionManager.getConnection();
 			PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID);
 			statement.setString(1, String.valueOf(id));
-
 			ResultSet result = statement.executeQuery();
+			connection.close();
 
-			if (result.next())
-				return Optional.of(new Company(result.getLong("id"), result.getString("name")));
+			if (result.next()){
+				return Optional.of(MapperCompany.mapToCompany(result));
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -61,16 +64,13 @@ public class CompanyDAO implements DAO<Company> {
 	@Override
 	public List<Company> findAll() {
 
-		List<Company> list = new ArrayList<>();
-
-		Connection connection = connectionManager.getConnection();
-
-		try(PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL)){
-
+		try{
+			Connection connection = connectionManager.getConnection();
+			PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL);
 			ResultSet result = statement.executeQuery();
+			connection.close();
 
-			while(result.next())
-				list.add(new Company(result.getLong("id"), result.getString("name")));
+			return MapperCompany.mapListCompany(result);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -78,8 +78,6 @@ public class CompanyDAO implements DAO<Company> {
 		} finally {
 			connectionManager.close();
 		}
-
-		return list;
 	}
 
 }

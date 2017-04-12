@@ -1,5 +1,6 @@
 package com.excilys.computerDatabase.model ;
 
+
 /**
  * Class company <br/>
  * Represents a company
@@ -17,9 +18,9 @@ public class Company {
 	 */
 	private String name ;
 
-	public Company(long id, String name) {
-		this.id = id ;
-		this.name = name ;
+	public Company(BuilderCompany builder) {
+		this.id = builder.id ;
+		this.name = builder.name ;
 	}
 
 	public long getId() {
@@ -62,6 +63,26 @@ public class Company {
 	@Override
 	public int hashCode() {
 		return name.hashCode() + (int) id;
+	}
+	
+	public static class BuilderCompany{
+
+		private long id ;
+		private String name ; 
+
+		public BuilderCompany(String name){
+			this.name = name ;
+		}
+
+		public BuilderCompany id(long id){
+			this.id = id ;
+			return this ;
+		}
+		
+		public Company build(){
+			return new Company(this);
+		}
+
 	}
 
 }
