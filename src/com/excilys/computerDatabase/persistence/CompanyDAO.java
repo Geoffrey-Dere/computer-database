@@ -40,44 +40,40 @@ public class CompanyDAO implements DAO<Company> {
 	@Override
 	public Optional<Company> find(long id) {
 
-		try {
-			Connection connection = connectionManager.getConnection();
+		Company company = null ;
+
+		try (Connection connection = connectionManager.getConnection()){
+
 			PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID);
 			statement.setString(1, String.valueOf(id));
 			ResultSet result = statement.executeQuery();
-			connection.close();
 
 			if (result.next()){
-				return Optional.of(MapperCompany.mapToCompany(result));
+				company = MapperCompany.mapToCompany(result);
 			}
+
+			return Optional.ofNullable(company);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ExceptionDAO("error find one companie", e);
-		} finally {
-			connectionManager.close();
-		}
-
-		return Optional.empty();
+		} 
 	}
 
 	@Override
 	public List<Company> findAll() {
 
-		try{
-			Connection connection = connectionManager.getConnection();
+		try (Connection connection = connectionManager.getConnection()){
+
 			PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL);
 			ResultSet result = statement.executeQuery();
-			connection.close();
-
-			return MapperCompany.mapListCompany(result);
+			List<Company> list = MapperCompany.mapListCompany(result);
+			return list ;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ExceptionDAO("error find all companies", e);
-		} finally {
-			connectionManager.close();
-		}
+		} 
 	}
 
 }

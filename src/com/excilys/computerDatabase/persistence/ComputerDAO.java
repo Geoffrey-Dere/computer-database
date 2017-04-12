@@ -8,12 +8,14 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import com.excilys.computerDatabase.mapper.MapperComputer;
 import com.excilys.computerDatabase.model.Computer;
+import com.mysql.fabric.xmlrpc.base.Array;
 
 public class ComputerDAO implements DAO<Computer>{
 
@@ -29,8 +31,8 @@ public class ComputerDAO implements DAO<Computer>{
 	@Override
 	public boolean create(Computer obj) {
 
-		try {
-			Connection connection = connectionManager.getConnection();
+		try (Connection connection = connectionManager.getConnection()){
+
 			PreparedStatement statement = connection.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, obj.getName());
 			statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced()));
@@ -47,46 +49,42 @@ public class ComputerDAO implements DAO<Computer>{
 		} catch (SQLException e) {
 			e.printStackTrace();
 
-		}
+		} 
 		return false;
 	}
 
 	@Override
 	public boolean delete(Computer obj) {
 
-		try {
-			Connection connection = connectionManager.getConnection();
+		try (Connection connection = connectionManager.getConnection()){
+
 			PreparedStatement statement = connection.prepareStatement(SQL_DELETE);
 			statement.setLong(1, obj.getId());
 			boolean success = statement.execute();
-			connection.close();
 			return success ;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ExceptionDAO("error deleting computer ", e);
-		}
+		} 
 	}
-
-
 
 	@Override
 	public boolean update(Computer obj) {
 		{
-			try {
-				Connection connection = connectionManager.getConnection();
+			try (Connection connection = connectionManager.getConnection()){
+
 				PreparedStatement statement = connection.prepareStatement(SQL_UPDATE);
 				statement.setString(1, obj.getName());
 				statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced()));
 				statement.setTimestamp(3, timeFromDateLocal(obj.getDiscontinued()));
 				boolean success = statement.execute();
-				connection.close();
 				return success ;
 
 			} catch (SQLException e) {
 				e.printStackTrace();
 				throw new ExceptionDAO("error updating computer ", e);
-			}
+			} 
 		}
 	}
 
@@ -94,12 +92,11 @@ public class ComputerDAO implements DAO<Computer>{
 	@Override
 	public Optional<Computer> find(long id) {
 
-		try {
-			Connection connection = connectionManager.getConnection();
+		try (Connection connection = connectionManager.getConnection()){
+
 			PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID);
 			statement.setString(1, String.valueOf(id));
 			ResultSet res = statement.executeQuery();
-			connection.close();
 
 			if (res.next()){
 				Computer computer = MapperComputer.mapToComputer(res);
@@ -109,20 +106,20 @@ public class ComputerDAO implements DAO<Computer>{
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ExceptionDAO("error to find computer ", e);
-		}
+		} 
+
 		return Optional.empty();
 	}
 
 	@Override
 	public List<Computer> findAll() {
 
-		try {
-			Connection connection = connectionManager.getConnection();
+		try (Connection connection = connectionManager.getConnection()){
+
 			PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL);
 			ResultSet result = statement.executeQuery();
-			connection.close();
-
-			return MapperComputer.mapListComputer(result);
+			List<Computer> list = MapperComputer.mapListComputer(result);
+			return list ;
 
 		} catch (SQLException e) {
 			e.printStackTrace();

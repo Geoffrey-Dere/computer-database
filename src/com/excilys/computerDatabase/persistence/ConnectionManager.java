@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public enum ConnectionManager {
-	
+
 	INSTANCE;
 
 	private static final String URL = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
@@ -14,12 +14,13 @@ public enum ConnectionManager {
 
 	private Connection connection = null;
 
-	
+
 	private ConnectionManager(){
 	}
 
 
 	public Connection getConnection(){
+
 		try {
 			if(connection == null || connection.isClosed()){
 				Class.forName( "com.mysql.jdbc.Driver" );

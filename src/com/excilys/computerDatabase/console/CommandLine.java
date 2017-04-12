@@ -70,8 +70,8 @@ public class CommandLine {
 		for(Computer computer : this.computerService.getAllComputers()){
 			System.out.println(computer);
 		}
-
 	}
+	
 	private void displayCompanies() {
 		for(Company company : this.companyService.getAllCompanies()){
 			System.out.println(company);
@@ -110,7 +110,9 @@ public class CommandLine {
 
 		int id = this.nextInt("Enter the id of the Computer");
 
-		if(this.computerService.removeComputer(id))
+		Optional<Computer> computer = this.computerService.getComputer(id);
+		
+		if(computer.isPresent() && this.computerService.removeComputer(computer.get()))
 			System.out.print("the computer has been deleted");
 		else
 			System.out.print("the computer hasn't been deleted");

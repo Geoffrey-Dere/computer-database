@@ -40,9 +40,4 @@ public class ComputerService implements IComputerService {
 		return computerDAO.delete(c);
 	}
 
-	@Override
-	public boolean removeComputer(int id) {
-		return  computerDAO.delete(new Computer(id,""));
-	}
-
 }
