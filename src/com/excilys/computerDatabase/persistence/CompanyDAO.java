@@ -9,12 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 import com.excilys.computerDatabase.mapper.MapperCompany;
-import com.excilys.computerDatabase.mapper.MapperComputer;
 import com.excilys.computerDatabase.model.Company;
 
 public class CompanyDAO implements DAO<Company> {
 
-	private static final String SQL_FIND_ALL = "select * from company ;" ;
+	private static final String SQL_FIND_ALL = "select * from company ;";
 	private static final String SQL_FIND_BY_ID = "select * from company where id = ? ;";
 
 	private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
@@ -40,15 +39,15 @@ public class CompanyDAO implements DAO<Company> {
 	@Override
 	public Optional<Company> find(long id) {
 
-		Company company = null ;
+		Company company = null;
 
-		try (Connection connection = connectionManager.getConnection()){
+		try (Connection connection = connectionManager.getConnection()) {
 
 			PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID);
 			statement.setString(1, String.valueOf(id));
 			ResultSet result = statement.executeQuery();
 
-			if (result.next()){
+			if (result.next()) {
 				company = MapperCompany.mapperCompany(result);
 			}
 
@@ -57,29 +56,29 @@ public class CompanyDAO implements DAO<Company> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ExceptionDAO("error find one companie", e);
-		} 
+		}
 	}
 
 	@Override
 	public List<Company> findAll() {
 
-		List<Company> list = new ArrayList<>() ;
-		
-		try (Connection connection = connectionManager.getConnection()){
+		List<Company> list = new ArrayList<>();
+
+		try (Connection connection = connectionManager.getConnection()) {
 
 			PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL);
 			ResultSet result = statement.executeQuery();
 
-			while (result.next()){
+			while (result.next()) {
 				list.add(MapperCompany.mapperCompany(result));
 			}
-			
-			return list ;
+
+			return list;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new ExceptionDAO("error find all companies", e);
-		} 
+		}
 	}
 
 }

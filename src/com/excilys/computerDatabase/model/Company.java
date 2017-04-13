@@ -1,9 +1,9 @@
-package com.excilys.computerDatabase.model ;
-
+package com.excilys.computerDatabase.model;
 
 /**
  * Class company <br/>
  * Represents a company
+ * 
  * @author Geoffrey
  */
 public class Company {
@@ -11,16 +11,16 @@ public class Company {
 	/**
 	 * the id of the company
 	 */
-	private final long id ;
+	private final long id;
 
 	/**
 	 * the name of the company
 	 */
-	private String name ;
+	private String name;
 
 	public Company(BuilderCompany builder) {
-		this.id = builder.id ;
-		this.name = builder.name ;
+		this.id = builder.id;
+		this.name = builder.name;
 	}
 
 	public long getId() {
@@ -38,18 +38,18 @@ public class Company {
 	@Override
 	public boolean equals(Object obj) {
 
-		if(obj == null)
+		if (obj == null)
 			return false;
 
-		if(this.getClass() != obj.getClass())
+		if (this.getClass() != obj.getClass())
 			return false;
 
-		Company company = (Company) obj ;
+		Company company = (Company) obj;
 
 		if (this.name != null ? !this.name.equals(company.name) : company.name != null)
-			return false ;
+			return false;
 
-		return this.id == company.id ;	
+		return this.id == company.id;
 	}
 
 	@Override
@@ -58,28 +58,28 @@ public class Company {
 		sb.append("(").append(this.id).append(" , ").append(this.name).append(")");
 
 		return sb.toString();
-	}	
-	
+	}
+
 	@Override
 	public int hashCode() {
 		return name.hashCode() + (int) id;
 	}
-	
-	public static class BuilderCompany{
 
-		private long id ;
-		private String name ; 
+	public static class BuilderCompany {
 
-		public BuilderCompany(String name){
-			this.name = name ;
+		private long id;
+		private String name;
+
+		public BuilderCompany(String name) {
+			this.name = name;
 		}
 
-		public BuilderCompany id(long id){
-			this.id = id ;
-			return this ;
+		public BuilderCompany id(long id) {
+			this.id = id;
+			return this;
 		}
-		
-		public Company build(){
+
+		public Company build() {
 			return new Company(this);
 		}
 

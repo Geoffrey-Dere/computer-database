@@ -5,33 +5,32 @@ import com.excilys.computerDatabase.model.exception.DateException;
 
 public class Computer {
 
-	private long id ; 
+	private long id;
 
 	/**
 	 * the name of the computer
 	 */
-	private String name ;
+	private String name;
 
 	/**
 	 * the date that the computer was introduced, can be null
 	 */
-	private LocalDate introduced = null ;
+	private LocalDate introduced = null;
 
 	/**
 	 * the date that the computer was introduced, can be null only if the date
 	 * it was introduced is also null
 	 */
-	private LocalDate discontinued = null ;
+	private LocalDate discontinued = null;
 
-	private Company company ;
+	private Company company;
 
-
-	private Computer(BuilderComputer builder){
-		this.id = builder.id ;
+	private Computer(BuilderComputer builder) {
+		this.id = builder.id;
 		this.name = builder.name;
-		this.introduced = builder.introduced ;
-		this.discontinued = builder.discontinued ;
-		this.company = builder.company ;
+		this.introduced = builder.introduced;
+		this.discontinued = builder.discontinued;
+		this.company = builder.company;
 	}
 
 	public LocalDate getDiscontinued() {
@@ -40,21 +39,24 @@ public class Computer {
 
 	/**
 	 * Set the date that it was discontinued
-	 * @param discontinued, the date
+	 * 
+	 * @param discontinued,
+	 *            the date
 	 */
 	public void setDiscontinued(LocalDate discontinued) throws DateException {
 		this.discontinued = discontinued;
 	}
 
 	public void setDate(LocalDate intro, LocalDate discon) throws DateException {
-		this.introduced = intro ;
-		this.discontinued = discon ;
+		this.introduced = intro;
+		this.discontinued = discon;
 	}
 
-
 	/**
-	 * set the date that it was introduced 
-	 * @param introduced, the date
+	 * set the date that it was introduced
+	 * 
+	 * @param introduced,
+	 *            the date
 	 */
 	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
@@ -63,7 +65,6 @@ public class Computer {
 	public long getId() {
 		return id;
 	}
-
 
 	public void setId(long id) {
 		this.id = id;
@@ -77,8 +78,8 @@ public class Computer {
 		return introduced;
 	}
 
-	public Company getCompany(){
-		return this.company ;
+	public Company getCompany() {
+		return this.company;
 	}
 
 	/**
@@ -88,28 +89,27 @@ public class Computer {
 	@Override
 	public boolean equals(Object obj) {
 
-		if(obj == null)
+		if (obj == null)
 			return false;
 
-		if(this.getClass() != obj.getClass())
+		if (this.getClass() != obj.getClass())
 			return false;
 
-		Computer company = (Computer) obj ;
+		Computer company = (Computer) obj;
 
 		if (this.name != null ? !this.name.equals(company.name) : company.name != null)
-			return false ;
+			return false;
 
-		return this.id == company.id ;	
+		return this.id == company.id;
 	}
-
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public String toString(){
-		return "Computer("+ id +" , " + name + " , " + introduced +" , " + discontinued +" ,\n\t " + 
-				company +" ) " ;  
+	public String toString() {
+		return "Computer(" + id + " , " + name + " , " + introduced + " , " + discontinued + " ,\n\t " + company
+				+ " ) ";
 	}
 
 	@Override
@@ -117,40 +117,39 @@ public class Computer {
 		return introduced.hashCode() + this.discontinued.hashCode() + name.hashCode();
 	}
 
+	public static class BuilderComputer {
 
-	public static class BuilderComputer{
+		private long id;
+		private String name;
+		private LocalDate introduced;
+		private LocalDate discontinued;
+		private Company company;
 
-		private long id ;
-		private String name ; 
-		private LocalDate introduced ;
-		private LocalDate discontinued ;
-		private Company company ;
-
-		public BuilderComputer(String name){
-			this.name = name ;
+		public BuilderComputer(String name) {
+			this.name = name;
 		}
 
-		public BuilderComputer id(long id){
-			this.id = id ;
-			return this ;
+		public BuilderComputer id(long id) {
+			this.id = id;
+			return this;
 		}
 
-		public BuilderComputer introduced(LocalDate introduced){
-			this.introduced = introduced ;
-			return this ;
+		public BuilderComputer introduced(LocalDate introduced) {
+			this.introduced = introduced;
+			return this;
 		}
 
-		public BuilderComputer discontinued(LocalDate discontinued){
-			this.discontinued = discontinued ;
-			return this ;
+		public BuilderComputer discontinued(LocalDate discontinued) {
+			this.discontinued = discontinued;
+			return this;
 		}
 
-		public BuilderComputer company_id(Company company){
-			this.company = company ;
-			return this ;
+		public BuilderComputer company_id(Company company) {
+			this.company = company;
+			return this;
 		}
 
-		public Computer build(){
+		public Computer build() {
 			return new Computer(this);
 		}
 

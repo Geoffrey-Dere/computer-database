@@ -13,10 +13,9 @@ import com.excilys.computerDatabase.service.ComputerServiceImpl;
 
 public class CommandLine {
 
-
-	private CompanyServiceImpl companyService ;
-	private ComputerServiceImpl computerService ;
-	private Scanner scanner ;
+	private CompanyServiceImpl companyService;
+	private ComputerServiceImpl computerService;
+	private Scanner scanner;
 
 	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
 
@@ -26,23 +25,21 @@ public class CommandLine {
 		this.computerService = new ComputerServiceImpl();
 	}
 
-
-
 	public void run() {
 
-		String choix ;
-		boolean run = true ;
+		String choix;
+		boolean run = true;
 
-		printMenu();		
-		while(run){
+		printMenu();
+		while (run) {
 
-			System.out.print("your choice : " );
+			System.out.print("your choice : ");
 			choix = scanner.next();
 
-			switch (choix){
-			case "q" :
-				run = false ;
-				break ;
+			switch (choix) {
+			case "q":
+				run = false;
+				break;
 			case "1":
 				displayCompanies();
 				break;
@@ -61,24 +58,23 @@ public class CommandLine {
 			case "6":
 				updateOneComputer();
 				break;
-			default :
+			default:
 				printMenu();
 			}
 		}
 	}
 
 	private void displayComputers() {
-		for(Computer computer : this.computerService.getAllComputers()){
+		for (Computer computer : this.computerService.getAllComputers()) {
 			System.out.println(computer);
 		}
 	}
 
 	private void displayCompanies() {
-		for(Company company : this.companyService.getAllCompanies()){
+		for (Company company : this.companyService.getAllCompanies()) {
 			System.out.println(company);
 		}
 	}
-
 
 	private void displayOneComputer() {
 
@@ -86,10 +82,10 @@ public class CommandLine {
 
 		Optional<Computer> computer = this.computerService.getComputer(id);
 
-		if(computer.isPresent()){
+		if (computer.isPresent()) {
 			System.out.println(computer.get());
 		} else {
-			System.out.println("no computer with id " + id );
+			System.out.println("no computer with id " + id);
 		}
 	}
 
@@ -99,13 +95,12 @@ public class CommandLine {
 
 		Optional<Company> company = this.companyService.getCompany(id);
 
-		if(company.isPresent()){
+		if (company.isPresent()) {
 			System.out.println(company.get());
 		} else {
-			System.out.println("no company with id " + id );
+			System.out.println("no company with id " + id);
 		}
 	}
-
 
 	private void deleteOneComputer() {
 
@@ -113,7 +108,7 @@ public class CommandLine {
 
 		Optional<Computer> computer = this.computerService.getComputer(id);
 
-		if(computer.isPresent() && this.computerService.removeComputer(computer.get()))
+		if (computer.isPresent() && this.computerService.removeComputer(computer.get()))
 			System.out.print("the computer has been deleted");
 		else
 			System.out.print("the computer hasn't been deleted");
@@ -123,22 +118,22 @@ public class CommandLine {
 	private void updateOneComputer() {
 		int id = this.nextInt("Enter the id of the Computer");
 
-		String name ; 
-		LocalDate intro = null ;
-		LocalDate discon = null ;
+		String name;
+		LocalDate intro = null;
+		LocalDate discon = null;
 
 		Optional<Computer> computer = this.computerService.getComputer(id);
 
-		if(computer.isPresent()){
+		if (computer.isPresent()) {
 
 			System.out.println("enter the new name : ");
 			name = scanner.nextLine();
 
-			System.out.println(	"New introducing date (yyyy-MMM-dd)");
-			intro = LocalDate.parse( this.scanner.next() , formatter);
+			System.out.println("New introducing date (yyyy-MMM-dd)");
+			intro = LocalDate.parse(this.scanner.next(), formatter);
 
-			System.out.println(	"New discontinuing date (yyyy-MMM-dd)");
-			discon = LocalDate.parse( this.scanner.next() , formatter);
+			System.out.println("New discontinuing date (yyyy-MMM-dd)");
+			discon = LocalDate.parse(this.scanner.next(), formatter);
 
 			try {
 				computer.get().setName(name);
@@ -149,24 +144,22 @@ public class CommandLine {
 			}
 
 		} else {
-			System.out.println("no computer with id " + id );
+			System.out.println("no computer with id " + id);
 		}
 
 	}
 
+	private int nextInt(String msg) {
 
-	private int nextInt(String msg){
-
-		int id = 0 ;
+		int id = 0;
 
 		try {
 			System.out.print(msg + " ");
 			id = scanner.nextInt();
-		} catch (java.util.InputMismatchException e){
+		} catch (java.util.InputMismatchException e) {
 		}
-		return id ;
+		return id;
 	}
-
 
 	private void printMenu() {
 		System.out.println("------- MENU -----------");
