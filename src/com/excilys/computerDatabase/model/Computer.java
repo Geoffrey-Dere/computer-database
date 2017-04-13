@@ -23,12 +23,15 @@ public class Computer {
 	 */
 	private LocalDate discontinued = null ;
 
+	private Company company ;
+
 
 	private Computer(BuilderComputer builder){
 		this.id = builder.id ;
 		this.name = builder.name;
 		this.introduced = builder.introduced ;
 		this.discontinued = builder.discontinued ;
+		this.company = builder.company ;
 	}
 
 	public LocalDate getDiscontinued() {
@@ -74,6 +77,10 @@ public class Computer {
 		return introduced;
 	}
 
+	public Company getCompany(){
+		return this.company ;
+	}
+
 	/**
 	 * function equals for Computer class <br/>
 	 * 2 objects are equal if they have the same name and id
@@ -101,11 +108,8 @@ public class Computer {
 	}
 
 	public String toString(){
-		StringBuilder sb = new StringBuilder("Computer(");
-		sb.append(id).append(" , ").append(name).append(" , ").
-		append(introduced).append(" , ").append(discontinued).append(")");
-		return sb.toString();
-
+		return "Computer("+ id +" , " + name + " , " + introduced +" , " + discontinued +" ,\n\t " + 
+				company +" ) " ;  
 	}
 
 	@Override
@@ -120,6 +124,7 @@ public class Computer {
 		private String name ; 
 		private LocalDate introduced ;
 		private LocalDate discontinued ;
+		private Company company ;
 
 		public BuilderComputer(String name){
 			this.name = name ;
@@ -129,7 +134,7 @@ public class Computer {
 			this.id = id ;
 			return this ;
 		}
-		
+
 		public BuilderComputer introduced(LocalDate introduced){
 			this.introduced = introduced ;
 			return this ;
@@ -137,6 +142,11 @@ public class Computer {
 
 		public BuilderComputer discontinued(LocalDate discontinued){
 			this.discontinued = discontinued ;
+			return this ;
+		}
+
+		public BuilderComputer company_id(Company company){
+			this.company = company ;
 			return this ;
 		}
 

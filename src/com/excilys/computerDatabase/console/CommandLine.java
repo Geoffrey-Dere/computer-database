@@ -8,22 +8,22 @@ import java.util.Scanner;
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.model.exception.DateException;
-import com.excilys.computerDatabase.service.CompanyService;
-import com.excilys.computerDatabase.service.ComputerService;
+import com.excilys.computerDatabase.service.CompanyServiceImpl;
+import com.excilys.computerDatabase.service.ComputerServiceImpl;
 
 public class CommandLine {
 
 
-	private CompanyService companyService ;
-	private ComputerService computerService ;
+	private CompanyServiceImpl companyService ;
+	private ComputerServiceImpl computerService ;
 	private Scanner scanner ;
 
 	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
 
 	public CommandLine() {
 		this.scanner = new Scanner(System.in);
-		this.companyService = new CompanyService();
-		this.computerService = new ComputerService();
+		this.companyService = new CompanyServiceImpl();
+		this.computerService = new ComputerServiceImpl();
 	}
 
 

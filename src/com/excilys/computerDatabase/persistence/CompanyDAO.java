@@ -49,7 +49,7 @@ public class CompanyDAO implements DAO<Company> {
 			ResultSet result = statement.executeQuery();
 
 			if (result.next()){
-				company = MapperCompany.mapToCompany(result);
+				company = MapperCompany.mapperCompany(result);
 			}
 
 			return Optional.ofNullable(company);
@@ -63,11 +63,17 @@ public class CompanyDAO implements DAO<Company> {
 	@Override
 	public List<Company> findAll() {
 
+		List<Company> list = new ArrayList<>() ;
+		
 		try (Connection connection = connectionManager.getConnection()){
 
 			PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL);
 			ResultSet result = statement.executeQuery();
-			List<Company> list = MapperCompany.mapListCompany(result);
+
+			while (result.next()){
+				list.add(MapperCompany.mapperCompany(result));
+			}
+			
 			return list ;
 
 		} catch (SQLException e) {

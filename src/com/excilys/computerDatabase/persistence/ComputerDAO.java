@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -18,10 +19,12 @@ import com.excilys.computerDatabase.model.Computer;
 public class ComputerDAO implements DAO<Computer>{
 
 	private static final String SQL_FIND_ALL = "select * from computer;" ;
+	private static final String SQL_FIND_ALL_WITH_COMPANY = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id ;" ;
+	
 	private static final String SQL_FIND_BY_ID = "select * from computer where id = ? ;";
 	private static final String SQL_DELETE = "delete from computer where id = ? ;";
-	private static final String SQL_INSERT = "insert into computer(name, introduced, discontinued) VALUES(?,?,?);";
-	private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ? WHERE id = ?";
+	private static final String SQL_INSERT = "insert into computer(name, introduced, discontinued, company_id)VALUES(?,?,?,?);";
+	private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 
 	private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 
@@ -34,6 +37,13 @@ public class ComputerDAO implements DAO<Computer>{
 			statement.setString(1, obj.getName());
 			statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced()));
 			statement.setTimestamp(3, timeFromDateLocal(obj.getDiscontinued()));
+			
+			if(obj.getCompany() != null){
+			statement.setLong(4, obj.getCompany().getId());
+			} else {
+				statement.setNull(4, java.sql.Types.BIGINT);
+			}
+			
 			statement.executeUpdate();
 
 			ResultSet rs = statement.getGeneratedKeys();
@@ -75,6 +85,15 @@ public class ComputerDAO implements DAO<Computer>{
 				statement.setString(1, obj.getName());
 				statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced()));
 				statement.setTimestamp(3, timeFromDateLocal(obj.getDiscontinued()));
+				
+				if(obj.getCompany() != null){
+					statement.setLong(4, obj.getCompany().getId());
+					} else {
+						statement.setNull(4, java.sql.Types.BIGINT);
+					}
+				
+				statement.setLong(5, obj.getId());
+				
 				boolean success = statement.execute();
 				return success ;
 
@@ -96,7 +115,7 @@ public class ComputerDAO implements DAO<Computer>{
 			ResultSet res = statement.executeQuery();
 
 			if (res.next()){
-				Computer computer = MapperComputer.mapToComputer(res);
+				Computer computer = MapperComputer.mapperComputer(res, false);
 				return Optional.of(computer);
 			}
 
@@ -111,11 +130,17 @@ public class ComputerDAO implements DAO<Computer>{
 	@Override
 	public List<Computer> findAll() {
 
+		List<Computer> list = new ArrayList<>();
+		
 		try (Connection connection = connectionManager.getConnection()){
 
-			PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL);
+			PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_WITH_COMPANY );
 			ResultSet result = statement.executeQuery();
-			List<Computer> list = MapperComputer.mapListComputer(result);
+			
+			while(result.next()){
+				list.add(MapperComputer.mapperComputer(result, true));
+			}
+			
 			return list ;
 
 		} catch (SQLException e) {

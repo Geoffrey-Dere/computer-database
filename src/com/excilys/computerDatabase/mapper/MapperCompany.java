@@ -11,11 +11,11 @@ import com.excilys.computerDatabase.model.Company.BuilderCompany;
 
 public abstract class MapperCompany {
 
-	private final static String ID = "id";
-	private final static String NAME = "name" ;
+	private final static String ID = "Company.id";
+	private final static String NAME = "Company.name" ;
 
 
-	public static Company mapToCompany(ResultSet res) throws SQLException {
+	public static Company mapperCompany(ResultSet res) throws SQLException {
 
 		long id = res.getLong(ID);
 		String name = res.getString(NAME);
@@ -23,13 +23,4 @@ public abstract class MapperCompany {
 		return new BuilderCompany(name).id(id).build();
 	}
 
-	public static List<Company >  mapListCompany (ResultSet res) throws SQLException{
-
-		List<Company > list = new ArrayList<>();
-
-		while(res.next()){
-			list.add(mapToCompany(res));
-		}
-		return list ;
-	}
 }
