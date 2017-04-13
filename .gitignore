@@ -20,4 +20,4 @@ local.properties
 .settings/
 .loadpath
 
-resources/config/bdd.properties.default
+resources/config/bdd.properties

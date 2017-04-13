@@ -8,22 +8,19 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import com.excilys.computerDatabase.mapper.MapperComputer;
 import com.excilys.computerDatabase.model.Computer;
-import com.mysql.fabric.xmlrpc.base.Array;
 
 public class ComputerDAO implements DAO<Computer>{
 
 	private static final String SQL_FIND_ALL = "select * from computer;" ;
 	private static final String SQL_FIND_BY_ID = "select * from computer where id = ? ;";
 	private static final String SQL_DELETE = "delete from computer where id = ? ;";
-	private static final String SQL_INSERT = "insert into computer(name, introduced, discontinued)"+
-			"VALUES(?,?,?);";
+	private static final String SQL_INSERT = "insert into computer(name, introduced, discontinued) VALUES(?,?,?);";
 	private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ? WHERE id = ?";
 
 	private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
