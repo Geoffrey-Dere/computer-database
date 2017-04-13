@@ -60,6 +60,7 @@ public class CommandLine {
 				break;
 			case "6":
 				updateOneComputer();
+				break;
 			default :
 				printMenu();
 			}
@@ -71,7 +72,7 @@ public class CommandLine {
 			System.out.println(computer);
 		}
 	}
-	
+
 	private void displayCompanies() {
 		for(Company company : this.companyService.getAllCompanies()){
 			System.out.println(company);
@@ -81,7 +82,7 @@ public class CommandLine {
 
 	private void displayOneComputer() {
 
-		int id = this.nextInt("Enter the id of the Computer");
+		int id = nextInt("Enter the id of the Computer");
 
 		Optional<Computer> computer = this.computerService.getComputer(id);
 
@@ -111,7 +112,7 @@ public class CommandLine {
 		int id = this.nextInt("Enter the id of the Computer");
 
 		Optional<Computer> computer = this.computerService.getComputer(id);
-		
+
 		if(computer.isPresent() && this.computerService.removeComputer(computer.get()))
 			System.out.print("the computer has been deleted");
 		else
@@ -156,14 +157,13 @@ public class CommandLine {
 
 	private int nextInt(String msg){
 
-		int id = -1 ;
-		while (id != -1){
-			try {
-				System.out.print(msg);
-				id = scanner.nextInt();
-			} catch (java.util.InputMismatchException e){
-			}
-		}	
+		int id = 0 ;
+
+		try {
+			System.out.print(msg + " ");
+			id = scanner.nextInt();
+		} catch (java.util.InputMismatchException e){
+		}
 		return id ;
 	}
 
