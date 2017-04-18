@@ -1,3 +1,4 @@
-url = "url";
-user = "user";
-password = "password";
+driver=driver
+base=base
+user=user
+password=password
