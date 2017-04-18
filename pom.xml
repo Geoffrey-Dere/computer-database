@@ -1,0 +1,96 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.excilys.computerDatabase</groupId>
+  <artifactId>computerDatabase</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>computerDatabase Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  
+  
+
+  <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+		<maven-checkstyle-plugin.version>2.17</maven-checkstyle-plugin.version>
+		<maven-checkstyle-plugin.configLocation>config/checkstyle/checkstyle.xml</maven-checkstyle-plugin.configLocation>
+		<maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
+		<maven-slf4j.version>1.7.16</maven-slf4j.version>
+		<maven-mysql.version>5.1.6</maven-mysql.version>
+		<junit.version>4.12</junit.version>
+		<org.mockito>2.7.12</org.mockito>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${maven-mysql.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		         <dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${org.mockito}</version>
+			<scope>test</scope>
+		</dependency>
+
+
+	</dependencies>
+
+	<build>		
+		<plugins>
+			<!-- Compilateur JDK Java -->
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+
+			<!-- Ajout du checkStyle au projet-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${maven-checkstyle-plugin.version}</version>
+				<configuration>
+					<configLocation>${maven-checkstyle-plugin.configLocation}</configLocation>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<reporting>
+		<plugins>
+			<!-- Vérificaion de styles -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${maven-checkstyle-plugin.version}</version>
+				<configuration>
+					<configLocation>${maven-checkstyle-plugin.configLocation}</configLocation>
+				</configuration>
+
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>checkstyle</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
+
+</project>
