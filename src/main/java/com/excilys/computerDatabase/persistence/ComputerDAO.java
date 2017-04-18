@@ -13,10 +13,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.computerDatabase.persistence.mapper.MapperComputer;
+
 import com.excilys.computerDatabase.model.Computer;
 
 public class ComputerDAO implements DAO<Computer> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
 
     private static final String SQL_FIND_ALL = "select * from computer;";
     private static final String SQL_FIND_ALL_WITH_COMPANY = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id ;";
@@ -56,10 +62,10 @@ public class ComputerDAO implements DAO<Computer> {
             return false;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("sql exception : function create new computer ");
+            throw new ExceptionDAO("error create new computer", e);
 
         }
-        return false;
     }
 
     @Override
@@ -73,7 +79,7 @@ public class ComputerDAO implements DAO<Computer> {
             return success;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("sql exception : error deleting computer");
             throw new ExceptionDAO("error deleting computer ", e);
         }
     }
@@ -100,7 +106,7 @@ public class ComputerDAO implements DAO<Computer> {
             return success;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("error updating computer");
             throw new ExceptionDAO("error updating computer ", e);
         }
 
@@ -108,6 +114,8 @@ public class ComputerDAO implements DAO<Computer> {
 
     @Override
     public Optional<Computer> find(long id) {
+
+        LOGGER.debug("EUH");
 
         try (Connection connection = connectionManager.getConnection()) {
 
@@ -121,8 +129,8 @@ public class ComputerDAO implements DAO<Computer> {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new ExceptionDAO("error to find computer ", e);
+            LOGGER.error("error to find a computer ");
+            throw new ExceptionDAO("error to find a computer ", e);
         }
 
         return Optional.empty();
@@ -145,7 +153,7 @@ public class ComputerDAO implements DAO<Computer> {
             return list;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("error to find  all computers ");
             throw new ExceptionDAO("error to find  all computers", e);
         }
     }
@@ -190,8 +198,8 @@ public class ComputerDAO implements DAO<Computer> {
             return list;
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new ExceptionDAO("error to find  all computers", e);
+            LOGGER.error("error to find  all computers with limit");
+            throw new ExceptionDAO("error to find  all computers with limit", e);
         }
     }
 

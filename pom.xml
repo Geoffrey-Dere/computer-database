@@ -1,15 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.excilys.computerDatabase</groupId>
-  <artifactId>computerDatabase</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <name>computerDatabase Maven Webapp</name>
-  <url>http://maven.apache.org</url>
-  
-  
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.excilys.computerDatabase</groupId>
+	<artifactId>computerDatabase</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>computerDatabase Maven Webapp</name>
+	<url>http://maven.apache.org</url>
 
-  <properties>
+
+
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
@@ -21,7 +21,7 @@
 		<junit.version>4.12</junit.version>
 		<org.mockito>2.7.12</org.mockito>
 	</properties>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -36,8 +36,8 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
-		         <dependency>
+
+		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>${org.mockito}</version>
@@ -45,9 +45,21 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.25</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.0.13</version>
+		</dependency>
+
 	</dependencies>
 
-	<build>		
+	<build>
 		<plugins>
 			<!-- Compilateur JDK Java -->
 			<plugin>
@@ -59,7 +71,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- Ajout du checkStyle au projet-->
+			<!-- Ajout du checkStyle au projet -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
@@ -81,7 +93,7 @@
 				<configuration>
 					<configLocation>${maven-checkstyle-plugin.configLocation}</configLocation>
 				</configuration>
-				
+
 
 				<reportSets>
 					<reportSet>
