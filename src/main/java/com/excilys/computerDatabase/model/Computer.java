@@ -2,7 +2,6 @@ package com.excilys.computerDatabase.model;
 
 import java.time.LocalDate;
 
-
 public class Computer {
 
     private long id;

@@ -1,4 +1,4 @@
-package com.excilys.computerDatabase.mapper;
+package com.excilys.computerDatabase.persistence.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,8 +8,8 @@ import com.excilys.computerDatabase.model.Company.BuilderCompany;
 
 public abstract class MapperCompany {
 
-    private static final String ID = "Company.id";
-    private static final String NAME = "Company.name";
+    public static final String ID = "Company.id";
+    public static final String NAME = "Company.name";
 
     /**
      * @param res the resultset

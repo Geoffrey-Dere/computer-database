@@ -1,7 +1,6 @@
 package com.excilys.computerDatabase.console;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -9,14 +8,13 @@ import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.service.CompanyServiceImpl;
 import com.excilys.computerDatabase.service.ComputerServiceImpl;
+import com.excilys.computerDatabase.util.DateFormatter;
 
 public class CommandLine {
 
     private CompanyServiceImpl companyService;
     private ComputerServiceImpl computerService;
     private Scanner scanner;
-
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
 
     /**
      */
@@ -146,10 +144,10 @@ public class CommandLine {
             name = scanner.nextLine();
 
             System.out.println("New introducing date (yyyy-MMM-dd)");
-            intro = LocalDate.parse(this.scanner.next(), formatter);
+            intro = DateFormatter.stringtoLocalDate(this.scanner.next());
 
             System.out.println("New discontinuing date (yyyy-MMM-dd)");
-            discon = LocalDate.parse(this.scanner.next(), formatter);
+            discon = DateFormatter.stringtoLocalDate(this.scanner.next());
 
             computer.get().setName(name);
             computer.get().setDate(intro, discon);

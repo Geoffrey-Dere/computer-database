@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.excilys.computerDatabase.mapper.MapperCompany;
+import com.excilys.computerDatabase.persistence.mapper.MapperCompany;
 import com.excilys.computerDatabase.model.Company;
 
 public class CompanyDAO implements DAO<Company> {

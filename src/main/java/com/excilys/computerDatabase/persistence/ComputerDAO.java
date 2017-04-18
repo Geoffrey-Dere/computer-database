@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import com.excilys.computerDatabase.mapper.MapperComputer;
+import com.excilys.computerDatabase.persistence.mapper.MapperComputer;
 import com.excilys.computerDatabase.model.Computer;
 
 public class ComputerDAO implements DAO<Computer> {
