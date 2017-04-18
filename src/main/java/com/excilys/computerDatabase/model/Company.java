@@ -1,88 +1,103 @@
 package com.excilys.computerDatabase.model;
 
 /**
- * Class company <br/>
+ * Class company <br/>.
  * Represents a company
- * 
  * @author Geoffrey
  */
 public class Company {
 
-	/**
-	 * the id of the company
-	 */
-	private final long id;
+    /**
+     * the id of the company.
+     */
+    private final long id;
 
-	/**
-	 * the name of the company
-	 */
-	private String name;
+    /**
+     * the name of the company.
+     */
+    private String name;
 
-	public Company(BuilderCompany builder) {
-		this.id = builder.id;
-		this.name = builder.name;
-	}
+    /**
+     * @param builder the builder
+     */
+    public Company(BuilderCompany builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+    }
 
-	public long getId() {
-		return id;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * function equals for Company class <br/>
-	 * 2 objects 'Company' are equal if they have the same name and id
-	 */
-	@Override
-	public boolean equals(Object obj) {
+    /**
+     * function equals for Company class <br/>.
+     * 2 objects 'Company' are equal if they have the same name and id
+     */
+    @Override
+    public boolean equals(Object obj) {
 
-		if (obj == null)
-			return false;
+        if (obj == null) {
+            return false;
+        }
 
-		if (this.getClass() != obj.getClass())
-			return false;
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
 
-		Company company = (Company) obj;
+        Company company = (Company) obj;
 
-		if (this.name != null ? !this.name.equals(company.name) : company.name != null)
-			return false;
+        if (this.name != null ? !this.name.equals(company.name) : company.name != null) {
+            return false;
+        }
 
-		return this.id == company.id;
-	}
+        return this.id == company.id;
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder("Company");
-		sb.append("(").append(this.id).append(" , ").append(this.name).append(")");
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Company");
+        sb.append("(").append(this.id).append(" , ").append(this.name).append(")");
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 
-	@Override
-	public int hashCode() {
-		return name.hashCode() + (int) id;
-	}
+    @Override
+    public int hashCode() {
+        return name.hashCode() + (int) id;
+    }
 
-	public static class BuilderCompany {
+    public static class BuilderCompany {
 
-		private long id;
-		private String name;
+        private long id;
+        private String name;
 
-		public BuilderCompany(String name) {
-			this.name = name;
-		}
+        /**
+         * @param name the name of the company
+         */
+        public BuilderCompany(String name) {
+            this.name = name;
+        }
 
-		public BuilderCompany id(long id) {
-			this.id = id;
-			return this;
-		}
+        /**
+         * @param id the id
+         * @return the builder
+         */
+        public BuilderCompany id(long id) {
+            this.id = id;
+            return this;
+        }
 
-		public Company build() {
-			return new Company(this);
-		}
+        /**
+         * @return the new object company
+         */
+        public Company build() {
+            return new Company(this);
+        }
 
-	}
+    }
 
 }

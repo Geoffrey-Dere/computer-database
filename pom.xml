@@ -81,6 +81,7 @@
 				<configuration>
 					<configLocation>${maven-checkstyle-plugin.configLocation}</configLocation>
 				</configuration>
+				
 
 				<reportSets>
 					<reportSet>

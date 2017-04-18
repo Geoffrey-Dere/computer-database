@@ -5,26 +5,38 @@ import java.util.List;
 
 public class Pager<T> {
 
-	private List<T> list_entity = new ArrayList<>();
+    private List<T> list_entity = new ArrayList<>();
 
-	private Pager(BuilderPage<T> builder) {
-		this.list_entity = builder.list;
-	}
+    /**
+     * @param builder the builder
+     */
+    private Pager(BuilderPage<T> builder) {
+        this.list_entity = builder.list;
+    }
 
-	public List<T> getList_entity() {
-		return list_entity;
-	}
+    /**
+     * @return the objects on the list
+     */
+    public List<T> getListEntity() {
+        return list_entity;
+    }
 
-	public static class BuilderPage<T> {
-		private List<T> list;
+    public static class BuilderPage<T> {
+        private List<T> list;
 
-		public BuilderPage(List<T> list) {
-			this.list = list;
+        /**
+         * @param list the list
+         */
+        public BuilderPage(List<T> list) {
+            this.list = list;
 
-		}
+        }
 
-		public Pager<T> build() {
-			return new Pager<T>(this);
-		}
-	}
+        /**
+         * @return the new pager
+         */
+        public Pager<T> build() {
+            return new Pager<T>(this);
+        }
+    }
 }

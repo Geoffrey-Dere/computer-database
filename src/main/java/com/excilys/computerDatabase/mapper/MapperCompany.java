@@ -8,15 +8,20 @@ import com.excilys.computerDatabase.model.Company.BuilderCompany;
 
 public abstract class MapperCompany {
 
-	private final static String ID = "Company.id";
-	private final static String NAME = "Company.name";
+    private static final String ID = "Company.id";
+    private static final String NAME = "Company.name";
 
-	public static Company mapperCompany(ResultSet res) throws SQLException {
+    /**
+     * @param res the resultset
+     * @return the company
+     * @throws SQLException the sql exception
+     */
+    public static Company mapperCompany(ResultSet res) throws SQLException {
 
-		long id = res.getLong(ID);
-		String name = res.getString(NAME);
+        long id = res.getLong(ID);
+        String name = res.getString(NAME);
 
-		return new BuilderCompany(name).id(id).build();
-	}
+        return new BuilderCompany(name).id(id).build();
+    }
 
 }

@@ -15,175 +15,184 @@ import java.util.Optional;
 
 import com.excilys.computerDatabase.mapper.MapperComputer;
 import com.excilys.computerDatabase.model.Computer;
-import com.excilys.computerDatabase.model.Pager;
 
 public class ComputerDAO implements DAO<Computer> {
 
-	private static final String SQL_FIND_ALL = "select * from computer;";
-	private static final String SQL_FIND_ALL_WITH_COMPANY = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id ;";
+    private static final String SQL_FIND_ALL = "select * from computer;";
+    private static final String SQL_FIND_ALL_WITH_COMPANY = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id ;";
 
-	private static final String SQL_FIND_BY_ID = "select * from computer where id = ? ;";
-	private static final String SQL_DELETE = "delete from computer where id = ? ;";
-	private static final String SQL_INSERT = "insert into computer(name, introduced, discontinued, company_id)VALUES(?,?,?,?);";
-	private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
-	
-	private static final String SQL_FIND_LIMIT = "select * from computer limit ? offset ? ;";
+    private static final String SQL_FIND_BY_ID = "select * from computer where id = ? ;";
+    private static final String SQL_DELETE = "delete from computer where id = ? ;";
+    private static final String SQL_INSERT = "insert into computer(name, introduced, discontinued, company_id)VALUES(?,?,?,?);";
+    private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 
-	private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
+    private static final String SQL_FIND_LIMIT = "select * from computer limit ? offset ? ;";
 
-	@Override
-	public boolean create(Computer obj) {
+    private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 
-		try (Connection connection = connectionManager.getConnection()) {
+    @Override
+    public boolean create(Computer obj) {
 
-			PreparedStatement statement = connection.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-			statement.setString(1, obj.getName());
-			statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced()));
-			statement.setTimestamp(3, timeFromDateLocal(obj.getDiscontinued()));
+        try (Connection connection = connectionManager.getConnection()) {
 
-			if (obj.getCompany() != null) {
-				statement.setLong(4, obj.getCompany().getId());
-			} else {
-				statement.setNull(4, java.sql.Types.BIGINT);
-			}
+            PreparedStatement statement = connection.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, obj.getName());
+            statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced()));
+            statement.setTimestamp(3, timeFromDateLocal(obj.getDiscontinued()));
 
-			statement.executeUpdate();
+            if (obj.getCompany() != null) {
+                statement.setLong(4, obj.getCompany().getId());
+            } else {
+                statement.setNull(4, java.sql.Types.BIGINT);
+            }
 
-			ResultSet rs = statement.getGeneratedKeys();
-			if (rs.next()) {
-				obj.setId(rs.getInt(1));
-				return true;
-			}
-			return false;
+            statement.executeUpdate();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
+            ResultSet rs = statement.getGeneratedKeys();
+            if (rs.next()) {
+                obj.setId(rs.getInt(1));
+                return true;
+            }
+            return false;
 
-		}
-		return false;
-	}
+        } catch (SQLException e) {
+            e.printStackTrace();
 
-	@Override
-	public boolean delete(Computer obj) {
+        }
+        return false;
+    }
 
-		try (Connection connection = connectionManager.getConnection()) {
+    @Override
+    public boolean delete(Computer obj) {
 
-			PreparedStatement statement = connection.prepareStatement(SQL_DELETE);
-			statement.setLong(1, obj.getId());
-			boolean success = statement.execute();
-			return success;
+        try (Connection connection = connectionManager.getConnection()) {
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new ExceptionDAO("error deleting computer ", e);
-		}
-	}
+            PreparedStatement statement = connection.prepareStatement(SQL_DELETE);
+            statement.setLong(1, obj.getId());
+            boolean success = statement.execute();
+            return success;
 
-	@Override
-	public boolean update(Computer obj) {
-		{
-			try (Connection connection = connectionManager.getConnection()) {
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new ExceptionDAO("error deleting computer ", e);
+        }
+    }
 
-				PreparedStatement statement = connection.prepareStatement(SQL_UPDATE);
-				statement.setString(1, obj.getName());
-				statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced()));
-				statement.setTimestamp(3, timeFromDateLocal(obj.getDiscontinued()));
+    @Override
+    public boolean update(Computer obj) {
 
-				if (obj.getCompany() != null) {
-					statement.setLong(4, obj.getCompany().getId());
-				} else {
-					statement.setNull(4, java.sql.Types.BIGINT);
-				}
+        try (Connection connection = connectionManager.getConnection()) {
 
-				statement.setLong(5, obj.getId());
+            PreparedStatement statement = connection.prepareStatement(SQL_UPDATE);
+            statement.setString(1, obj.getName());
+            statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced()));
+            statement.setTimestamp(3, timeFromDateLocal(obj.getDiscontinued()));
 
-				boolean success = statement.execute();
-				return success;
+            if (obj.getCompany() != null) {
+                statement.setLong(4, obj.getCompany().getId());
+            } else {
+                statement.setNull(4, java.sql.Types.BIGINT);
+            }
 
-			} catch (SQLException e) {
-				e.printStackTrace();
-				throw new ExceptionDAO("error updating computer ", e);
-			}
-		}
-	}
+            statement.setLong(5, obj.getId());
 
-	@Override
-	public Optional<Computer> find(long id) {
+            boolean success = statement.execute();
+            return success;
 
-		try (Connection connection = connectionManager.getConnection()) {
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new ExceptionDAO("error updating computer ", e);
+        }
 
-			PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID);
-			statement.setString(1, String.valueOf(id));
-			ResultSet res = statement.executeQuery();
+    }
 
-			if (res.next()) {
-				Computer computer = MapperComputer.mapperComputer(res, false);
-				return Optional.of(computer);
-			}
+    @Override
+    public Optional<Computer> find(long id) {
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new ExceptionDAO("error to find computer ", e);
-		}
+        try (Connection connection = connectionManager.getConnection()) {
 
-		return Optional.empty();
-	}
+            PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID);
+            statement.setString(1, String.valueOf(id));
+            ResultSet res = statement.executeQuery();
 
-	@Override
-	public List<Computer> findAll() {
+            if (res.next()) {
+                Computer computer = MapperComputer.mapperComputer(res, false);
+                return Optional.of(computer);
+            }
 
-		List<Computer> list = new ArrayList<>();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new ExceptionDAO("error to find computer ", e);
+        }
 
-		try (Connection connection = connectionManager.getConnection()) {
+        return Optional.empty();
+    }
 
-			PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_WITH_COMPANY);
-			ResultSet result = statement.executeQuery();
+    @Override
+    public List<Computer> findAll() {
 
-			while (result.next()) {
-				list.add(MapperComputer.mapperComputer(result, true));
-			}
+        List<Computer> list = new ArrayList<>();
 
-			return list;
+        try (Connection connection = connectionManager.getConnection()) {
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new ExceptionDAO("error to find  all computers", e);
-		}
-	}
+            PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_WITH_COMPANY);
+            ResultSet result = statement.executeQuery();
 
-	private Timestamp timeFromDateLocal(LocalDate localDate) {
+            while (result.next()) {
+                list.add(MapperComputer.mapperComputer(result, true));
+            }
 
-		Timestamp t = null;
+            return list;
 
-		if (localDate == null)
-			return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new ExceptionDAO("error to find  all computers", e);
+        }
+    }
 
-		Date date = Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-		t = new Timestamp(date.getTime());
-		return t;
-	}
+    /**
+     * @param localDate the date to transform
+     * @return the date
+     */
+    private Timestamp timeFromDateLocal(LocalDate localDate) {
 
-	public List<Computer> findAll(int limit, int offset) {
-		
-		List<Computer> list = new ArrayList<>();
+        Timestamp t = null;
 
-		try (Connection connection = connectionManager.getConnection()) {
+        if (localDate == null) {
+            return null;
+        }
 
-			PreparedStatement statement = connection.prepareStatement(SQL_FIND_LIMIT);
-			statement.setInt(1, limit);
-			statement.setInt(2, offset);
-			ResultSet result = statement.executeQuery();
+        Date date = Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        t = new Timestamp(date.getTime());
+        return t;
+    }
 
-			while (result.next()) {
-				list.add(MapperComputer.mapperComputer(result, true));
-			}
-			
-			return list;
+    /**
+     * @param limit the limit
+     * @param offset the offset
+     * @return the list of computers
+     */
+    public List<Computer> findAll(int limit, int offset) {
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new ExceptionDAO("error to find  all computers", e);
-		}	
-	}
+        List<Computer> list = new ArrayList<>();
+
+        try (Connection connection = connectionManager.getConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(SQL_FIND_LIMIT);
+            statement.setInt(1, limit);
+            statement.setInt(2, offset);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                list.add(MapperComputer.mapperComputer(result, true));
+            }
+
+            return list;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new ExceptionDAO("error to find  all computers", e);
+        }
+    }
 
 }
