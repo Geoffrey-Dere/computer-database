@@ -6,9 +6,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public enum ConnectionManager {
 
     INSTANCE;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionManager.class);
 
     private static final String PATH_FILE = "config/bdd.properties";
     private static final String DRIVER = "driver";
@@ -33,7 +38,8 @@ public enum ConnectionManager {
             user = prop.getProperty(USER);
             password = prop.getProperty(PASSWORD);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("can't read the file {} ", PATH_FILE);
+            throw new ExceptionDAO("error to read the file " + PATH_FILE, e);
         }
     }
 
@@ -53,7 +59,7 @@ public enum ConnectionManager {
                 connection = DriverManager.getConnection(base, user, password);
             }
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.error("error connection with the database ");
             throw new ExceptionDAO("error connection", e);
         }
         return connection;
@@ -65,7 +71,7 @@ public enum ConnectionManager {
         try {
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("error Closure of the connection");
             throw new ExceptionDAO("error Closure of the connection", e);
         }
     }

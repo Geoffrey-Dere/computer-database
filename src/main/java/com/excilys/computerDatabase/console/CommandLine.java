@@ -68,9 +68,9 @@ public class CommandLine {
     /**
      */
     private void displayComputers() {
-        for (Computer computer : this.computerService.getAllComputers()) {
-            System.out.println(computer);
-        }
+//        for (Computer computer : this.computerService.getAllComputers()) {
+//            System.out.println(computer);
+//        }
     }
 
     /**
@@ -85,15 +85,15 @@ public class CommandLine {
      */
     private void displayOneComputer() {
 
-        int id = nextInt("Enter the id of the Computer");
-
-        Optional<Computer> computer = this.computerService.getComputer(id);
-
-        if (computer.isPresent()) {
-            System.out.println(computer.get());
-        } else {
-            System.out.println("no computer with id " + id);
-        }
+//        int id = nextInt("Enter the id of the Computer");
+//
+//        Optional<Computer> computer = this.computerService.getComputer(id);
+//
+//        if (computer.isPresent()) {
+//            System.out.println(computer.get());
+//        } else {
+//            System.out.println("no computer with id " + id);
+//        }
     }
 
     /**
@@ -115,47 +115,47 @@ public class CommandLine {
      */
     private void deleteOneComputer() {
 
-        int id = this.nextInt("Enter the id of the Computer");
-
-        Optional<Computer> computer = this.computerService.getComputer(id);
-
-        if (computer.isPresent() && this.computerService.removeComputer(computer.get())) {
-            System.out.print("the computer has been deleted");
-        } else {
-            System.out.print("the computer hasn't been deleted");
-        }
+//        int id = this.nextInt("Enter the id of the Computer");
+//
+//        Optional<Computer> computer = this.computerService.getComputer(id);
+//
+//        if (computer.isPresent() && this.computerService.removeComputer(computer.get())) {
+//            System.out.print("the computer has been deleted");
+//        } else {
+//            System.out.print("the computer hasn't been deleted");
+//        }
 
     }
 
     /**
      */
     private void updateOneComputer() {
-        int id = this.nextInt("Enter the id of the Computer");
-
-        String name;
-        LocalDate intro = null;
-        LocalDate discon = null;
-
-        Optional<Computer> computer = this.computerService.getComputer(id);
-
-        if (computer.isPresent()) {
-
-            System.out.println("enter the new name : ");
-            name = scanner.nextLine();
-
-            System.out.println("New introducing date (yyyy-MMM-dd)");
-            intro = DateFormatter.stringtoLocalDate(this.scanner.next());
-
-            System.out.println("New discontinuing date (yyyy-MMM-dd)");
-            discon = DateFormatter.stringtoLocalDate(this.scanner.next());
-
-            computer.get().setName(name);
-            computer.get().setDate(intro, discon);
-            this.computerService.updateComputer(computer.get());
-
-        } else {
-            System.out.println("no computer with id " + id);
-        }
+//        int id = this.nextInt("Enter the id of the Computer");
+//
+//        String name;
+//        LocalDate intro = null;
+//        LocalDate discon = null;
+//
+//        Optional<Computer> computer = this.computerService.getComputer(id);
+//
+//        if (computer.isPresent()) {
+//
+//            System.out.println("enter the new name : ");
+//            name = scanner.nextLine();
+//
+//            System.out.println("New introducing date (yyyy-MMM-dd)");
+//            intro = DateFormatter.stringtoLocalDate(this.scanner.next());
+//
+//            System.out.println("New discontinuing date (yyyy-MMM-dd)");
+//            discon = DateFormatter.stringtoLocalDate(this.scanner.next());
+//
+//            computer.get().setName(name);
+//            computer.get().setDate(intro, discon);
+//            this.computerService.updateComputer(computer.get());
+//
+//        } else {
+//            System.out.println("no computer with id " + id);
+//        }
 
     }
 

@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.excilys.computerDatabase.model.Company;
-import com.excilys.computerDatabase.model.Company.BuilderCompany;
 
 public abstract class MapperCompany {
 
@@ -21,7 +20,7 @@ public abstract class MapperCompany {
         long id = res.getLong(ID);
         String name = res.getString(NAME);
 
-        return new BuilderCompany(name).id(id).build();
+        return new Company.Builder(name).id(id).build();
     }
 
 }

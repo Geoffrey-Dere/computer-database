@@ -20,7 +20,7 @@ public class Company {
     /**
      * @param builder the builder
      */
-    public Company(BuilderCompany builder) {
+    public Company(Builder builder) {
         this.id = builder.id;
         this.name = builder.name;
     }
@@ -70,7 +70,7 @@ public class Company {
         return name.hashCode() + (int) id;
     }
 
-    public static class BuilderCompany {
+    public static class Builder {
 
         private long id;
         private String name;
@@ -78,7 +78,7 @@ public class Company {
         /**
          * @param name the name of the company
          */
-        public BuilderCompany(String name) {
+        public Builder(String name) {
             this.name = name;
         }
 
@@ -86,7 +86,7 @@ public class Company {
          * @param id the id
          * @return the builder
          */
-        public BuilderCompany id(long id) {
+        public Builder id(long id) {
             this.id = id;
             return this;
         }

@@ -43,11 +43,17 @@ public class ComputerDAO implements DAO<Computer> {
 
             PreparedStatement statement = connection.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, obj.getName());
-            statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced()));
-            statement.setTimestamp(3, timeFromDateLocal(obj.getDiscontinued()));
 
-            if (obj.getCompany() != null) {
-                statement.setLong(4, obj.getCompany().getId());
+            if (obj.getIntroduced().isPresent()) {
+                statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced().get()));
+            }
+
+            if (obj.getDiscontinued().isPresent()) {
+                statement.setTimestamp(3, timeFromDateLocal(obj.getDiscontinued().get()));
+            }
+
+            if (obj.getCompany().isPresent()) {
+                statement.setLong(4, obj.getCompany().get().getId());
             } else {
                 statement.setNull(4, java.sql.Types.BIGINT);
             }
@@ -91,11 +97,17 @@ public class ComputerDAO implements DAO<Computer> {
 
             PreparedStatement statement = connection.prepareStatement(SQL_UPDATE);
             statement.setString(1, obj.getName());
-            statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced()));
-            statement.setTimestamp(3, timeFromDateLocal(obj.getDiscontinued()));
 
-            if (obj.getCompany() != null) {
-                statement.setLong(4, obj.getCompany().getId());
+            if (obj.getIntroduced().isPresent()) {
+                statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced().get()));
+            }
+
+            if (obj.getDiscontinued().isPresent()) {
+                statement.setTimestamp(3, timeFromDateLocal(obj.getDiscontinued().get()));
+            }
+
+            if (obj.getCompany().isPresent()) {
+                statement.setLong(4, obj.getCompany().get().getId());
             } else {
                 statement.setNull(4, java.sql.Types.BIGINT);
             }
@@ -180,15 +192,15 @@ public class ComputerDAO implements DAO<Computer> {
      * @param offset the offset
      * @return the list of computers
      */
-    public List<Computer> findAll(int limit, int offset) {
+    public List<Computer> findAll(long limit, long offset) {
 
         List<Computer> list = new ArrayList<>();
 
         try (Connection connection = connectionManager.getConnection()) {
 
             PreparedStatement statement = connection.prepareStatement(SQL_FIND_LIMIT);
-            statement.setInt(1, limit);
-            statement.setInt(2, offset);
+            statement.setLong(1, limit);
+            statement.setLong(2, offset);
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {

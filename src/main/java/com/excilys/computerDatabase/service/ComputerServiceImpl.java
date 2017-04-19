@@ -3,10 +3,14 @@ package com.excilys.computerDatabase.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.excilys.computerDatabase.dto.ComputerDTO;
+import com.excilys.computerDatabase.mapper.CompanyMapper;
+import com.excilys.computerDatabase.mapper.ComputerMapper;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.model.Pager;
 import com.excilys.computerDatabase.model.Pager.BuilderPage;
 import com.excilys.computerDatabase.persistence.ComputerDAO;
+import com.excilys.computerDatabase.persistence.mapper.MapperComputer;
 
 public class ComputerServiceImpl implements ComputerService {
 
@@ -21,19 +25,24 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
-    public List<Computer> getAllComputers() {
-        return computerDAO.findAll();
+    public Pager<ComputerDTO> getAllComputers() {
+        return getPageComputer(Long.MAX_VALUE, 0);
     }
 
     @Override
-    public Pager<Computer> getPageComputer(int limit, int offset) {
-        BuilderPage<Computer> builder = new BuilderPage<>(computerDAO.findAll(limit, offset));
+    public Pager<ComputerDTO> getPageComputer(long limit, long offset) {
+        List<Computer> listComputer = computerDAO.findAll(limit, offset);
+        BuilderPage<ComputerDTO> builder = new BuilderPage<>(ComputerMapper.mapperToDTO(listComputer));
         return builder.build();
     }
 
     @Override
-    public Optional<Computer> getComputer(long id) {
-        return computerDAO.find(id);
+    public ComputerDTO getComputer(long id) {
+        Optional<Computer> computer = computerDAO.find(id);
+        if (computer.isPresent()) {
+            return ComputerMapper.mapperToDTO(computer.get());
+        }
+        throw new ServiceException("no computer with id " + id);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.excilys.computerDatabase.model;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class Computer {
 
@@ -35,8 +36,8 @@ public class Computer {
         this.company = builder.company;
     }
 
-    public LocalDate getDiscontinued() {
-        return discontinued;
+    public Optional<LocalDate> getDiscontinued() {
+        return Optional.ofNullable(discontinued);
     }
 
     public void setDiscontinued(LocalDate discontinued) {
@@ -68,12 +69,12 @@ public class Computer {
         return name;
     }
 
-    public LocalDate getIntroduced() {
-        return introduced;
+    public Optional<LocalDate> getIntroduced() {
+        return Optional.ofNullable(introduced);
     }
 
-    public Company getCompany() {
-        return this.company;
+    public Optional<Company> getCompany() {
+        return Optional.ofNullable(this.company);
     }
 
     /**
@@ -122,9 +123,9 @@ public class Computer {
 
         private long id;
         private String name;
-        private LocalDate introduced;
-        private LocalDate discontinued;
-        private Company company;
+        private LocalDate introduced = null;
+        private LocalDate discontinued = null;
+        private Company company = null;
 
         /**
          * @param name name
