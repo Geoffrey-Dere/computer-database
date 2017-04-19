@@ -1,7 +1,52 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
 
-<web-app>
-  <display-name>Archetype Created Web Application</display-name>
+
+	<servlet>
+		<servlet-name>AddComputer</servlet-name>
+		<servlet-class>com.excilys.computerDatabase.controller.AddComputer</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>AddComputer</servlet-name>
+		<url-pattern>/addComputer</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Dashboard</servlet-name>
+		<servlet-class>com.excilys.computerDatabase.controller.Dashboard</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Dashboard</servlet-name>
+		<url-pattern>/dashboard</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>EditComputer</servlet-name>
+		<servlet-class>com.excilys.computerDatabase.controller.EditComputer</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>EditComputer</servlet-name>
+		<url-pattern>/editComputer</url-pattern>
+	</servlet-mapping>
+	
+	<error-page>
+    <error-code>401</error-code>
+    <location>/403.html</location>
+    </error-page>
+    
+    	<error-page>
+    <error-code>404</error-code>
+    <location>/404.html</location>
+    </error-page>
+    
+    	<error-page>
+    <error-code>500</error-code>
+    <location>/500.html</location>
+    </error-page>
+
 </web-app>
