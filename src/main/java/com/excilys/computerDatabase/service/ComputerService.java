@@ -26,7 +26,7 @@ public interface ComputerService {
      * @param c the computer
      * @return true if the computer has been added and false otherwise
      */
-    boolean addComputer(Computer c);
+    boolean addComputer(ComputerDTO c);
 
     /**
      * update a computer on the database.

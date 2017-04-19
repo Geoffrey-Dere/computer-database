@@ -61,8 +61,5 @@ public class ComputerDTO {
     public void setCompany(CompanyDTO company) {
         this.company = company;
     }
-    
-    
-    
-    
+        
 }

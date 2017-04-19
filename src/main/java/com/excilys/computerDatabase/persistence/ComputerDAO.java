@@ -32,7 +32,7 @@ public class ComputerDAO implements DAO<Computer> {
     private static final String SQL_INSERT = "insert into computer(name, introduced, discontinued, company_id)VALUES(?,?,?,?);";
     private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 
-    private static final String SQL_FIND_LIMIT = "select * from computer limit ? offset ? ;";
+    private static final String SQL_FIND_LIMIT = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id limit ? offset ? ;";
 
     private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 

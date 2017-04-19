@@ -63,7 +63,7 @@ public class ComputerMapper {
      * @param c the company dto 
      * @return the object
      */
-    public static Company mapperToModel(CompanyDTO c) {
+    public static Computer mapperToModel(ComputerDTO c) {
 
         return null;
     }
