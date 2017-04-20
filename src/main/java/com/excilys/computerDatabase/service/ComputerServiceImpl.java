@@ -21,7 +21,7 @@ public class ComputerServiceImpl implements ComputerService {
 
     /**
      */
-    private ComputerDAO computerDAO = new ComputerDAO();
+    private ComputerDAO computerDAO = ComputerDAO.INSTANCE;
 
     /**
      */

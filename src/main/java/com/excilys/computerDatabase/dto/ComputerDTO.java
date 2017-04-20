@@ -6,8 +6,8 @@ public class ComputerDTO {
 
     private Long id;
     private String name;
-    private String introduced;
-    private String discontinued;
+    private String introduced = "";
+    private String discontinued = "";
     private CompanyDTO company;
 
     public ComputerDTO() {

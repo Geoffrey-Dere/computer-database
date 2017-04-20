@@ -12,7 +12,7 @@ import com.excilys.computerDatabase.persistence.mapper.MapperCompany;
 
 public class CompanyServiceImpl implements CompanyService {
 
-    private CompanyDAO companyDAO = new CompanyDAO();
+    private CompanyDAO companyDAO = CompanyDAO.INSTANCE;
 
     /**
      */

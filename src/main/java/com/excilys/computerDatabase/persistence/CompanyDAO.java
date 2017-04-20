@@ -14,8 +14,10 @@ import org.slf4j.LoggerFactory;
 import com.excilys.computerDatabase.persistence.mapper.MapperCompany;
 import com.excilys.computerDatabase.model.Company;
 
-public class CompanyDAO implements DAO<Company> {
+public enum CompanyDAO implements DAO<Company> {
 
+    INSTANCE;
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 
     private static final String SQL_FIND_ALL = "select * from company ;";

@@ -25,7 +25,7 @@
 
 	<section id="main">
 	<div class="container">
-		<h1 id="homeTitle">${fn:length(page.listEntity)} Computers found</h1>
+		<h1 id="homeTitle">${fn:length(page.listEntity)}Computersfound</h1>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
 				<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -33,7 +33,7 @@
 					<input type="search" id="searchbox" name="search"
 						class="form-control" placeholder="Search name" /> <input
 						type="submit" id="searchsubmit" value="Filter by name"
-						class="btn btn-primary"/>
+						class="btn btn-primary" />
 				</form>
 			</div>
 			<div class="pull-right">
@@ -77,12 +77,16 @@
 					<tr>
 						<td class="editMode"><input type="checkbox" name="cb"
 							class="cb" value="0"></td>
-						<td><a href="editComputer.html" onclick="">${computer.name}</a></td>
-						<td>${computer.introduced}</td>
-						<td>${computer.discontinued}</td>
-						<c:if test="${not empty computer.company}">
-							<td>${computer.company.name}</td>
-						</c:if>
+						<td><a href="editComputer.html" onclick=""> <c:out
+									value="${computer.name}" />
+						</a></td>
+						<td><c:out value="${computer.introduced}" /></td>
+						<td><c:out value="${computer.discontinued}" /></td>
+
+						<td><c:if test="${computer.company.isPresent()}">
+								<c:out value="${computer.company.get().name}"/>
+						</c:if></td>
+
 					</tr>
 				</c:forEach>
 			</tbody>

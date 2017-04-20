@@ -20,7 +20,9 @@ import com.excilys.computerDatabase.persistence.mapper.MapperComputer;
 
 import com.excilys.computerDatabase.model.Computer;
 
-public class ComputerDAO implements DAO<Computer> {
+public enum ComputerDAO implements DAO<Computer> {
+
+    INSTANCE;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
 
