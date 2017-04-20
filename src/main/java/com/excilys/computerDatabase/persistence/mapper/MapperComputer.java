@@ -37,7 +37,7 @@ public abstract class MapperComputer {
         }
 
         if (jointureCompany && res.getLong(COMPANY_ID) != 0) {
-            builder.companyId(MapperCompany.mapperCompany(res));
+            builder.company(MapperCompany.mapperCompany(res));
         }
 
         return builder.build();

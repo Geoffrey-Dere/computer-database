@@ -1,10 +1,14 @@
 package com.excilys.computerDatabase.service;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.excilys.computerDatabase.dto.CompanyDTO;
+import com.excilys.computerDatabase.mapper.CompanyMapper;
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Pager;
 import com.excilys.computerDatabase.persistence.CompanyDAO;
+import com.excilys.computerDatabase.persistence.mapper.MapperCompany;
 
 public class CompanyServiceImpl implements CompanyService {
 
@@ -17,13 +21,20 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Pager<Company> getAllCompanies() {
-        return new Pager.BuilderPage<Company>(companyDAO.findAll()).build();
+    public Optional<CompanyDTO> getCompany(long id) {
+        
+        Optional<Company> company = companyDAO.find(id);   
+        if(company.isPresent()){
+            return Optional.of(CompanyMapper.mapperToDTO(company.get()));
+        }
+        return Optional.empty();
     }
 
-    @Override
-    public Optional<Company> getCompany(long id) {
-        return companyDAO.find(id);
+   
+    public List<CompanyDTO> getAllCompanies() {
+        
+        List<Company> listCompany = companyDAO.findAll();
+        return CompanyMapper.mapperToDTO(listCompany);
     }
 
 }

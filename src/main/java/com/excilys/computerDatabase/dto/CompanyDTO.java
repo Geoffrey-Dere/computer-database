@@ -28,4 +28,7 @@ public class CompanyDTO {
         this.name = name;
     }
 
-}
+    @Override
+    public String toString() {
+        return "ComputerDTO("+this.id+" , " + this.name + ")";    
+    }}

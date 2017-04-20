@@ -17,14 +17,11 @@ public class Dashboard extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
+
         ComputerServiceImpl computerService = new ComputerServiceImpl();
-        computerService.getAllComputers();
-        
-        
-        
-        
+        req.setAttribute("page", computerService.getAllComputers());
+
         this.getServletContext().getRequestDispatcher("/WEB-INF/view/dashboard.jsp").forward(req, resp);
     }
-    
+
 }

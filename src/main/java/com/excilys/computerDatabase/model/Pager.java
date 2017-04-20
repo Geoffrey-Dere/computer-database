@@ -5,20 +5,20 @@ import java.util.List;
 
 public class Pager<T> {
 
-    private List<T> list_entity = new ArrayList<>();
+    private List<T> listEntity = new ArrayList<>();
 
     /**
      * @param builder the builder
      */
     private Pager(BuilderPage<T> builder) {
-        this.list_entity = builder.list;
+        this.listEntity = builder.list;
     }
 
     /**
      * @return the objects on the list
      */
     public List<T> getListEntity() {
-        return list_entity;
+        return listEntity;
     }
 
     public static class BuilderPage<T> {

@@ -165,7 +165,7 @@ public class Computer {
          * @param company the company id
          * @return the builder
          */
-        public BuilderComputer companyId(Company company) {
+        public BuilderComputer company(Company company) {
             this.company = company;
             return this;
         }

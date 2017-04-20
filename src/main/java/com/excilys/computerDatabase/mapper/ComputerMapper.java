@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 import com.excilys.computerDatabase.dto.CompanyDTO;
 import com.excilys.computerDatabase.dto.ComputerDTO;
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
+import com.excilys.computerDatabase.model.Computer.BuilderComputer;
 import com.excilys.computerDatabase.util.DateFormatter;
 
 public class ComputerMapper {
@@ -47,25 +47,39 @@ public class ComputerMapper {
         return computerDTO;
     }
 
-    public static List<ComputerDTO> mapperToDTO(List<Computer> list){
-        
+    public static List<ComputerDTO> mapperToDTO(List<Computer> list) {
+
         List<ComputerDTO> listDTO = new ArrayList<>();
-        
-        for(Computer computer : list){
+
+        for (Computer computer : list) {
             listDTO.add(mapperToDTO(computer));
         }
-        return listDTO ;
+        return listDTO;
     }
-    
-    
-    
+
     /**
      * @param c the company dto 
      * @return the object
      */
-    public static Company mapperToModel(CompanyDTO c) {
+    public static Computer mapperToModel(ComputerDTO c) {
 
-        return null;
+        String introduced = c.getIntroduced();
+        String discon = c.getDiscontinued();
+
+        Computer.BuilderComputer builder = new BuilderComputer(c.getName());
+
+        if (!introduced.isEmpty()) {
+            builder.introduced(DateFormatter.stringtoLocalDate(introduced));
+        }
+
+        if (!discon.isEmpty()) {
+            builder.discontinued(DateFormatter.stringtoLocalDate(discon));
+        }
+        if (c.getCompany().isPresent()) {
+            builder.company(CompanyMapper.mapperToModel(c.getCompany().get()));
+        }
+
+        return builder.build();
     }
 
 }

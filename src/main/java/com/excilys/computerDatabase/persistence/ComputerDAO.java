@@ -32,12 +32,14 @@ public class ComputerDAO implements DAO<Computer> {
     private static final String SQL_INSERT = "insert into computer(name, introduced, discontinued, company_id)VALUES(?,?,?,?);";
     private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 
-    private static final String SQL_FIND_LIMIT = "select * from computer limit ? offset ? ;";
+    private static final String SQL_FIND_LIMIT = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id limit ? offset ? ;";
 
     private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 
     @Override
     public boolean create(Computer obj) {
+
+        LOGGER.debug("inserting new computer {}", obj);
 
         try (Connection connection = connectionManager.getConnection()) {
 
@@ -46,10 +48,14 @@ public class ComputerDAO implements DAO<Computer> {
 
             if (obj.getIntroduced().isPresent()) {
                 statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced().get()));
+            } else {
+                statement.setNull(2, java.sql.Types.VARCHAR);
             }
 
             if (obj.getDiscontinued().isPresent()) {
                 statement.setTimestamp(3, timeFromDateLocal(obj.getDiscontinued().get()));
+            } else {
+                statement.setNull(3, java.sql.Types.VARCHAR);
             }
 
             if (obj.getCompany().isPresent()) {
@@ -63,6 +69,7 @@ public class ComputerDAO implements DAO<Computer> {
             ResultSet rs = statement.getGeneratedKeys();
             if (rs.next()) {
                 obj.setId(rs.getInt(1));
+                LOGGER.debug("computer inserted");
                 return true;
             }
             return false;

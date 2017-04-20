@@ -76,9 +76,9 @@ public class CommandLine {
     /**
      */
     private void displayCompanies() {
-        for (Company company : this.companyService.getAllCompanies().getListEntity()) {
-            System.out.println(company);
-        }
+//        for (Company company : this.companyService.getAllCompanies().getListEntity()) {
+//            System.out.println(company);
+//        }
     }
 
     /**
@@ -100,15 +100,15 @@ public class CommandLine {
      */
     private void displayOneCompany() {
 
-        int id = this.nextInt("Enter the id of the company");
-
-        Optional<Company> company = this.companyService.getCompany(id);
-
-        if (company.isPresent()) {
-            System.out.println(company.get());
-        } else {
-            System.out.println("no company with id " + id);
-        }
+//        int id = this.nextInt("Enter the id of the company");
+//
+//        Optional<Company> company = this.companyService.getCompany(id);
+//
+//        if (company.isPresent()) {
+//            System.out.println(company.get());
+//        } else {
+//            System.out.println("no company with id " + id);
+//        }
     }
 
     /**

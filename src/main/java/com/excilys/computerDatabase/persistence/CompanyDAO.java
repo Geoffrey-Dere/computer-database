@@ -20,6 +20,7 @@ public class CompanyDAO implements DAO<Company> {
 
     private static final String SQL_FIND_ALL = "select * from company ;";
     private static final String SQL_FIND_BY_ID = "select * from company where id = ? ;";
+    private static final String SQL_GET__ID = "select id from company ;";
 
     private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 
@@ -85,5 +86,4 @@ public class CompanyDAO implements DAO<Company> {
             throw new ExceptionDAO("error find all companies", e);
         }
     }
-
 }
