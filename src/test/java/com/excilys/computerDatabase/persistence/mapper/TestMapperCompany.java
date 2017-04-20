@@ -36,9 +36,9 @@ public class TestMapperCompany {
 
         Company company = MapperCompany.mapperCompany(result);
 
-        //assertNotNull(company);
-       // assertEquals(company.getId(), 1);
-      //  assertEquals(company.getName(), "asus");
+        assertNotNull(company);
+        assertEquals(company.getId(), 1);
+        assertEquals(company.getName(), "asus");
     }
 
 }
