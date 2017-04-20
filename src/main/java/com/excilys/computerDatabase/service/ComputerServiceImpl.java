@@ -47,9 +47,7 @@ public class ComputerServiceImpl implements ComputerService {
         if (computer.isPresent()) {
             return ComputerMapper.mapperToDTO(computer.get());
         }
-
         LOGGER.debug("no computer with id {} ", id);
-
         throw new ServiceException("no computer with id " + id);
     }
 

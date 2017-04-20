@@ -19,7 +19,7 @@ public class ComputerValidator {
 
         if (computer == null) {
             LOGGER.debug("computer is null");
-            throw new ValidatorException("no company selected");
+            throw new ValidatorException("computer is null");
         }
         return isNameValid(computer.getName()) && isDatesValid(computer.getIntroduced(), computer.getDiscontinued());
     }

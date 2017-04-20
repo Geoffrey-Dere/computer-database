@@ -25,6 +25,7 @@
 
 	<section id="main">
 	<div class="container">
+
 		<h1 id="homeTitle">${fn:length(page.listEntity)}Computersfound</h1>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
@@ -84,8 +85,8 @@
 						<td><c:out value="${computer.discontinued}" /></td>
 
 						<td><c:if test="${computer.company.isPresent()}">
-								<c:out value="${computer.company.get().name}"/>
-						</c:if></td>
+								<c:out value="${computer.company.get().name}" />
+							</c:if></td>
 
 					</tr>
 				</c:forEach>

@@ -17,6 +17,7 @@ import com.excilys.computerDatabase.dto.CompanyDTO;
 import com.excilys.computerDatabase.dto.ComputerDTO;
 import com.excilys.computerDatabase.service.CompanyServiceImpl;
 import com.excilys.computerDatabase.service.ComputerServiceImpl;
+import com.excilys.computerDatabase.service.ServiceException;
 
 public class AddComputer extends HttpServlet {
 
@@ -31,7 +32,7 @@ public class AddComputer extends HttpServlet {
         CompanyServiceImpl service = new CompanyServiceImpl();
         List<CompanyDTO> listCompany = service.getAllCompanies();
         req.setAttribute("listCompany", listCompany);
-
+   
         this.getServletContext().getRequestDispatcher("/WEB-INF/view/addComputer.jsp").forward(req, resp);
     }
 
@@ -52,7 +53,6 @@ public class AddComputer extends HttpServlet {
         computerDTO.setDiscontinued(discontinued);
 
         Long id = 0L;
-
         try {
             id = Long.parseLong(companyId);
         } catch (java.lang.NumberFormatException e) {
@@ -69,7 +69,12 @@ public class AddComputer extends HttpServlet {
         }
 
         LOGGER.debug("inserting new object computerDTO  : {}", computerDTO);
+        
+        try{
         service.addComputer(computerDTO);
+        } catch(ServiceException e){
+            req.setAttribute("error", e.getMessage());  
+            doGet(req, resp);
+        }
     }
-
 }

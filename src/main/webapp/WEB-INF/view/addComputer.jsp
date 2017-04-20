@@ -10,6 +10,10 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="css/font-awesome.css" rel="stylesheet" media="screen">
 <link href="css/main.css" rel="stylesheet" media="screen">
+
+
+<script type="text/javascript" src="webjars/jquery/2.1.4/jquery.js"></script>
+<script type="text/javascript" src="js/addComputer.js"></script>
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -21,6 +25,12 @@
 
 	<section id="main">
 	<div class="container">
+
+		<c:if test="${not empty error}">
+			<p>
+				<c:out value="${error}"></c:out>
+		</c:if>
+
 		<div class="row">
 			<div class="col-xs-8 col-xs-offset-2 box">
 				<h1>Add Computer</h1>
@@ -52,8 +62,9 @@
 						</div>
 					</fieldset>
 					<div class="actions pull-right">
-						<input type="submit" value="Add" class="btn btn-primary">
-						or <a href="dashboard.html" class="btn btn-default">Cancel</a>
+						<input type="submit" id="submit" value="Add"
+							class="btn btn-primary"> or <a href="dashboard.html"
+							class="btn btn-default">Cancel</a>
 					</div>
 				</form>
 			</div>
