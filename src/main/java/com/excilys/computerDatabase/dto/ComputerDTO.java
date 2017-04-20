@@ -62,5 +62,4 @@ public class ComputerDTO {
 
         return "ComputerDTP(" + id + " , " + name + " , " + date1 + " , " + date2 + " ,\n\t " + company + " ) ";
     }
-
 }

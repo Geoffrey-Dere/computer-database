@@ -7,14 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.computerDatabase.dto.ComputerDTO;
-import com.excilys.computerDatabase.mapper.CompanyMapper;
 import com.excilys.computerDatabase.mapper.ComputerMapper;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.model.Pager;
 import com.excilys.computerDatabase.model.Pager.BuilderPage;
 import com.excilys.computerDatabase.persistence.ComputerDAO;
-import com.excilys.computerDatabase.persistence.ConnectionManager;
-import com.excilys.computerDatabase.persistence.mapper.MapperComputer;
 import com.excilys.computerDatabase.validator.ComputerValidator;
 import com.excilys.computerDatabase.validator.ValidatorException;
 
@@ -50,7 +47,9 @@ public class ComputerServiceImpl implements ComputerService {
         if (computer.isPresent()) {
             return ComputerMapper.mapperToDTO(computer.get());
         }
+
         LOGGER.debug("no computer with id {} ", id);
+
         throw new ServiceException("no computer with id " + id);
     }
 
