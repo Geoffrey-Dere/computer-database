@@ -70,4 +70,8 @@ public class ComputerServiceImpl implements ComputerService {
     public boolean removeComputer(Computer c) {
         return computerDAO.delete(c);
     }
+
+    public int count() {
+        return computerDAO.count();
+    }
 }

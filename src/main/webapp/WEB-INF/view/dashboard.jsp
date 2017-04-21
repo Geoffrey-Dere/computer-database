@@ -26,6 +26,7 @@
 	<section id="main">
 	<div class="container">
 
+		<c:out value="coucou toi ${currentPage}"></c:out>
 		<h1 id="homeTitle">${fn:length(page.listEntity)}Computersfound</h1>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
@@ -97,7 +98,7 @@
 
 	<footer class="navbar-fixed-bottom">
 	<div class="container text-center">
-		<ul class="pagination">
+<!-- 		<ul class="pagination">
 			<li><a href="#" aria-label="Previous"> <span
 					aria-hidden="true">&laquo;</span>
 			</a></li>
@@ -108,13 +109,11 @@
 			<li><a href="#">5</a></li>
 			<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 			</a></li>
-		</ul>
+		</ul> -->
 
-		<div class="btn-group btn-group-sm pull-right" role="group">
-			<button type="button" class="btn btn-default">10</button>
-			<button type="button" class="btn btn-default">50</button>
-			<button type="button" class="btn btn-default">100</button>
-		</div>
+		<mylib:pagination currentPage="${currentPage}" limit="${limit}" maxPages="${maxPages}" uri="${uriPage}" uriLimit="${uriLimit}" />
+
+	</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

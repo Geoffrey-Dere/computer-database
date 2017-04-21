@@ -11,6 +11,10 @@ import com.excilys.computerDatabase.service.ComputerServiceImpl;
 
 public class Dashboard extends HttpServlet {
 
+    private static final int LIMIT_DEFAULT = 10;
+    private static final String URI_PAGE = "page";
+    private static final String URI_LIMIT = "limit";
+
     /**
      */
     private static final long serialVersionUID = 1L;
@@ -19,9 +23,43 @@ public class Dashboard extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         ComputerServiceImpl computerService = new ComputerServiceImpl();
-        req.setAttribute("page", computerService.getAllComputers());
+      
+        int size = computerService.count();
 
+        // get the current page by (url parameter)
+        if (isInteger(req.getParameter(URI_PAGE))) {
+            req.setAttribute("currentPage", req.getParameter("page"));
+        } else {
+            req.setAttribute("currentPage", "1");
+        }
+      
+        int limit = LIMIT_DEFAULT;
+        //get the limit
+        if (isInteger(req.getParameter(URI_LIMIT))) {
+            req.setAttribute("uriLimit", req.getParameter("page"));
+            limit = Integer.parseInt(req.getParameter(URI_LIMIT));
+        } else {
+            req.setAttribute("uriLimit", URI_LIMIT);
+        }
+        
+        int currentPage = Integer.parseInt((String) req.getAttribute("currentPage"));
+        
+        req.setAttribute("page", computerService.getPageComputer(limit, (currentPage-1)*limit ));
+        req.setAttribute("limit", limit);
+        req.setAttribute("maxPages", Math.ceil((double) size / limit));
+        req.setAttribute("uriPage", URI_PAGE);
+ 
         this.getServletContext().getRequestDispatcher("/WEB-INF/view/dashboard.jsp").forward(req, resp);
     }
 
+    private boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            return false;
+        } catch (NullPointerException e) {
+            return false;
+        }
+        return true;
+    }
 }

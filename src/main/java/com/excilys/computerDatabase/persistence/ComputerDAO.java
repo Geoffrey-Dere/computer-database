@@ -16,9 +16,8 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.computerDatabase.persistence.mapper.MapperComputer;
-
 import com.excilys.computerDatabase.model.Computer;
+import com.excilys.computerDatabase.persistence.mapper.MapperComputer;
 
 public enum ComputerDAO implements DAO<Computer> {
 
@@ -33,8 +32,8 @@ public enum ComputerDAO implements DAO<Computer> {
     private static final String SQL_DELETE = "delete from computer where id = ? ;";
     private static final String SQL_INSERT = "insert into computer(name, introduced, discontinued, company_id)VALUES(?,?,?,?);";
     private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
-
     private static final String SQL_FIND_LIMIT = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id limit ? offset ? ;";
+    private static final String SQL_COUNT = "select count(*) from computer";
 
     private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 
@@ -222,6 +221,24 @@ public enum ComputerDAO implements DAO<Computer> {
             LOGGER.error("error to find  all computers with limit");
             throw new ExceptionDAO("error to find  all computers with limit", e);
         }
+    }
+
+    public int count() {
+
+        try (Connection connection = connectionManager.getConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(SQL_COUNT);
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                return result.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error("error");
+            throw new ExceptionDAO("error", e);
+        }
+        return 0;
     }
 
 }
