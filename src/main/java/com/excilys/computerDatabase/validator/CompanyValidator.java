@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.computerDatabase.dto.CompanyDTO;
+import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.persistence.ConnectionManager;
 
 public class CompanyValidator {
@@ -12,7 +13,7 @@ public class CompanyValidator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionManager.class);
 
-    public static boolean isValid(CompanyDTO company) {
+    public static boolean isValid(Company company) {
 
         if (company == null) {
             LOGGER.debug("company is null");

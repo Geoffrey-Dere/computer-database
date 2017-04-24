@@ -7,9 +7,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.computerDatabase.mapper.ComputerMapper;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.model.Pager;
+import com.excilys.computerDatabase.persistence.ConnectionManager;
 import com.excilys.computerDatabase.service.ComputerServiceImpl;
 
 public class Dashboard extends HttpServlet {
@@ -18,6 +22,7 @@ public class Dashboard extends HttpServlet {
     private static final String URI_PAGE = "page";
     private static final String URI_LIMIT = "limit";
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Dashboard.class);
     /**
      */
     private static final long serialVersionUID = 1L;
@@ -48,7 +53,7 @@ public class Dashboard extends HttpServlet {
         int currentPage = Integer.parseInt((String) req.getAttribute("currentPage"));
 
         Pager<Computer> pager = computerService.getPageComputer(limit, (currentPage - 1) * limit);
-        
+
         req.setAttribute("listComputer", ComputerMapper.mapperToDTO(pager.getListEntity()));
         req.setAttribute("limit", limit);
         req.setAttribute("maxPages", Math.ceil((double) size / limit));
@@ -58,6 +63,25 @@ public class Dashboard extends HttpServlet {
         this.getServletContext().getRequestDispatcher("/WEB-INF/view/dashboard.jsp").forward(req, resp);
 
         System.out.println();
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        ComputerServiceImpl computerService = new ComputerServiceImpl();
+
+        String[] selection = req.getParameter("selection").split(",");
+
+        for (int i = 0; i < selection.length; i++) {
+
+            if (isInteger(selection[i])) {
+                computerService.removeComputer(Integer.parseInt(selection[i]));
+
+            } else {
+                LOGGER.debug("{} not a number", selection[i]);
+            }
+        }
+        doGet(req, resp);
     }
 
     private boolean isInteger(String s) {
@@ -70,4 +94,5 @@ public class Dashboard extends HttpServlet {
         }
         return true;
     }
+
 }

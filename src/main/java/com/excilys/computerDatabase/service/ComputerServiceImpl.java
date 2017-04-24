@@ -49,17 +49,26 @@ public class ComputerServiceImpl implements ComputerService {
 
     @Override
     public boolean addComputer(Computer c) {
+        ComputerValidator.isValid(c);
         return computerDAO.create(c);
     }
 
     @Override
     public boolean updateComputer(Computer c) {
+        ComputerValidator.isValid(c);
         return false;
     }
 
     @Override
     public boolean removeComputer(Computer c) {
         return computerDAO.delete(c);
+    }
+    
+    public boolean removeComputer(int id){
+       Computer computer = new Computer(); 
+       computer.setId(id);
+       return computerDAO.delete(computer);
+        
     }
 
     public int count() {

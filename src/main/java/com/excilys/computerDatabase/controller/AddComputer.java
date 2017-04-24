@@ -35,6 +35,8 @@ public class AddComputer extends HttpServlet {
         CompanyServiceImpl service = new CompanyServiceImpl();
         List<Company> listCompany = service.getAllCompanies();
         req.setAttribute("listCompany", CompanyMapper.mapperToDTO(listCompany));
+        this.getServletContext().getRequestDispatcher("/WEB-INF/view/addComputer.jsp").forward(req, resp);
+        
     }
 
     @Override

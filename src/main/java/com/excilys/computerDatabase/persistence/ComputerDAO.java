@@ -72,8 +72,14 @@ public enum ComputerDAO implements DAO<Computer> {
 
             PreparedStatement statement = connection.prepareStatement(SQL_DELETE);
             statement.setLong(1, obj.getId());
-            boolean success = statement.execute();
-            return success;
+            int success = statement.executeUpdate();
+            
+            if (success >= 1) {
+                LOGGER.debug("The computer with id {} has been deleted", obj.getId());
+            } else {
+                LOGGER.debug("The computer with id {} hasn't been deleted", obj.getId());
+            }
+            return success == 1;
 
         } catch (SQLException e) {
             LOGGER.error("sql exception : error deleting computer");

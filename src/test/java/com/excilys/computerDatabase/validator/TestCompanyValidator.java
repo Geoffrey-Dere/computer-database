@@ -1,20 +1,21 @@
 package com.excilys.computerDatabase.validator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.excilys.computerDatabase.dto.CompanyDTO;
+import com.excilys.computerDatabase.model.Company;
 
 public class TestCompanyValidator {
 
-    CompanyDTO companyDTO;
+    Company company;
 
     @Before
     public void before() {
-        companyDTO = Mockito.mock(CompanyDTO.class);
+        company = Mockito.mock(Company.class);
     }
 
     @Test(expected = ValidatorException.class)
@@ -24,14 +25,14 @@ public class TestCompanyValidator {
 
     @Test(expected = ValidatorException.class)
     public void TestIsValidNameError() {
-        Mockito.when(companyDTO.getName()).thenReturn("name@<false");
-        CompanyValidator.isValid(companyDTO);
+        Mockito.when(company.getName()).thenReturn("name@<false");
+        CompanyValidator.isValid(company);
     }
 
     @Test
     public void TestIsValid() {
-        Mockito.when(companyDTO.getName()).thenReturn("name of the computer");
-        assertTrue(CompanyValidator.isValid(companyDTO));
+        Mockito.when(company.getName()).thenReturn("name of the computer");
+        assertTrue(CompanyValidator.isValid(company));
 
     }
 
