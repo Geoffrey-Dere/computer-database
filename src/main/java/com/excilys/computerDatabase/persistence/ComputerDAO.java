@@ -42,43 +42,26 @@ public enum ComputerDAO implements DAO<Computer> {
 
         LOGGER.debug("inserting new computer {}", obj);
 
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionManager.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
+                        Statement.RETURN_GENERATED_KEYS)) {
 
-            PreparedStatement statement = connection.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, obj.getName());
-
-            if (obj.getIntroduced().isPresent()) {
-                statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced().get()));
-            } else {
-                statement.setNull(2, java.sql.Types.VARCHAR);
-            }
-
-            if (obj.getDiscontinued().isPresent()) {
-                statement.setTimestamp(3, timeFromDateLocal(obj.getDiscontinued().get()));
-            } else {
-                statement.setNull(3, java.sql.Types.VARCHAR);
-            }
-
-            if (obj.getCompany().isPresent()) {
-                statement.setLong(4, obj.getCompany().get().getId());
-            } else {
-                statement.setNull(4, java.sql.Types.BIGINT);
-            }
-
+            this.setStatement(statement, obj);
             statement.executeUpdate();
 
             ResultSet rs = statement.getGeneratedKeys();
+
             if (rs.next()) {
                 obj.setId(rs.getInt(1));
                 LOGGER.debug("computer inserted");
                 return true;
+            } else {
+                throw new ExceptionDAO("hasn't been inserted");
             }
-            return false;
 
         } catch (SQLException e) {
             LOGGER.error("sql exception : function create new computer ");
             throw new ExceptionDAO("error create new computer", e);
-
         }
     }
 
@@ -101,27 +84,10 @@ public enum ComputerDAO implements DAO<Computer> {
     @Override
     public boolean update(Computer obj) {
 
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionManager.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
 
-            PreparedStatement statement = connection.prepareStatement(SQL_UPDATE);
-            statement.setString(1, obj.getName());
-
-            if (obj.getIntroduced().isPresent()) {
-                statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced().get()));
-            }
-
-            if (obj.getDiscontinued().isPresent()) {
-                statement.setTimestamp(3, timeFromDateLocal(obj.getDiscontinued().get()));
-            }
-
-            if (obj.getCompany().isPresent()) {
-                statement.setLong(4, obj.getCompany().get().getId());
-            } else {
-                statement.setNull(4, java.sql.Types.BIGINT);
-            }
-
-            statement.setLong(5, obj.getId());
-
+            this.setStatement(statement, obj);
             boolean success = statement.execute();
             return success;
 
@@ -129,23 +95,24 @@ public enum ComputerDAO implements DAO<Computer> {
             LOGGER.error("error updating computer");
             throw new ExceptionDAO("error updating computer ", e);
         }
-
     }
 
     @Override
     public Optional<Computer> find(long id) {
 
-        LOGGER.debug("EUH");
+        try (Connection connection = connectionManager.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID)) {
 
-        try (Connection connection = connectionManager.getConnection()) {
-
-            PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID);
             statement.setString(1, String.valueOf(id));
             ResultSet res = statement.executeQuery();
 
             if (res.next()) {
                 Computer computer = MapperComputer.mapperComputer(res, false);
+                res.close();
                 return Optional.of(computer);
+            } else {
+                res.close();
+                return Optional.empty();
             }
 
         } catch (SQLException e) {
@@ -153,7 +120,6 @@ public enum ComputerDAO implements DAO<Computer> {
             throw new ExceptionDAO("error to find a computer ", e);
         }
 
-        return Optional.empty();
     }
 
     @Override
@@ -161,15 +127,13 @@ public enum ComputerDAO implements DAO<Computer> {
 
         List<Computer> list = new ArrayList<>();
 
-        try (Connection connection = connectionManager.getConnection()) {
-
-            PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_WITH_COMPANY);
-            ResultSet result = statement.executeQuery();
+        try (Connection connection = connectionManager.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_WITH_COMPANY);
+                ResultSet result = statement.executeQuery()) {
 
             while (result.next()) {
                 list.add(MapperComputer.mapperComputer(result, true));
             }
-
             return list;
 
         } catch (SQLException e) {
@@ -204,9 +168,9 @@ public enum ComputerDAO implements DAO<Computer> {
 
         List<Computer> list = new ArrayList<>();
 
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionManager.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_FIND_LIMIT)) {
 
-            PreparedStatement statement = connection.prepareStatement(SQL_FIND_LIMIT);
             statement.setLong(1, limit);
             statement.setLong(2, offset);
             ResultSet result = statement.executeQuery();
@@ -214,9 +178,7 @@ public enum ComputerDAO implements DAO<Computer> {
             while (result.next()) {
                 list.add(MapperComputer.mapperComputer(result, true));
             }
-
             return list;
-
         } catch (SQLException e) {
             LOGGER.error("error to find  all computers with limit");
             throw new ExceptionDAO("error to find  all computers with limit", e);
@@ -225,10 +187,9 @@ public enum ComputerDAO implements DAO<Computer> {
 
     public int count() {
 
-        try (Connection connection = connectionManager.getConnection()) {
-
-            PreparedStatement statement = connection.prepareStatement(SQL_COUNT);
-            ResultSet result = statement.executeQuery();
+        try (Connection connection = connectionManager.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_COUNT);
+                ResultSet result = statement.executeQuery()) {
 
             if (result.next()) {
                 return result.getInt(1);
@@ -239,6 +200,29 @@ public enum ComputerDAO implements DAO<Computer> {
             throw new ExceptionDAO("error", e);
         }
         return 0;
+    }
+
+    private PreparedStatement setStatement(PreparedStatement statement, Computer obj) throws SQLException {
+
+        statement.setString(1, obj.getName());
+
+        if (obj.getIntroduced().isPresent()) {
+            statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced().get()));
+        }
+
+        if (obj.getDiscontinued().isPresent()) {
+            statement.setTimestamp(3, timeFromDateLocal(obj.getDiscontinued().get()));
+        }
+
+        if (obj.getCompany().isPresent()) {
+            statement.setLong(4, obj.getCompany().get().getId());
+        } else {
+            statement.setNull(4, java.sql.Types.BIGINT);
+        }
+
+        statement.setLong(5, obj.getId());
+
+        return statement;
     }
 
 }

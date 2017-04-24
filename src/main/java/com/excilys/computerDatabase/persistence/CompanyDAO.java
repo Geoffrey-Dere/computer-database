@@ -17,7 +17,7 @@ import com.excilys.computerDatabase.model.Company;
 public enum CompanyDAO implements DAO<Company> {
 
     INSTANCE;
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 
     private static final String SQL_FIND_ALL = "select * from company ;";
@@ -49,9 +49,9 @@ public enum CompanyDAO implements DAO<Company> {
 
         Company company = null;
 
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionManager.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID)) {
 
-            PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID);
             statement.setString(1, String.valueOf(id));
             ResultSet result = statement.executeQuery();
 
@@ -72,10 +72,9 @@ public enum CompanyDAO implements DAO<Company> {
 
         List<Company> list = new ArrayList<>();
 
-        try (Connection connection = connectionManager.getConnection()) {
-
-            PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL);
-            ResultSet result = statement.executeQuery();
+        try (Connection connection = connectionManager.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL);
+                ResultSet result = statement.executeQuery()) {
 
             while (result.next()) {
                 list.add(MapperCompany.mapperCompany(result));
