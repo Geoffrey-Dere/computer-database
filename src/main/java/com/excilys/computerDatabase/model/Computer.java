@@ -25,15 +25,12 @@ public class Computer {
 
     private Company company;
 
-    /**
-     * @param builder company builder
-     */
-    private Computer(BuilderComputer builder) {
-        this.id = builder.id;
-        this.name = builder.name;
-        this.introduced = builder.introduced;
-        this.discontinued = builder.discontinued;
-        this.company = builder.company;
+    public Computer() {
+
+    }
+
+    public Computer(String name) {
+        this.name = name;
     }
 
     public Optional<LocalDate> getDiscontinued() {
@@ -77,6 +74,10 @@ public class Computer {
         return Optional.ofNullable(this.company);
     }
 
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
     /**
      * function equals for Computer class <br/>.
      * 2 objects are equal if they have the same name and id
@@ -98,7 +99,27 @@ public class Computer {
             return false;
         }
 
-        return this.id == company.id;
+        if (this.introduced != null ? !this.introduced.equals(company.introduced) : company.introduced != null) {
+            return false;
+        }
+
+        if (this.discontinued != null ? !this.discontinued.equals(company.discontinued)
+                : company.discontinued != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+
+        final int prime = 73;
+        int result = 1;
+        result = prime * result + (name == null ? 0 : name.hashCode());
+        result = prime * result + (introduced == null ? 0 : introduced.hashCode());
+        result = prime * result + (discontinued == null ? 0 : discontinued.hashCode());
+        return result;
     }
 
     /**
@@ -114,24 +135,15 @@ public class Computer {
                 + " ) ";
     }
 
-    @Override
-    public int hashCode() {
-        return introduced.hashCode() + this.discontinued.hashCode() + name.hashCode();
-    }
-
     public static class BuilderComputer {
 
-        private long id;
-        private String name;
-        private LocalDate introduced = null;
-        private LocalDate discontinued = null;
-        private Company company = null;
+        private Computer computer;
 
         /**
          * @param name name
          */
         public BuilderComputer(String name) {
-            this.name = name;
+            this.computer = new Computer(name);
         }
 
         /**
@@ -139,7 +151,7 @@ public class Computer {
          * @return the builder
          */
         public BuilderComputer id(long id) {
-            this.id = id;
+            this.computer.setId(id);
             return this;
         }
 
@@ -148,7 +160,7 @@ public class Computer {
          * @return the builder
          */
         public BuilderComputer introduced(LocalDate introduced) {
-            this.introduced = introduced;
+            this.computer.setIntroduced(introduced);
             return this;
         }
 
@@ -157,7 +169,7 @@ public class Computer {
          * @return the builder
          */
         public BuilderComputer discontinued(LocalDate discontinued) {
-            this.discontinued = discontinued;
+            this.computer.setDiscontinued(discontinued);
             return this;
         }
 
@@ -166,7 +178,7 @@ public class Computer {
          * @return the builder
          */
         public BuilderComputer company(Company company) {
-            this.company = company;
+            this.computer.setCompany(company);
             return this;
         }
 
@@ -174,7 +186,7 @@ public class Computer {
          * @return the new computer
          */
         public Computer build() {
-            return new Computer(this);
+            return this.computer;
         }
 
     }

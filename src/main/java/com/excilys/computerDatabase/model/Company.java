@@ -10,7 +10,7 @@ public class Company {
     /**
      * the id of the company.
      */
-    private final long id;
+    private long id;
 
     /**
      * the name of the company.
@@ -20,17 +20,29 @@ public class Company {
     /**
      * @param builder the builder
      */
-    public Company(Builder builder) {
-        this.id = builder.id;
-        this.name = builder.name;
+
+    public Company() {
+
+    }
+
+    public Company(String name) {
+        this.name = name;
     }
 
     public long getId() {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -54,7 +66,7 @@ public class Company {
             return false;
         }
 
-        return this.id == company.id;
+        return true;
     }
 
     @Override
@@ -67,19 +79,22 @@ public class Company {
 
     @Override
     public int hashCode() {
-        return name.hashCode() + (int) id;
+
+        final int prime = 29;
+        int result = 1;
+        result = prime * result + (name == null ? 0 : name.hashCode());
+        return result;
     }
 
     public static class Builder {
 
-        private long id;
-        private String name;
+        private Company company;
 
         /**
          * @param name the name of the company
          */
         public Builder(String name) {
-            this.name = name;
+            company = new Company(name);
         }
 
         /**
@@ -87,7 +102,7 @@ public class Company {
          * @return the builder
          */
         public Builder id(long id) {
-            this.id = id;
+            company.setId(id);
             return this;
         }
 
@@ -95,7 +110,7 @@ public class Company {
          * @return the new object company
          */
         public Company build() {
-            return new Company(this);
+            return company;
         }
 
     }
