@@ -19,6 +19,14 @@
 		<maven-mysql.version>5.1.6</maven-mysql.version>
 		<junit.version>4.12</junit.version>
 		<org.mockito>2.7.12</org.mockito>
+		<org.slf4j>1.7.25</org.slf4j>
+		<ch.qos.logback>1.0.13</ch.qos.logback>
+		<org.apache.taglibs.spec>1.2.5</org.apache.taglibs.spec>
+		<org.apache.taglibs.imp>1.2.5</org.apache.taglibs.imp>
+		<org.webjars>2.1.4</org.webjars>
+		<com.zaxxer>2.6.1</com.zaxxer>
+		<javax.servlet>2.5</javax.servlet>
+		<javax.servlet.jsp>2.0</javax.servlet.jsp>
 	</properties>
 
 	<dependencies>
@@ -26,7 +34,6 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${maven-mysql.version}</version>
-			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
@@ -47,49 +54,60 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.25</version>
+			<version>${org.slf4j}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.0.13</version>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
+			<version>${ch.qos.logback}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.taglibs</groupId>
 			<artifactId>taglibs-standard-spec</artifactId>
-			<version>1.2.5</version>
+			<version>${org.apache.taglibs.spec}</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.taglibs</groupId>
 			<artifactId>taglibs-standard-impl</artifactId>
-			<version>1.2.5</version>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>2.0</version>
+			<version>${org.apache.taglibs.imp}</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>jquery</artifactId>
-			<version>2.1.4</version>
+			<version>${org.webjars}</version>
 			<scope>runtime</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>${com.zaxxer}</version>
+			<scope>compile</scope>
+		</dependency>
 
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${javax.servlet}</version>
+		</dependency>
 
-
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>${javax.servlet.jsp}</version>
+		</dependency>
+		
+		<dependency>
+    <groupId>org.mariadb.jdbc</groupId>
+    <artifactId>mariadb-java-client</artifactId>
+    <version>1.1.7</version>
+</dependency>
 
 	</dependencies>
 

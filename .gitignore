@@ -21,3 +21,5 @@ local.properties
 .loadpath
 
 src/main/resources/config/bdd.properties
+src/main/resources/config/hikari.properties
+
