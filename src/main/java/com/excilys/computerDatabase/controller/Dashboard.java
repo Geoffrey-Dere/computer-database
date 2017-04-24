@@ -23,7 +23,7 @@ public class Dashboard extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         ComputerServiceImpl computerService = new ComputerServiceImpl();
-      
+
         int size = computerService.count();
 
         // get the current page by (url parameter)
@@ -32,24 +32,27 @@ public class Dashboard extends HttpServlet {
         } else {
             req.setAttribute("currentPage", "1");
         }
-      
+
         int limit = LIMIT_DEFAULT;
-        //get the limit
+        // get the limit
         if (isInteger(req.getParameter(URI_LIMIT))) {
-            req.setAttribute("uriLimit", req.getParameter("page"));
             limit = Integer.parseInt(req.getParameter(URI_LIMIT));
+            req.setAttribute("limit", req.getParameter(URI_LIMIT));
         } else {
-            req.setAttribute("uriLimit", URI_LIMIT);
+            req.setAttribute("limit", LIMIT_DEFAULT);
         }
-        
+
         int currentPage = Integer.parseInt((String) req.getAttribute("currentPage"));
-        
-        req.setAttribute("page", computerService.getPageComputer(limit, (currentPage-1)*limit ));
+
+        req.setAttribute("page", computerService.getPageComputer(limit, (currentPage - 1) * limit));
         req.setAttribute("limit", limit);
         req.setAttribute("maxPages", Math.ceil((double) size / limit));
         req.setAttribute("uriPage", URI_PAGE);
- 
+        req.setAttribute("uriLimit", URI_LIMIT);
+
         this.getServletContext().getRequestDispatcher("/WEB-INF/view/dashboard.jsp").forward(req, resp);
+
+        System.out.println();
     }
 
     private boolean isInteger(String s) {

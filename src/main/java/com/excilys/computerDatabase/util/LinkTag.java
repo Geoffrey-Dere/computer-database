@@ -85,11 +85,10 @@ public class LinkTag extends SimpleTagSupport {
     }
 
     private void displayLink(JspWriter out) throws IOException {
-
         out.println("<div class=\"btn-group btn-group-sm pull-right\" role=\"group\">");
-        out.println("<a type=\"button\" class=\"btn btn-default\" href=" + href(currentPage, 10) + " >10</a>");
-        out.println("<a type=\"button\" class=\"btn btn-default\" href=" + href(currentPage, 50) + " >50</a>");
-        out.println("<a type=\"button\" class=\"btn btn-default\" href=" + href(currentPage, 100) + " >100</a>");
+        out.println("<a type=\"button\" class=\"btn btn-default\" href=" + href(10) + " >10</a>");
+        out.println("<a type=\"button\" class=\"btn btn-default\" href=" + href(50) + " >50</a>");
+        out.println("<a type=\"button\" class=\"btn btn-default\" href=" + href(100) + " >100</a>");
         out.println("</div>");
 
     }
@@ -101,7 +100,7 @@ public class LinkTag extends SimpleTagSupport {
         return url;
     }
 
-    private String href(int page, int limit) {
+    private String href(int limit) {
 
         String url = String.format("\"?%s=%s\"", uriLimit, limit);
         return url;

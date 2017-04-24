@@ -25,8 +25,7 @@
 
 	<section id="main">
 	<div class="container">
-
-		<c:out value="coucou toi ${currentPage}"></c:out>
+	
 		<h1 id="homeTitle">${fn:length(page.listEntity)}Computersfound</h1>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
