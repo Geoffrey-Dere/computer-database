@@ -18,12 +18,18 @@ public class PaginationTag extends SimpleTagSupport {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PaginationTag.class);
 
-    private int currentPage;
-    private int limit;
+    
     private int maxPages;
+   
     private String uri;
+    private int currentPage;
+    
     private String uriLimit;
-
+    private int limit;
+    
+    private String uriSearch;
+    private String search ;
+    
     public PaginationTag() {
         // TODO Auto-generated constructor stub
     }
@@ -47,9 +53,7 @@ public class PaginationTag extends SimpleTagSupport {
             pageRight = maxPages - currentPage;
             pageLeft = NUMBER_PAGE - pageRight - 1;
         }
-
         printPagination(out, pageLeft, pageRight);
-
     }
 
     private void printPagination(JspWriter out, int pageLeft, int pageRight) {
@@ -154,4 +158,21 @@ public class PaginationTag extends SimpleTagSupport {
         this.uriLimit = uriLimit;
     }
 
+    public String getUriSearch() {
+        return uriSearch;
+    }
+
+    public void setUriSearch(String uriSearch) {
+        this.uriSearch = uriSearch;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
+    }
+
+    
 }

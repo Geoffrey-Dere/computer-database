@@ -40,6 +40,12 @@ public class ComputerServiceImpl implements ComputerService {
         BuilderPage<Computer> builder = new BuilderPage<>(listComputer);
         return builder.build();
     }
+    
+    public Pager<Computer> getPageComputer(long limit, long offset, String regex) {
+        List<Computer> listComputer = computerDAO.findAllWithRegex(limit, offset);
+        BuilderPage<Computer> builder = new BuilderPage<>(listComputer);
+        return builder.build();
+    }
 
     @Override
     public Optional<Computer> getComputer(long id) {

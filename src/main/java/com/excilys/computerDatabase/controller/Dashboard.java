@@ -50,10 +50,18 @@ public class Dashboard extends HttpServlet {
             req.setAttribute("limit", LIMIT_DEFAULT);
         }
 
+        Pager<Computer> pager = null;
         int currentPage = Integer.parseInt((String) req.getAttribute("currentPage"));
 
-        Pager<Computer> pager = computerService.getPageComputer(limit, (currentPage - 1) * limit);
+        // search
+        if (req.getParameter("search") != null) {
+            String regex = req.getParameter("search");
+            req.setAttribute("search", regex);
+            pager = computerService.getPageComputer(limit, (currentPage - 1) * limit);
+        } else {
+            pager = computerService.getPageComputer(limit, (currentPage - 1) * limit);
 
+        }
         req.setAttribute("listComputer", ComputerMapper.mapperToDTO(pager.getListEntity()));
         req.setAttribute("limit", limit);
         req.setAttribute("maxPages", Math.ceil((double) size / limit));

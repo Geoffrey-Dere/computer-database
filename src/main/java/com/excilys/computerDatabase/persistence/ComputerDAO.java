@@ -193,6 +193,11 @@ public enum ComputerDAO implements DAO<Computer> {
             throw new ExceptionDAO("error to find  all computers with limit", e);
         }
     }
+    
+    public List<Computer> findAllWithRegex(long limit, long offset) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     public int count() {
 
@@ -235,5 +240,4 @@ public enum ComputerDAO implements DAO<Computer> {
 
         return statement;
     }
-
 }
