@@ -35,7 +35,7 @@ public class Dashboard extends HttpServlet {
         int size = computerService.count();
 
         // get the current page by (url parameter)
-        if (isInteger(req.getParameter(URI_PAGE))) {
+        if (isInteger(req.getParameter(URI_PAGE)) && Integer.parseInt(req.getParameter(URI_PAGE)) >= 1) {
             req.setAttribute("currentPage", req.getParameter("page"));
         } else {
             req.setAttribute("currentPage", "1");

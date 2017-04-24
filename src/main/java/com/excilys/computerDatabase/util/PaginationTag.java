@@ -12,11 +12,11 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.computerDatabase.persistence.ConnectionManager;
 
-public class LinkTag extends SimpleTagSupport {
+public class PaginationTag extends SimpleTagSupport {
 
     private static final int NUMBER_PAGE = 5;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LinkTag.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PaginationTag.class);
 
     private int currentPage;
     private int limit;
@@ -24,7 +24,7 @@ public class LinkTag extends SimpleTagSupport {
     private String uri;
     private String uriLimit;
 
-    public LinkTag() {
+    public PaginationTag() {
         // TODO Auto-generated constructor stub
     }
 
@@ -48,35 +48,49 @@ public class LinkTag extends SimpleTagSupport {
             pageLeft = NUMBER_PAGE - pageRight - 1;
         }
 
+        printPagination(out, pageLeft, pageRight);
+
+    }
+
+    private void printPagination(JspWriter out, int pageLeft, int pageRight) {
         try {
             out.println("<ul class=\"pagination\">");
 
             if (this.currentPage > 1) {
-                out.println(link(currentPage - 1, "&laquo;", " aria-label=\"Previous\" ", limit));
+                out.println("<li>");
+                out.println("<a  aria-label=\"Previous\" href= " + link(currentPage - 1, limit) + "> &laquo; </a>");
+                out.println("</li>");
             }
 
             // display the previous pages
             for (int i = currentPage - pageLeft; i >= 1 && pageLeft > 0; i++) {
-                out.println(link(i, String.valueOf(i), "", limit));
+                out.println("<li>");
+                out.println("<a href= " + link(i, limit) + ">" + i + "</a>");
+                out.println("</li>");
                 pageLeft--;
             }
 
             // display the current page
-            out.println(link(currentPage, String.valueOf(currentPage), "", limit));
+            out.println("<li>");
+            out.println("<a href= " + link(currentPage, limit) + ">" + currentPage + "</a>");
 
             // display the next pages
             for (int i = currentPage + 1; i <= maxPages && pageRight > 0; i++) {
-                out.println(link(i, String.valueOf(i), "", limit));
+                out.println("<li>");
+                out.println("<a href= " + link(i, limit) + ">" + i + "</a>");
+                out.println("</li>");
                 pageRight--;
             }
 
             if (this.currentPage < maxPages) {
-                out.println(link(currentPage + 1, "&raquo;", " aria-label=\"Next\" ", limit));
+                out.println("<li>");
+                out.println("<a  aria-label=\"Previous\" href= " + link(currentPage + 1, limit) + "> &raquo; </a>");
+                out.println("</li>");
             }
 
             out.println("</ul>");
 
-            displayLink(out);
+            printLimit(out);
 
         } catch (Exception e) {
             LOGGER.debug("error pagination");
@@ -84,27 +98,21 @@ public class LinkTag extends SimpleTagSupport {
         }
     }
 
-    private void displayLink(JspWriter out) throws IOException {
+    private void printLimit(JspWriter out) throws IOException {
         out.println("<div class=\"btn-group btn-group-sm pull-right\" role=\"group\">");
-        out.println("<a type=\"button\" class=\"btn btn-default\" href=" + href(10) + " >10</a>");
-        out.println("<a type=\"button\" class=\"btn btn-default\" href=" + href(50) + " >50</a>");
-        out.println("<a type=\"button\" class=\"btn btn-default\" href=" + href(100) + " >100</a>");
+        out.println("<a type=\"button\" class=\"btn btn-default\" href=" + link(1, 10) + " >10</a>");
+        out.println("<a type=\"button\" class=\"btn btn-default\" href=" + link(1, 50) + " >50</a>");
+        out.println("<a type=\"button\" class=\"btn btn-default\" href=" + link(1, 100) + " >100</a>");
         out.println("</div>");
 
     }
 
-    private String link(int page, String value, String decorator, int limit) {
+    private String link(int page, int limit) {
 
-        String url = String.format("<li>" + "<a  %s href= \"?%s=%d&%s=%s\">%s</a>" + "</li>", decorator, uri, page,
-                uriLimit, limit, value);
+        String url = String.format("\"?%s=%d&%s=%s\"", uri, page, uriLimit, limit);
         return url;
     }
 
-    private String href(int limit) {
-
-        String url = String.format("\"?%s=%s\"", uriLimit, limit);
-        return url;
-    }
 
     public int getCurrentPage() {
         return currentPage;
