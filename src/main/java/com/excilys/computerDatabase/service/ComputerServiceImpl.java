@@ -56,7 +56,7 @@ public class ComputerServiceImpl implements ComputerService {
     @Override
     public boolean updateComputer(Computer c) {
         ComputerValidator.isValid(c);
-        return false;
+        return computerDAO.update(c);
     }
 
     @Override

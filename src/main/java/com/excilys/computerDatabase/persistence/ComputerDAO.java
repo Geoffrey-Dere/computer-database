@@ -28,7 +28,7 @@ public enum ComputerDAO implements DAO<Computer> {
     private static final String SQL_FIND_ALL = "select * from computer;";
     private static final String SQL_FIND_ALL_WITH_COMPANY = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id ;";
 
-    private static final String SQL_FIND_BY_ID = "select * from computer where id = ? ;";
+    private static final String SQL_FIND_BY_ID = "select * from computer  LEFT OUTER JOIN company on computer.company_id = company.id where computer.id = ? ;";
     private static final String SQL_DELETE = "delete from computer where id = ? ;";
     private static final String SQL_INSERT = "insert into computer(name, introduced, discontinued, company_id)VALUES(?,?,?,?);";
     private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
@@ -73,7 +73,7 @@ public enum ComputerDAO implements DAO<Computer> {
             PreparedStatement statement = connection.prepareStatement(SQL_DELETE);
             statement.setLong(1, obj.getId());
             int success = statement.executeUpdate();
-            
+
             if (success >= 1) {
                 LOGGER.debug("The computer with id {} has been deleted", obj.getId());
             } else {
@@ -93,9 +93,12 @@ public enum ComputerDAO implements DAO<Computer> {
         try (Connection connection = connectionManager.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
 
+            LOGGER.trace("update new computer {}", obj);
+            
             this.setStatement(statement, obj);
-            boolean success = statement.execute();
-            return success;
+            statement.setLong(5, obj.getId());
+            int success = statement.executeUpdate();
+            return success == 1;
 
         } catch (SQLException e) {
             LOGGER.error("error updating computer");
@@ -113,7 +116,7 @@ public enum ComputerDAO implements DAO<Computer> {
             ResultSet res = statement.executeQuery();
 
             if (res.next()) {
-                Computer computer = MapperComputer.mapperComputer(res, false);
+                Computer computer = MapperComputer.mapperComputer(res, true);
                 res.close();
                 return Optional.of(computer);
             } else {
@@ -214,10 +217,14 @@ public enum ComputerDAO implements DAO<Computer> {
 
         if (obj.getIntroduced().isPresent()) {
             statement.setTimestamp(2, timeFromDateLocal(obj.getIntroduced().get()));
+        } else {
+            statement.setNull(2, java.sql.Types.TIMESTAMP);
         }
 
         if (obj.getDiscontinued().isPresent()) {
             statement.setTimestamp(3, timeFromDateLocal(obj.getDiscontinued().get()));
+        } else {
+            statement.setNull(3, java.sql.Types.TIMESTAMP);
         }
 
         if (obj.getCompany().isPresent()) {
@@ -225,8 +232,6 @@ public enum ComputerDAO implements DAO<Computer> {
         } else {
             statement.setNull(4, java.sql.Types.BIGINT);
         }
-
-        statement.setLong(5, obj.getId());
 
         return statement;
     }

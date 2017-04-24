@@ -60,6 +60,6 @@ public class ComputerDTO {
         String date1 = (introduced.isEmpty() ? "empty" : introduced);
         String date2 = (discontinued.isEmpty() ? "empty" : introduced);
 
-        return "ComputerDTP(" + id + " , " + name + " , " + date1 + " , " + date2 + " ,\n\t " + company + " ) ";
+        return "ComputerDTO(" + id + " , " + name + " , " + date1 + " , " + date2 + "  " + company + " ) ";
     }
 }

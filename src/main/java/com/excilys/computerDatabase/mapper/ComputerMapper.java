@@ -68,6 +68,8 @@ public class ComputerMapper {
 
         Computer.BuilderComputer builder = new BuilderComputer(c.getName());
 
+        builder.id(c.getId());
+
         if (!introduced.isEmpty()) {
             builder.introduced(DateFormatter.stringtoLocalDate(introduced));
         }

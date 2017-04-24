@@ -25,7 +25,7 @@
 
 	<section id="main">
 	<div class="container">
-	
+
 		<h1 id="homeTitle">${fn:length(listComputer)}Computersfound</h1>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
@@ -75,10 +75,15 @@
 			<!-- Browse attribute computers -->
 			<tbody id="results">
 				<c:forEach items="${listComputer}" var="computer">
+
+					<c:url value="editComputer" var="myURL">
+						<c:param name="id" value="${computer.id}" />
+s					</c:url>
+
 					<tr>
 						<td class="editMode"><input type="checkbox" name="cb"
 							class="cb" value=${computer.id}></td>
-						<td><a href="editComputer.html" onclick=""> <c:out
+						<td><a href="<c:out value="${myURL}"/>" onclick=""> <c:out
 									value="${computer.name}" />
 						</a></td>
 						<td><c:out value="${computer.introduced}" /></td>
@@ -97,7 +102,7 @@
 
 	<footer class="navbar-fixed-bottom">
 	<div class="container text-center">
-<!-- 		<ul class="pagination">
+		<!-- 		<ul class="pagination">
 			<li><a href="#" aria-label="Previous"> <span
 					aria-hidden="true">&laquo;</span>
 			</a></li>
@@ -110,7 +115,8 @@
 			</a></li>
 		</ul> -->
 
-		<mylib:pagination currentPage="${currentPage}" limit="${limit}" maxPages="${maxPages}" uri="${uriPage}" uriLimit="${uriLimit}" />
+		<mylib:pagination currentPage="${currentPage}" limit="${limit}"
+			maxPages="${maxPages}" uri="${uriPage}" uriLimit="${uriLimit}" />
 
 	</div>
 	</footer>

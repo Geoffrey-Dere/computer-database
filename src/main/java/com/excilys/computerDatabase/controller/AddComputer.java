@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,12 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.computerDatabase.dto.CompanyDTO;
 import com.excilys.computerDatabase.dto.ComputerDTO;
 import com.excilys.computerDatabase.mapper.CompanyMapper;
 import com.excilys.computerDatabase.mapper.ComputerMapper;
 import com.excilys.computerDatabase.model.Company;
-import com.excilys.computerDatabase.persistence.mapper.MapperCompany;
 import com.excilys.computerDatabase.service.CompanyServiceImpl;
 import com.excilys.computerDatabase.service.ComputerServiceImpl;
 import com.excilys.computerDatabase.service.ServiceException;
@@ -36,7 +35,7 @@ public class AddComputer extends HttpServlet {
         List<Company> listCompany = service.getAllCompanies();
         req.setAttribute("listCompany", CompanyMapper.mapperToDTO(listCompany));
         this.getServletContext().getRequestDispatcher("/WEB-INF/view/addComputer.jsp").forward(req, resp);
-        
+
     }
 
     @Override
@@ -77,7 +76,7 @@ public class AddComputer extends HttpServlet {
             service.addComputer(ComputerMapper.mapperToModel(computerDTO));
         } catch (ServiceException e) {
             req.setAttribute("error", e.getMessage());
-            doGet(req, resp);
         }
+        resp.sendRedirect("dashboard");
     }
 }

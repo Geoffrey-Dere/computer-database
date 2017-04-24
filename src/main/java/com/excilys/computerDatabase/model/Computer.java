@@ -131,7 +131,7 @@ public class Computer {
 
     @Override
     public String toString() {
-        return "Computer(" + id + " , " + name + " , " + introduced + " , " + discontinued + " ,\n\t " + company
+        return "Computer(" + id + " , " + name + " , " + introduced + " , " + discontinued + "  " + company
                 + " ) ";
     }
 
