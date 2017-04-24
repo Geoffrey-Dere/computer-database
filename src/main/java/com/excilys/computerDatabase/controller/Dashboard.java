@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.computerDatabase.mapper.ComputerMapper;
+import com.excilys.computerDatabase.model.Computer;
+import com.excilys.computerDatabase.model.Pager;
 import com.excilys.computerDatabase.service.ComputerServiceImpl;
 
 public class Dashboard extends HttpServlet {
@@ -44,7 +47,9 @@ public class Dashboard extends HttpServlet {
 
         int currentPage = Integer.parseInt((String) req.getAttribute("currentPage"));
 
-        req.setAttribute("page", computerService.getPageComputer(limit, (currentPage - 1) * limit));
+        Pager<Computer> pager = computerService.getPageComputer(limit, (currentPage - 1) * limit);
+        
+        req.setAttribute("listComputer", ComputerMapper.mapperToDTO(pager.getListEntity()));
         req.setAttribute("limit", limit);
         req.setAttribute("maxPages", Math.ceil((double) size / limit));
         req.setAttribute("uriPage", URI_PAGE);

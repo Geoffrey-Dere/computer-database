@@ -9,12 +9,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.computerDatabase.dto.CompanyDTO;
 import com.excilys.computerDatabase.dto.ComputerDTO;
+import com.excilys.computerDatabase.mapper.CompanyMapper;
+import com.excilys.computerDatabase.mapper.ComputerMapper;
+import com.excilys.computerDatabase.model.Company;
+import com.excilys.computerDatabase.persistence.mapper.MapperCompany;
 import com.excilys.computerDatabase.service.CompanyServiceImpl;
 import com.excilys.computerDatabase.service.ComputerServiceImpl;
 import com.excilys.computerDatabase.service.ServiceException;
@@ -30,10 +33,8 @@ public class AddComputer extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         CompanyServiceImpl service = new CompanyServiceImpl();
-        List<CompanyDTO> listCompany = service.getAllCompanies();
-        req.setAttribute("listCompany", listCompany);
-   
-        this.getServletContext().getRequestDispatcher("/WEB-INF/view/addComputer.jsp").forward(req, resp);
+        List<Company> listCompany = service.getAllCompanies();
+        req.setAttribute("listCompany", CompanyMapper.mapperToDTO(listCompany));
     }
 
     @Override
@@ -60,20 +61,20 @@ public class AddComputer extends HttpServlet {
         }
 
         if (id > 0) {
-            Optional<CompanyDTO> company = companyService.getCompany(id);
+            Optional<Company> company = companyService.getCompany(id);
             if (company.isPresent()) {
-                computerDTO.setCompany(company.get());
+                computerDTO.setCompany(CompanyMapper.mapperToDTO(company.get()));
             } else {
                 LOGGER.debug("no company found with id", id);
             }
         }
 
         LOGGER.debug("inserting new object computerDTO  : {}", computerDTO);
-        
-        try{
-        service.addComputer(computerDTO);
-        } catch(ServiceException e){
-            req.setAttribute("error", e.getMessage());  
+
+        try {
+            service.addComputer(ComputerMapper.mapperToModel(computerDTO));
+        } catch (ServiceException e) {
+            req.setAttribute("error", e.getMessage());
             doGet(req, resp);
         }
     }

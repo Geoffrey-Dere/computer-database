@@ -26,7 +26,7 @@
 	<section id="main">
 	<div class="container">
 	
-		<h1 id="homeTitle">${fn:length(page.listEntity)}Computersfound</h1>
+		<h1 id="homeTitle">${fn:length(listComputer)}Computersfound</h1>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
 				<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -74,7 +74,7 @@
 			</thead>
 			<!-- Browse attribute computers -->
 			<tbody id="results">
-				<c:forEach items="${page.listEntity}" var="computer">
+				<c:forEach items="${listComputer}" var="computer">
 					<tr>
 						<td class="editMode"><input type="checkbox" name="cb"
 							class="cb" value="0"></td>

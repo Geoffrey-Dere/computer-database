@@ -30,35 +30,26 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
-    public Pager<ComputerDTO> getAllComputers() {
+    public Pager<Computer> getAllComputers() {
         return getPageComputer(Long.MAX_VALUE, 0);
     }
 
     @Override
-    public Pager<ComputerDTO> getPageComputer(long limit, long offset) {
+    public Pager<Computer> getPageComputer(long limit, long offset) {
         List<Computer> listComputer = computerDAO.findAll(limit, offset);
-        BuilderPage<ComputerDTO> builder = new BuilderPage<>(ComputerMapper.mapperToDTO(listComputer));
+        BuilderPage<Computer> builder = new BuilderPage<>(listComputer);
         return builder.build();
     }
 
     @Override
-    public ComputerDTO getComputer(long id) {
+    public Optional<Computer> getComputer(long id) {
         Optional<Computer> computer = computerDAO.find(id);
-        if (computer.isPresent()) {
-            return ComputerMapper.mapperToDTO(computer.get());
-        }
-        LOGGER.debug("no computer with id {} ", id);
-        throw new ServiceException("no computer with id " + id);
+        return computer;
     }
 
     @Override
-    public boolean addComputer(ComputerDTO c) {
-        try {
-            ComputerValidator.isValid(c);
-            return computerDAO.create(ComputerMapper.mapperToModel(c));
-        } catch (ValidatorException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
+    public boolean addComputer(Computer c) {
+        return computerDAO.create(c);
     }
 
     @Override
