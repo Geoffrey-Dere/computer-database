@@ -34,6 +34,7 @@ public enum ComputerDAO implements DAO<Computer> {
     private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 
     private static final String SQL_COUNT = "select count(*) from computer";
+    private static final String SQL_COUNT_REGEX = "select count(*) from computer where computer.name LIKE ?";
 
     private static final String SQL_FIND_ALL_WITH_COMPANY = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id ";
     private static final String SQL_REGEX = "select * from computer  LEFT OUTER JOIN company on computer.company_id = company.id where computer.name like ? limit ? offset ? ";
@@ -256,10 +257,28 @@ public enum ComputerDAO implements DAO<Computer> {
             }
 
         } catch (SQLException e) {
-            LOGGER.error("error");
-            throw new ExceptionDAO("error", e);
+            LOGGER.error("error count");
         }
         return 0;
+    }
+
+    public int count(String name) {
+        int res = 0;
+        ResultSet result;
+        try (Connection connection = connectionManager.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_COUNT_REGEX)) {
+
+            statement.setString(1, "%" + name + "%");
+            result = statement.executeQuery();
+            if (result.next()) {
+                res = result.getInt(1);
+            }
+            result.close();
+        } catch (SQLException e) {
+            LOGGER.error("error count with regex : {}", e.getMessage());
+        }
+        LOGGER.debug("count =  {}", res);
+        return res;
     }
 
     private PreparedStatement setStatement(PreparedStatement statement, Computer obj) throws SQLException {
@@ -285,4 +304,5 @@ public enum ComputerDAO implements DAO<Computer> {
         }
         return statement;
     }
+
 }

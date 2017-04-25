@@ -61,6 +61,7 @@ public class AddComputer extends HttpServlet {
             LOGGER.debug("{} isn't a number", companyId);
         }
 
+        //check for the company
         if (id > 0) {
             Optional<Company> company = companyService.getCompany(id);
             if (company.isPresent()) {
@@ -70,9 +71,8 @@ public class AddComputer extends HttpServlet {
             }
         }
 
-        LOGGER.debug("inserting new object computerDTO  : {}", computerDTO);
-
         try {
+            LOGGER.debug("inserting new object computerDTO  : {}", computerDTO);
             service.addComputer(ComputerMapper.mapperToModel(computerDTO));
         } catch (ServiceException e) {
             req.setAttribute("error", e.getMessage());

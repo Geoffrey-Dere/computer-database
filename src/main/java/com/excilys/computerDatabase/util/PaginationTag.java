@@ -114,8 +114,7 @@ public class PaginationTag extends SimpleTagSupport {
 
         String url = String.format("?%s=%d&%s=%s", uri, page, uriLimit, limit);
 
-        if (uriSearch != null && search != null) {
-            LOGGER.debug("add search param {} with {}", uriSearch, search);
+        if (uriSearch != null && search != null && !search.isEmpty()) {
             url += String.format("&%s=%s", uriSearch, search);
         }
 

@@ -26,7 +26,7 @@
 	<section id="main">
 	<div class="container">
 
-		<h1 id="homeTitle">${fn:length(listComputer)}Computersfound</h1>
+		<h1 id="homeTitle">${fn:length(listComputer)} Computers found</h1>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
 				<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -102,22 +102,10 @@ s					</c:url>
 
 	<footer class="navbar-fixed-bottom">
 	<div class="container text-center">
-		<!-- 		<ul class="pagination">
-			<li><a href="#" aria-label="Previous"> <span
-					aria-hidden="true">&laquo;</span>
-			</a></li>
-			<li><a href="#">1</a></li>
-			<li><a href="#">2</a></li>
-			<li><a href="#">3</a></li>
-			<li><a href="#">4</a></li>
-			<li><a href="#">5</a></li>
-			<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-			</a></li>
-		</ul> -->
 
 		<mylib:pagination currentPage="${currentPage}" limit="${limit}"
-			maxPages="${maxPages}" uri="${uriPage}" uriLimit="${uriLimit}" 
-			uriSearch="${uriSearch}" search="${search}"/>
+			maxPages="${maxPages}" uri="${uriPage}" uriLimit="${uriLimit}"
+			uriSearch="${uriSearch}" search="${search}" />
 
 	</div>
 	</footer>

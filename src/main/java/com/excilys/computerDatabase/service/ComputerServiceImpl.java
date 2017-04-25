@@ -40,7 +40,7 @@ public class ComputerServiceImpl implements ComputerService {
         BuilderPage<Computer> builder = new BuilderPage<>(listComputer);
         return builder.build();
     }
-    
+
     public Pager<Computer> getPageComputer(long limit, long offset, String regex) {
         List<Computer> listComputer = computerDAO.findByName(limit, offset, regex);
         BuilderPage<Computer> builder = new BuilderPage<>(listComputer);
@@ -69,15 +69,19 @@ public class ComputerServiceImpl implements ComputerService {
     public boolean removeComputer(Computer c) {
         return computerDAO.delete(c);
     }
-    
-    public boolean removeComputer(int id){
-       Computer computer = new Computer(); 
-       computer.setId(id);
-       return computerDAO.delete(computer);
-        
+
+    public boolean removeComputer(int id) {
+        Computer computer = new Computer();
+        computer.setId(id);
+        return computerDAO.delete(computer);
+
     }
 
     public int count() {
         return computerDAO.count();
+    }
+
+    public int count(String name) {
+        return computerDAO.count(name);
     }
 }
