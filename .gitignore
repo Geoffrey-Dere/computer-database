@@ -23,3 +23,5 @@ local.properties
 src/main/resources/config/bdd.properties
 src/main/resources/config/hikari.properties
 
+src/test/resources/config/bdd.properties
+src/test/resources/config/hikari.properties

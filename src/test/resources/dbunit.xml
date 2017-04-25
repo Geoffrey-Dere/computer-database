@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<dataset> 
+    <computer id="1" name="ordinateur 1"  /> 
+    <computer id="2" name="ordi 2"  /> 
+</dataset>

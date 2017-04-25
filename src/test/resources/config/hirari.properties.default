@@ -1,0 +1,4 @@
+driverClassName=driver
+username=user
+password=password
+jdbcUrl=url
