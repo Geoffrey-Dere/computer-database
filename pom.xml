@@ -102,20 +102,37 @@
 			<artifactId>jsp-api</artifactId>
 			<version>${javax.servlet.jsp}</version>
 		</dependency>
-		
-		<dependency>
-    <groupId>org.mariadb.jdbc</groupId>
-    <artifactId>mariadb-java-client</artifactId>
-    <version>1.1.7</version>
-</dependency>
 
-<!-- https://mvnrepository.com/artifact/org.dbunit/dbunit -->
-<dependency>
-    <groupId>org.dbunit</groupId>
-    <artifactId>dbunit</artifactId>
-    <version>2.4.9</version>
-    <scope>test</scope>
-</dependency>
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<version>1.1.7</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.dbunit/dbunit -->
+		<dependency>
+			<groupId>org.dbunit</groupId>
+			<artifactId>dbunit</artifactId>
+			<version>2.4.9</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-chrome-driver</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.github.bonigarcia</groupId>
+			<artifactId>webdrivermanager</artifactId>
+			<version>1.6.2</version>
+		</dependency>
 
 
 	</dependencies>
