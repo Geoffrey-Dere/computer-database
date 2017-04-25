@@ -42,7 +42,7 @@ public class ComputerServiceImpl implements ComputerService {
     }
     
     public Pager<Computer> getPageComputer(long limit, long offset, String regex) {
-        List<Computer> listComputer = computerDAO.findAllWithRegex(limit, offset);
+        List<Computer> listComputer = computerDAO.findAllWithRegex(limit, offset, regex);
         BuilderPage<Computer> builder = new BuilderPage<>(listComputer);
         return builder.build();
     }

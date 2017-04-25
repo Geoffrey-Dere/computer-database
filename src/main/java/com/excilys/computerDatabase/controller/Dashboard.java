@@ -21,6 +21,7 @@ public class Dashboard extends HttpServlet {
     private static final int LIMIT_DEFAULT = 10;
     private static final String URI_PAGE = "page";
     private static final String URI_LIMIT = "limit";
+    private static final String URI_SEARCH = "search";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Dashboard.class);
     /**
@@ -54,12 +55,14 @@ public class Dashboard extends HttpServlet {
         int currentPage = Integer.parseInt((String) req.getAttribute("currentPage"));
 
         // search
-        if (req.getParameter("search") != null) {
-            String regex = req.getParameter("search");
+        if (req.getParameter(URI_SEARCH) != null) {
+            String regex = req.getParameter(URI_SEARCH);
             req.setAttribute("search", regex);
-            pager = computerService.getPageComputer(limit, (currentPage - 1) * limit);
+            LOGGER.debug("REGEEX = {}", regex);
+            pager = computerService.getPageComputer(limit, (currentPage - 1) * limit, regex);
         } else {
             pager = computerService.getPageComputer(limit, (currentPage - 1) * limit);
+            LOGGER.debug("no regex");
 
         }
         req.setAttribute("listComputer", ComputerMapper.mapperToDTO(pager.getListEntity()));
@@ -67,6 +70,7 @@ public class Dashboard extends HttpServlet {
         req.setAttribute("maxPages", Math.ceil((double) size / limit));
         req.setAttribute("uriPage", URI_PAGE);
         req.setAttribute("uriLimit", URI_LIMIT);
+        req.setAttribute("uriSearch", URI_SEARCH);
 
         this.getServletContext().getRequestDispatcher("/WEB-INF/view/dashboard.jsp").forward(req, resp);
 

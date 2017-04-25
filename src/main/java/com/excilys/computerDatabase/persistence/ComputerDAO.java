@@ -34,6 +34,7 @@ public enum ComputerDAO implements DAO<Computer> {
     private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
     private static final String SQL_FIND_LIMIT = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id limit ? offset ? ;";
     private static final String SQL_COUNT = "select count(*) from computer";
+    private static final String SQL_REGEX = "select * from computer  LEFT OUTER JOIN company on computer.company_id = company.id where computer.name like ? limit ? offset ? ;";
 
     private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 
@@ -94,7 +95,7 @@ public enum ComputerDAO implements DAO<Computer> {
                 PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
 
             LOGGER.trace("update new computer {}", obj);
-            
+
             this.setStatement(statement, obj);
             statement.setLong(5, obj.getId());
             int success = statement.executeUpdate();
@@ -193,10 +194,28 @@ public enum ComputerDAO implements DAO<Computer> {
             throw new ExceptionDAO("error to find  all computers with limit", e);
         }
     }
-    
-    public List<Computer> findAllWithRegex(long limit, long offset) {
-        // TODO Auto-generated method stub
-        return null;
+
+    public List<Computer> findAllWithRegex(long limit, long offset, String regex) {
+
+        List<Computer> list = new ArrayList<>();
+
+        try (Connection connection = connectionManager.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_REGEX)) {
+
+            statement.setString(1, "%" + regex + "%");
+            statement.setLong(2, limit);
+            statement.setLong(3, offset);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                list.add(MapperComputer.mapperComputer(result, true));
+            }
+            return list;
+        } catch (SQLException e) {
+            LOGGER.error("error to find  computer with regex");
+            throw new ExceptionDAO("error to find  computer with regex", e);
+        }
+
     }
 
     public int count() {

@@ -18,18 +18,17 @@ public class PaginationTag extends SimpleTagSupport {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PaginationTag.class);
 
-    
     private int maxPages;
-   
+
     private String uri;
     private int currentPage;
-    
+
     private String uriLimit;
     private int limit;
-    
+
     private String uriSearch;
-    private String search ;
-    
+    private String search;
+
     public PaginationTag() {
         // TODO Auto-generated constructor stub
     }
@@ -113,10 +112,15 @@ public class PaginationTag extends SimpleTagSupport {
 
     private String link(int page, int limit) {
 
-        String url = String.format("\"?%s=%d&%s=%s\"", uri, page, uriLimit, limit);
+        String url = String.format("?%s=%d&%s=%s", uri, page, uriLimit, limit);
+
+        if (uriSearch != null && search != null) {
+            LOGGER.debug("add search param {} with {}", uriSearch, search);
+            url += String.format("&%s=%s", uriSearch, search);
+        }
+
         return url;
     }
-
 
     public int getCurrentPage() {
         return currentPage;
@@ -174,5 +178,4 @@ public class PaginationTag extends SimpleTagSupport {
         this.search = search;
     }
 
-    
 }

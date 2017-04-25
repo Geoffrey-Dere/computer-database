@@ -116,7 +116,8 @@ s					</c:url>
 		</ul> -->
 
 		<mylib:pagination currentPage="${currentPage}" limit="${limit}"
-			maxPages="${maxPages}" uri="${uriPage}" uriLimit="${uriLimit}" />
+			maxPages="${maxPages}" uri="${uriPage}" uriLimit="${uriLimit}" 
+			uriSearch="${uriSearch}" search="${search}"/>
 
 	</div>
 	</footer>
