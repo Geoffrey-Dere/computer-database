@@ -23,6 +23,7 @@ public enum CompanyDAO implements DAO<Company> {
     private static final String SQL_FIND_ALL = "select * from company ;";
     private static final String SQL_FIND_BY_ID = "select * from company where id = ? ;";
     private static final String SQL_GET__ID = "select id from company ;";
+    private static final String SQL_DELETE = "delete from company where id = ? ";
 
     private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 
@@ -34,7 +35,31 @@ public enum CompanyDAO implements DAO<Company> {
 
     @Override
     public boolean delete(Company obj) {
-        // TODO Auto-generated method stub
+
+        try (Connection connection = connectionManager.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_DELETE)) {
+
+            connection.setAutoCommit(false);
+
+            statement.setLong(1, obj.getId());
+            int success = statement.executeUpdate();
+
+            if (success == 1) {
+                ComputerDAO computerDAO = ComputerDAO.INSTANCE;
+
+                List<Long> list_computer_id = computerDAO.getIdByCompany(obj.getId());
+
+                for (Long id : list_computer_id) {
+                    computerDAO.deleteById(id);
+                }
+            }
+
+            connection.commit();
+            return true;
+
+        } catch (SQLException e) {
+            LOGGER.error("sql exception : function find ");
+        }
         return false;
     }
 

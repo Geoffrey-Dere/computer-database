@@ -25,16 +25,20 @@ public enum ComputerDAO implements DAO<Computer> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
 
-    private static final String SQL_FIND_ALL = "select * from computer;";
-    private static final String SQL_FIND_ALL_WITH_COMPANY = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id ;";
+    private static final String SQL_FIND_BY_ID = "select * from computer  LEFT OUTER JOIN company on computer.company_id = company.id where computer.id = ? ";
 
-    private static final String SQL_FIND_BY_ID = "select * from computer  LEFT OUTER JOIN company on computer.company_id = company.id where computer.id = ? ;";
-    private static final String SQL_DELETE = "delete from computer where id = ? ;";
-    private static final String SQL_INSERT = "insert into computer(name, introduced, discontinued, company_id)VALUES(?,?,?,?);";
+    private static final String SQL_DELETE = "delete from computer where id = ? ";
+
+    private static final String SQL_INSERT = "insert into computer(name, introduced, discontinued, company_id)VALUES(?,?,?,?)";
+
     private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
-    private static final String SQL_FIND_LIMIT = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id limit ? offset ? ;";
+
     private static final String SQL_COUNT = "select count(*) from computer";
-    private static final String SQL_REGEX = "select * from computer  LEFT OUTER JOIN company on computer.company_id = company.id where computer.name like ? limit ? offset ? ;";
+
+    private static final String SQL_FIND_ALL_WITH_COMPANY = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id ";
+    private static final String SQL_REGEX = "select * from computer  LEFT OUTER JOIN company on computer.company_id = company.id where computer.name like ? limit ? offset ? ";
+    private static final String SQL_FIND_LIMIT = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id limit ? offset ? ";
+    private static final String SQL_FIND_BY_COMPANY = "select id from computer where company_id = ?";
 
     private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
 
@@ -86,6 +90,12 @@ public enum ComputerDAO implements DAO<Computer> {
             LOGGER.error("sql exception : error deleting computer");
             throw new ExceptionDAO("error deleting computer ", e);
         }
+    }
+
+    public boolean deleteById(long id) {
+        Computer computer = new Computer();
+        computer.setId(id);
+        return delete(computer);
     }
 
     @Override
@@ -152,6 +162,23 @@ public enum ComputerDAO implements DAO<Computer> {
         }
     }
 
+    public List<Long> getIdByCompany(long company_id) {
+
+        List<Long> list = new ArrayList<>();
+        try (Connection connection = connectionManager.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_COMPANY)) {
+
+            statement.setLong(1, company_id);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                list.add(result.getLong("id"));
+            }
+        } catch (SQLException e) {
+            LOGGER.error("error function");
+        }
+        return list;
+    }
+
     /**
      * @param localDate the date to transform
      * @return the date
@@ -195,7 +222,7 @@ public enum ComputerDAO implements DAO<Computer> {
         }
     }
 
-    public List<Computer> findAllWithRegex(long limit, long offset, String regex) {
+    public List<Computer> findByName(long limit, long offset, String regex) {
 
         List<Computer> list = new ArrayList<>();
 
@@ -256,7 +283,6 @@ public enum ComputerDAO implements DAO<Computer> {
         } else {
             statement.setNull(4, java.sql.Types.BIGINT);
         }
-
         return statement;
     }
 }
