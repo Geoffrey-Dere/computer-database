@@ -23,7 +23,7 @@ public enum ConnectionManager {
 
     private static final String PATH_FILE = "config/bdd.properties";
 
-    private Connection connection = null;
+    private ThreadLocal<Connection> connection = new ThreadLocal<>();
 
     static {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -47,24 +47,24 @@ public enum ConnectionManager {
      * @return the connection of the database
      */
     public Connection getConnection() {
-       
+
         try {
-            if (connection == null || connection.isClosed()) {
+            if (connection.get() == null || connection.get().isClosed()) {
                 // Class.forName(driver);
-                connection = hikari.getConnection();
+                connection.set(hikari.getConnection());
             }
         } catch (SQLException e) {
             LOGGER.error("error connection with the database ");
             throw new ExceptionDAO("error connection", e);
         }
-        return connection;
+        return connection.get();
     }
 
     /**
      */
     public void close() {
         try {
-            connection.close();
+            connection.get().close();
         } catch (SQLException e) {
             LOGGER.error("error Closure of the connection");
             throw new ExceptionDAO("error Closure of the connection", e);
