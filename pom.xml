@@ -5,6 +5,8 @@
 	<artifactId>computerDatabase</artifactId>
 	<name>computerDatabase Maven Webapp</name>
 	<url>http://maven.apache.org</url>
+	<packaging>war</packaging>
+	<version>3.0.0-RELEASE</version>
 
 
 
@@ -27,6 +29,10 @@
 		<com.zaxxer>2.6.1</com.zaxxer>
 		<javax.servlet>2.5</javax.servlet>
 		<javax.servlet.jsp>2.0</javax.servlet.jsp>
+		<org.dbunit>2.4.9</org.dbunit>
+		<org.seleniumhq.selenium>3.3.0</org.seleniumhq.selenium>
+		<selenium-chrome-driver>3.3.0</selenium-chrome-driver>
+		<io.github.bonigarcia>1.6.2</io.github.bonigarcia>
 	</properties>
 
 	<dependencies>
@@ -103,35 +109,33 @@
 			<version>${javax.servlet.jsp}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.mariadb.jdbc</groupId>
-			<artifactId>mariadb-java-client</artifactId>
-			<version>1.1.7</version>
-		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.dbunit/dbunit -->
 		<dependency>
 			<groupId>org.dbunit</groupId>
 			<artifactId>dbunit</artifactId>
-			<version>2.4.9</version>
+			<version>${org.dbunit}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>3.3.0</version>
+			<version>${org.seleniumhq.selenium}</version>
+			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-chrome-driver</artifactId>
-			<version>3.3.0</version>
+			<version>${org.seleniumhq.selenium}</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
-			<version>1.6.2</version>
+			<version>${io.github.bonigarcia}</version>
+			<scope>test</scope>
 		</dependency>
 
 
@@ -184,6 +188,4 @@
 		</plugins>
 	</reporting>
 
-	<packaging>war</packaging>
-	<version>2.0.0-RELEASE</version>
 </project>
