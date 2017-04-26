@@ -31,9 +31,8 @@ public class ComputerValidator {
         }
 
         if (!name.matches(REGEX_NAME)) {
-            throw new ValidatorException("Name must be alphanumericr");
+            throw new ValidatorException("Name must be alphanumeric");
         }
-
         return true;
     }
 

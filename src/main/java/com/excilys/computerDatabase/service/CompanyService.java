@@ -11,13 +11,13 @@ public interface CompanyService {
      * get all companies from the database.
      * @return the pager of company
      */
-    List<Company> getAllCompanies();
+    List<Company> getAll();
 
     /**
      * return a company from the database identified by the id.
      * @param id the id of the company
      * @return the company or null if no one have this id
      */
-    Optional<Company> getCompany(long id);
+    Optional<Company> get(long id);
 
 }

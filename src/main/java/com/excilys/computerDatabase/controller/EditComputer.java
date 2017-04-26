@@ -32,41 +32,30 @@ public class EditComputer extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        ComputerServiceImpl service = new ComputerServiceImpl();
+        ComputerServiceImpl computerService = new ComputerServiceImpl();
 
         String id = req.getParameter("id");
         Optional<Computer> computer = Optional.empty();
 
         if (isInteger(id)) {
-            computer = service.getComputer(Integer.parseInt(id));
+            computer = computerService.get(Integer.parseInt(id));
             if (computer.isPresent()) {
                 req.setAttribute("computer", ComputerMapper.mapperToDTO(computer.get()));
             }
         }
 
         CompanyServiceImpl Companyservice = new CompanyServiceImpl();
-        List<Company> listCompany = Companyservice.getAllCompanies();
+        List<Company> listCompany = Companyservice.getAll();
         req.setAttribute("listCompany", CompanyMapper.mapperToDTO(listCompany));
 
         this.getServletContext().getRequestDispatcher("/WEB-INF/view/editComputer.jsp").forward(req, resp);
-    }
-
-    private boolean isInteger(String s) {
-        try {
-            Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-            return false;
-        } catch (NullPointerException e) {
-            return false;
-        }
-        return true;
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         CompanyServiceImpl companyService = new CompanyServiceImpl();
-        ComputerServiceImpl service = new ComputerServiceImpl();
+        ComputerServiceImpl computerService = new ComputerServiceImpl();
         ComputerDTO computerDTO = new ComputerDTO();
 
         String computer_id = req.getParameter("id").trim();
@@ -75,7 +64,6 @@ public class EditComputer extends HttpServlet {
         String discontinued = req.getParameter("discontinued").trim();
         String companyId = req.getParameter("companyID").trim();
 
-       
         if (isInteger(computer_id)) {
             computerDTO.setId(Long.parseLong(computer_id));
         }
@@ -92,7 +80,7 @@ public class EditComputer extends HttpServlet {
         }
 
         if (id > 0) {
-            Optional<Company> company = companyService.getCompany(id);
+            Optional<Company> company = companyService.get(id);
             if (company.isPresent()) {
                 computerDTO.setCompany(CompanyMapper.mapperToDTO(company.get()));
             } else {
@@ -103,10 +91,22 @@ public class EditComputer extends HttpServlet {
         LOGGER.trace("updatating new object computerDTO  : {}", computerDTO);
 
         try {
-            service.updateComputer(ComputerMapper.mapperToModel(computerDTO));
+            computerService.update(ComputerMapper.mapperToModel(computerDTO));
         } catch (ServiceException e) {
             req.setAttribute("error", e.getMessage());
         }
         resp.sendRedirect("dashboard");
     }
+
+    private boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            return false;
+        } catch (NullPointerException e) {
+            return false;
+        }
+        return true;
+    }
+
 }

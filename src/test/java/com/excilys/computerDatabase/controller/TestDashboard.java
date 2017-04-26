@@ -31,12 +31,12 @@ public class TestDashboard {
     public void setUp() {
         driver = new ChromeDriver();
         baseUrl = "http://localhost:8080/computerDatabase";
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        // driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
     @After
     public void after() throws IOException {
-      driver.quit();
+        driver.quit();
     }
 
     @Test
@@ -44,11 +44,11 @@ public class TestDashboard {
         driver.get(baseUrl + "/dashboard");
         assertEquals(driver.getTitle(), "dashboard");
     }
-    
-    public void testRedirectAddComputeur(){
+
+    public void testRedirectAddComputeur() {
         WebElement addComputer = driver.findElement(By.id("addComputer"));
         addComputer.click();
         assertEquals(driver.getCurrentUrl(), this.baseUrl + "/addComputer");
     }
-    
+
 }

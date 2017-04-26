@@ -28,6 +28,7 @@ public enum ComputerDAO implements DAO<Computer> {
     private static final String SQL_FIND_BY_ID = "select * from computer  LEFT OUTER JOIN company on computer.company_id = company.id where computer.id = ? ";
 
     private static final String SQL_DELETE = "delete from computer where id = ? ";
+    private static final String SQL_DELETE_BY_COMPANY = "delete from computer where company.id = ?";
 
     private static final String SQL_INSERT = "insert into computer(name, introduced, discontinued, company_id)VALUES(?,?,?,?)";
 
@@ -303,6 +304,20 @@ public enum ComputerDAO implements DAO<Computer> {
             statement.setNull(4, java.sql.Types.BIGINT);
         }
         return statement;
+    }
+
+    public boolean deleteByCompany(long company_id, Connection connection) {
+
+        try (PreparedStatement statement = connection.prepareStatement(SQL_DELETE_BY_COMPANY)) {
+
+            statement.setLong(1, company_id);
+            return statement.executeUpdate() >= 1;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
 }

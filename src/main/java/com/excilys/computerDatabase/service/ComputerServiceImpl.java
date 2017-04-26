@@ -1,5 +1,6 @@
 package com.excilys.computerDatabase.service;
 
+import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,47 +31,55 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
-    public Pager<Computer> getAllComputers() {
-        return getPageComputer(Long.MAX_VALUE, 0);
+    public Pager<Computer> getAll() {
+        return getPage(Long.MAX_VALUE, 0);
     }
 
     @Override
-    public Pager<Computer> getPageComputer(long limit, long offset) {
+    public Pager<Computer> getPage(long limit, long offset) {
         List<Computer> listComputer = computerDAO.findAll(limit, offset);
         BuilderPage<Computer> builder = new BuilderPage<>(listComputer);
         return builder.build();
     }
 
-    public Pager<Computer> getPageComputer(long limit, long offset, String regex) {
+    public Pager<Computer> getPage(long limit, long offset, String regex) {
         List<Computer> listComputer = computerDAO.findByName(limit, offset, regex);
         BuilderPage<Computer> builder = new BuilderPage<>(listComputer);
         return builder.build();
     }
 
     @Override
-    public Optional<Computer> getComputer(long id) {
+    public Optional<Computer> get(long id) {
         Optional<Computer> computer = computerDAO.find(id);
         return computer;
     }
 
     @Override
-    public boolean addComputer(Computer c) {
-        ComputerValidator.isValid(c);
-        return computerDAO.create(c);
+    public boolean add(Computer c) {
+        try {
+            ComputerValidator.isValid(c);
+            return computerDAO.create(c);
+        } catch (ValidatorException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
 
     @Override
-    public boolean updateComputer(Computer c) {
-        ComputerValidator.isValid(c);
-        return computerDAO.update(c);
+    public boolean update(Computer c) {
+        try {
+            ComputerValidator.isValid(c);
+            return computerDAO.update(c);
+        } catch (ValidatorException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
 
     @Override
-    public boolean removeComputer(Computer c) {
+    public boolean remove(Computer c) {
         return computerDAO.delete(c);
     }
 
-    public boolean removeComputer(int id) {
+    public boolean remove(int id) {
         Computer computer = new Computer();
         computer.setId(id);
         return computerDAO.delete(computer);
@@ -83,5 +92,10 @@ public class ComputerServiceImpl implements ComputerService {
 
     public int count(String name) {
         return computerDAO.count(name);
+    }
+
+    public void removeByCompanyId(long id, Connection connection) {
+        computerDAO.deleteByCompany(id, connection);
+
     }
 }

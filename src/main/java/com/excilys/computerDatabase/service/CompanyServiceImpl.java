@@ -1,10 +1,14 @@
 package com.excilys.computerDatabase.service;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.persistence.CompanyDAO;
+import com.excilys.computerDatabase.persistence.ConnectionManager;
+import com.excilys.computerDatabase.persistence.ExceptionDAO;
 
 public class CompanyServiceImpl implements CompanyService {
 
@@ -17,16 +21,32 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Optional<Company> getCompany(long id) {
+    public Optional<Company> get(long id) {
 
         Optional<Company> company = companyDAO.find(id);
         return company;
     }
 
-    public List<Company> getAllCompanies() {
+    public List<Company> getAll() {
 
         List<Company> listCompany = companyDAO.findAll();
         return listCompany;
     }
 
+    public boolean removeCascade(Company company) throws SQLException {
+
+        Connection connection = ConnectionManager.INSTANCE.getConnection();
+
+        try {
+            connection.setAutoCommit(false);
+            new ComputerServiceImpl().removeByCompanyId(company.getId(), connection);
+            companyDAO.delete(company);
+            connection.commit();
+            return true ;
+        } catch (SQLException | ExceptionDAO e) {
+            e.printStackTrace();
+            connection.rollback();
+        }
+        return false;
+    }
 }

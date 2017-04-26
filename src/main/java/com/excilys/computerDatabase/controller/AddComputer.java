@@ -31,8 +31,8 @@ public class AddComputer extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        CompanyServiceImpl service = new CompanyServiceImpl();
-        List<Company> listCompany = service.getAllCompanies();
+        CompanyServiceImpl companyService = new CompanyServiceImpl();
+        List<Company> listCompany = companyService.getAll();
         req.setAttribute("listCompany", CompanyMapper.mapperToDTO(listCompany));
         this.getServletContext().getRequestDispatcher("/WEB-INF/view/addComputer.jsp").forward(req, resp);
 
@@ -42,20 +42,19 @@ public class AddComputer extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         CompanyServiceImpl companyService = new CompanyServiceImpl();
-        ComputerServiceImpl service = new ComputerServiceImpl();
+        ComputerServiceImpl computerService = new ComputerServiceImpl();
         ComputerDTO computerDTO = new ComputerDTO();
 
-        String name = req.getParameter("computerName").trim();
+        String name = (req.getParameter("computerName") != null) ? req.getParameter("computerName").trim() : "";
         String introduced = (req.getParameter("introduced") != null) ? req.getParameter("introduced").trim() : "";
         String discontinued = (req.getParameter("discontinued") != null) ? req.getParameter("discontinued").trim() : "";
         String companyId = req.getParameter("companyID").trim();
 
         computerDTO.setName(name);
         computerDTO.setIntroduced(introduced);
-        LOGGER.debug("test = {}", discontinued);
         computerDTO.setDiscontinued(discontinued);
 
-        Long id = 0L;
+        long id = 0;
         try {
             id = Long.parseLong(companyId);
         } catch (java.lang.NumberFormatException e) {
@@ -64,7 +63,7 @@ public class AddComputer extends HttpServlet {
 
         // check for the company
         if (id > 0) {
-            Optional<Company> company = companyService.getCompany(id);
+            Optional<Company> company = companyService.get(id);
             if (company.isPresent()) {
                 computerDTO.setCompany(CompanyMapper.mapperToDTO(company.get()));
             } else {
@@ -74,7 +73,7 @@ public class AddComputer extends HttpServlet {
 
         try {
             LOGGER.debug("inserting new object computerDTO  : {}", computerDTO);
-            service.addComputer(ComputerMapper.mapperToModel(computerDTO));
+            computerService.add(ComputerMapper.mapperToModel(computerDTO));
         } catch (ServiceException e) {
             req.setAttribute("error", e.getMessage());
         }

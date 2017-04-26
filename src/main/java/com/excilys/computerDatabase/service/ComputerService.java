@@ -13,41 +13,41 @@ public interface ComputerService {
      * get all computers from the database.
      * @return the list
      */
-    Pager<Computer> getAllComputers();
+    Pager<Computer> getAll();
 
     /**
      * return a computer from the database identified by the id.
      * @param id the id
      * @return the computer or null if no one have this id
      */
-    Optional<Computer> getComputer(long id);
+    Optional<Computer> get(long id);
 
     /**
      * Add a computer on the database.
      * @param c the computer
      * @return true if the computer has been added and false otherwise
      */
-    boolean addComputer(Computer c);
+    boolean add(Computer c);
 
     /**
      * update a computer on the database.
      * @param c  the computer
      * @return true if the computer has been updated and false otherwise
      */
-    boolean updateComputer(Computer c);
+    boolean update(Computer c);
 
     /**
      * delete a computer on the database.
      * @param c  the computer
      * @return true if the computer has been updated and false otherwise
      */
-    boolean removeComputer(Computer c);
+    boolean remove(Computer c);
 
     /**
      * @param limit the limit
      * @param offset the offset
      * @return the pager with the companies
      */
-    Pager<Computer> getPageComputer(long limit, long offset);
+    Pager<Computer> getPage(long limit, long offset);
 
 }

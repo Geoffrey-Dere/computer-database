@@ -50,10 +50,10 @@ public class Dashboard extends HttpServlet {
         if (req.getParameter(URI_SEARCH) != null) {
             String regex = req.getParameter(URI_SEARCH);
             req.setAttribute("search", regex);
-            pager = computerService.getPageComputer(limit, (currentPage - 1) * limit, regex);
+            pager = computerService.getPage(limit, (currentPage - 1) * limit, regex);
             size = computerService.count(regex) ;
         } else {
-            pager = computerService.getPageComputer(limit, (currentPage - 1) * limit);
+            pager = computerService.getPage(limit, (currentPage - 1) * limit);
             size = computerService.count() ;
         }
 
@@ -78,7 +78,7 @@ public class Dashboard extends HttpServlet {
         for (int i = 0; i < selection.length; i++) {
 
             if (isInteger(selection[i])) {
-                computerService.removeComputer(Integer.parseInt(selection[i]));
+                computerService.remove(Integer.parseInt(selection[i]));
             } else {
                 LOGGER.debug("{} not a number", selection[i]);
             }
