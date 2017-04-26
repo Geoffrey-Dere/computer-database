@@ -3,7 +3,6 @@ package com.excilys.computerDatabase.controller;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -16,7 +15,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 
-public class TestDashboard {
+public class TestAddComputer {
 
     private WebDriver driver;
 
@@ -40,17 +39,24 @@ public class TestDashboard {
     }
 
     @Test
-    public void testUrl() {
-        driver.get(baseUrl + "/dashboard");
-        assertEquals(driver.getTitle(), "dashboard");
+    public void testAddShouldNotWork() {
+        driver.get(baseUrl + "/addComputer");
+      //  assertEquals(driver.getTitle(), "dashboard");
+        WebElement inputName = driver.findElement(By.id("computerName"));
+        WebElement buttonAdd = driver.findElement(By.id("submit"));
+        inputName.sendKeys("dfd&é'(-@");
+        buttonAdd.click();
+        assertEquals(driver.getCurrentUrl(), baseUrl + "/addComputer");      
     }
-
+    
     @Test
-    public void testRedirectAddComputeur() {
-        driver.get(baseUrl + "/dashboard");
-        WebElement addComputer = driver.findElement(By.id("addComputer"));
-        addComputer.click();
-        assertEquals(driver.getCurrentUrl(), this.baseUrl + "/addComputer");
+    public void testAddShouldWork() {
+        driver.get(baseUrl + "/addComputer");
+      //  assertEquals(driver.getTitle(), "dashboard");
+        WebElement inputName = driver.findElement(By.id("computerName"));
+        WebElement buttonAdd = driver.findElement(By.id("submit"));
+        inputName.sendKeys("name is valid");
+        buttonAdd.click();
+        assertEquals(driver.getCurrentUrl(), baseUrl + "/dashboard");         
     }
-
 }
