@@ -46,12 +46,13 @@ public class AddComputer extends HttpServlet {
         ComputerDTO computerDTO = new ComputerDTO();
 
         String name = req.getParameter("computerName").trim();
-        String introduced = req.getParameter("introduced").trim();
-        String discontinued = req.getParameter("discontinued").trim();
+        String introduced = (req.getParameter("introduced") != null) ? req.getParameter("introduced").trim() : "";
+        String discontinued = (req.getParameter("discontinued") != null) ? req.getParameter("discontinued").trim() : "";
         String companyId = req.getParameter("companyID").trim();
 
         computerDTO.setName(name);
         computerDTO.setIntroduced(introduced);
+        LOGGER.debug("test = {}", discontinued);
         computerDTO.setDiscontinued(discontinued);
 
         Long id = 0L;
@@ -61,7 +62,7 @@ public class AddComputer extends HttpServlet {
             LOGGER.debug("{} isn't a number", companyId);
         }
 
-        //check for the company
+        // check for the company
         if (id > 0) {
             Optional<Company> company = companyService.getCompany(id);
             if (company.isPresent()) {

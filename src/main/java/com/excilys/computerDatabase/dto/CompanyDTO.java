@@ -2,7 +2,7 @@ package com.excilys.computerDatabase.dto;
 
 public class CompanyDTO {
 
-    private Long id;
+    private long id;
     private String name;
 
     /**

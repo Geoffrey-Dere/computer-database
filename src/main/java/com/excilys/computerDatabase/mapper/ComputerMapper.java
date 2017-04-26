@@ -5,15 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.excilys.computerDatabase.dto.CompanyDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.computerDatabase.dto.ComputerDTO;
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.model.Computer.BuilderComputer;
 import com.excilys.computerDatabase.util.DateFormatter;
 
+
 public class ComputerMapper {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ComputerMapper.class);
+    
     /**
      * @param c the computer we transform
      * @return the object DTO
@@ -23,7 +28,6 @@ public class ComputerMapper {
         ComputerDTO computerDTO = new ComputerDTO();
         computerDTO.setId(c.getId());
         computerDTO.setName(c.getName());
-
         Optional<LocalDate> introduced = c.getIntroduced();
         Optional<LocalDate> discontinued = c.getDiscontinued();
         Optional<Company> company = c.getCompany();
@@ -68,6 +72,7 @@ public class ComputerMapper {
 
         Computer.BuilderComputer builder = new BuilderComputer(c.getName());
 
+        LOGGER.debug("id = {}", c.getId());
         builder.id(c.getId());
 
         if (!introduced.isEmpty()) {

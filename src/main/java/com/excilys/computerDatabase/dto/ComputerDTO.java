@@ -4,7 +4,7 @@ import java.util.Optional;
 
 public class ComputerDTO {
 
-    private Long id;
+    private long id;
     private String name;
     private String introduced = "";
     private String discontinued = "";
@@ -14,11 +14,11 @@ public class ComputerDTO {
 
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
