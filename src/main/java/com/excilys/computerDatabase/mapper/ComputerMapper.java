@@ -8,85 +8,88 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.computerDatabase.dto.CompanyDTO;
 import com.excilys.computerDatabase.dto.ComputerDTO;
 import com.excilys.computerDatabase.model.Company;
 import com.excilys.computerDatabase.model.Computer;
 import com.excilys.computerDatabase.model.Computer.BuilderComputer;
 import com.excilys.computerDatabase.util.DateFormatter;
 
-
 public class ComputerMapper {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ComputerMapper.class);
-    
-    /**
-     * @param c the computer we transform
-     * @return the object DTO
-     */
-    public static ComputerDTO mapperToDTO(Computer c) {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ComputerMapper.class);
 
-        ComputerDTO computerDTO = new ComputerDTO();
-        computerDTO.setId(c.getId());
-        computerDTO.setName(c.getName());
-        Optional<LocalDate> introduced = c.getIntroduced();
-        Optional<LocalDate> discontinued = c.getDiscontinued();
-        Optional<Company> company = c.getCompany();
+	/**
+	 * @param c
+	 *            the computer we transform
+	 * @return the object DTO
+	 */
+	public static ComputerDTO mapperToDTO(Computer c) {
 
-        if (introduced.isPresent()) {
-            computerDTO.setIntroduced(DateFormatter.LocalDateToString(introduced.get()));
-        } else {
-            computerDTO.setIntroduced("");
-        }
+		ComputerDTO computerDTO = new ComputerDTO();
+		computerDTO.setId(c.getId());
+		computerDTO.setName(c.getName());
+		Optional<LocalDate> introduced = c.getIntroduced();
+		Optional<LocalDate> discontinued = c.getDiscontinued();
+		Optional<Company> company = c.getCompany();
 
-        if (discontinued.isPresent()) {
-            computerDTO.setDiscontinued(DateFormatter.LocalDateToString(discontinued.get()));
-        } else {
-            computerDTO.setDiscontinued("");
-        }
+		if (introduced.isPresent()) {
+			computerDTO.setIntroduced(DateFormatter.LocalDateToString(introduced.get()));
+		} else {
+			computerDTO.setIntroduced("");
+		}
 
-        if (company.isPresent()) {
-            computerDTO.setCompany(CompanyMapper.mapperToDTO(company.get()));
-        }
+		if (discontinued.isPresent()) {
+			computerDTO.setDiscontinued(DateFormatter.LocalDateToString(discontinued.get()));
+		} else {
+			computerDTO.setDiscontinued("");
+		}
 
-        return computerDTO;
-    }
+		if (company.isPresent()) {
+			computerDTO.setCompanyName(company.get().getName());
+			computerDTO.setCompanyId(company.get().getId());
+		}
 
-    public static List<ComputerDTO> mapperToDTO(List<Computer> list) {
+		return computerDTO;
+	}
 
-        List<ComputerDTO> listDTO = new ArrayList<>();
+	public static List<ComputerDTO> mapperToDTO(List<Computer> list) {
 
-        for (Computer computer : list) {
-            listDTO.add(mapperToDTO(computer));
-        }
-        return listDTO;
-    }
+		List<ComputerDTO> listDTO = new ArrayList<>();
 
-    /**
-     * @param c the company dto 
-     * @return the object
-     */
-    public static Computer mapperToModel(ComputerDTO c) {
+		for (Computer computer : list) {
+			listDTO.add(mapperToDTO(computer));
+		}
+		return listDTO;
+	}
 
-        String introduced = c.getIntroduced();
-        String discon = c.getDiscontinued();
+	/**
+	 * @param c
+	 *            the company dto
+	 * @return the object
+	 */
+	public static Computer mapperToModel(ComputerDTO c) {
 
-        Computer.BuilderComputer builder = new BuilderComputer(c.getName());
+		String introduced = c.getIntroduced();
+		String discon = c.getDiscontinued();
 
-        LOGGER.debug("id = {}", c.getId());
-        builder.id(c.getId());
+		Computer.BuilderComputer builder = new BuilderComputer(c.getName());
 
-        if (!introduced.isEmpty()) {
-            builder.introduced(DateFormatter.stringtoLocalDate(introduced));
-        }
+		LOGGER.debug("id = {}", c.getId());
+		builder.id(c.getId());
 
-        if (!discon.isEmpty()) {
-            builder.discontinued(DateFormatter.stringtoLocalDate(discon));
-        }
-        if (c.getCompany().isPresent()) {
-            builder.company(CompanyMapper.mapperToModel(c.getCompany().get()));
-        }
+		if (!introduced.isEmpty()) {
+			builder.introduced(DateFormatter.stringtoLocalDate(introduced));
+		}
 
-        return builder.build();
-    }
+		if (!discon.isEmpty()) {
+			builder.discontinued(DateFormatter.stringtoLocalDate(discon));
+		}
+		if (c.getCompanyId() > 0) {
+			builder.company(CompanyMapper.mapperToModel(new CompanyDTO(c.getCompanyId(), c.getCompanyName())));
+		}
+
+		return builder.build();
+	}
 
 }

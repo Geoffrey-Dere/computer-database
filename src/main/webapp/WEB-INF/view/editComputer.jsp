@@ -14,7 +14,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
-		<a class="navbar-brand" href="dashboard.html"> Application -
+		<a class="navbar-brand" href="dashboard"> Application -
 			Computer Database </a>
 	</div>
 	</header>
@@ -50,21 +50,20 @@
 								value="${computer.discontinued}">
 						</div>
 						<div class="form-group">
-							<c:set var="company_id" value="0" />
-							<c:if test="${computer.company.isPresent()}">
-								<c:set var="company_id" value="${computer.company.get().id}" />
-							</c:if>
 
-							<label for="companyId">Company</label> <select
+
+							<label for="companyId">Company</label> 
+							<select
 								class="form-control" id="companyId" name="companyID">
 								<option value="0"
-									<c:if test="${company_id} == 0"> selected </c:if>>--</option>
+									<c:if test="${computer.companyId eq 0}"> selected </c:if>>--</option>
 
 								<c:forEach items="${listCompany}" var="company">
 									<option value="${company.id}"
-										<c:if test="${company_id eq  company.id}"> 
+										<c:if test="${computer.companyId eq  company.id}"> 
 										<c:out value="selected"/> 
-										</c:if>>${company.name}</option>
+										</c:if>>${company.name}
+									</option>
 								</c:forEach>
 
 							</select>

@@ -32,18 +32,18 @@ public class ComputerServiceImpl implements ComputerService {
 
     @Override
     public Pager<Computer> getAll() {
-        return getPage(Long.MAX_VALUE, 0);
+        return getPage(Long.MAX_VALUE, 0, "", " ");
     }
 
     @Override
-    public Pager<Computer> getPage(long limit, long offset) {
-        List<Computer> listComputer = computerDAO.findAll(limit, offset);
+    public Pager<Computer> getPage(long limit, long offset, String column, String order) {
+        List<Computer> listComputer = computerDAO.findAll(limit, offset, column, order);
         BuilderPage<Computer> builder = new BuilderPage<>(listComputer);
         return builder.build();
     }
 
-    public Pager<Computer> getPage(long limit, long offset, String regex) {
-        List<Computer> listComputer = computerDAO.findByName(limit, offset, regex);
+    public Pager<Computer> getPage(long limit, long offset, String regex, String column, String order) {
+        List<Computer> listComputer = computerDAO.findByName(limit, offset, regex, column, order);
         BuilderPage<Computer> builder = new BuilderPage<>(listComputer);
         return builder.build();
     }
@@ -94,8 +94,12 @@ public class ComputerServiceImpl implements ComputerService {
         return computerDAO.count(name);
     }
 
-    public void removeByCompanyId(long id, Connection connection) {
-        computerDAO.deleteByCompany(id, connection);
+    public void removeByCompanyId(long id) {
+        computerDAO.deleteByCompany(id);
 
     }
+
+	public void remove(List<Integer> list_id) {
+computerDAO.remove(list_id);		
+	}
 }

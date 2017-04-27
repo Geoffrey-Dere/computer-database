@@ -1,6 +1,8 @@
 package com.excilys.computerDatabase.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,83 +20,99 @@ import com.excilys.computerDatabase.service.ComputerServiceImpl;
 
 public class Dashboard extends HttpServlet {
 
-    private static final int LIMIT_DEFAULT = 10;
-    private static final String URI_PAGE = "page";
-    private static final String URI_LIMIT = "limit";
-    private static final String URI_SEARCH = "search";
-    private static final Logger LOGGER = LoggerFactory.getLogger(Dashboard.class);
+	private static final int LIMIT_DEFAULT = 10;
+	private static final String URI_PAGE = "page";
+	private static final String URI_LIMIT = "limit";
+	private static final String URI_SEARCH = "search";
+	private static final Logger LOGGER = LoggerFactory.getLogger(Dashboard.class);
 
-    
-    private static final long serialVersionUID = 1L;
+	private static final String URI_ORDER = "order";
+	private static final String ORDER_DEFAULT = "ASC";
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private static final String URI_COLUMN = "column";
+	private static final String COLUMN_ORDER = "computer.name";
 
-        ComputerServiceImpl computerService = new ComputerServiceImpl();
-        int limit = LIMIT_DEFAULT;
-        int currentPage = 1;
-        int size = 0 ;
-        Pager<Computer> pager;
+	private static final long serialVersionUID = 1L;
+	private static ComputerServiceImpl computerService = new ComputerServiceImpl();
 
-        // get the current page by (url parameter)
-        if (isInteger(req.getParameter(URI_PAGE)) && Integer.parseInt(req.getParameter(URI_PAGE)) >= 1) {
-            currentPage = Integer.parseInt(req.getParameter(URI_PAGE));
-        }
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        // get the limit
-        if (isInteger(req.getParameter(URI_LIMIT))) {
-            limit = Integer.parseInt(req.getParameter(URI_LIMIT));
-        }
+		int limit = LIMIT_DEFAULT;
+		String column = COLUMN_ORDER;
+		String order = ORDER_DEFAULT;
 
-        // search
-        if (req.getParameter(URI_SEARCH) != null) {
-            String regex = req.getParameter(URI_SEARCH);
-            req.setAttribute("search", regex);
-            pager = computerService.getPage(limit, (currentPage - 1) * limit, regex);
-            size = computerService.count(regex) ;
-        } else {
-            pager = computerService.getPage(limit, (currentPage - 1) * limit);
-            size = computerService.count() ;
-        }
+		int currentPage = 1;
+		int size = 0;
+		Pager<Computer> pager;
 
-        req.setAttribute("listComputer", ComputerMapper.mapperToDTO(pager.getListEntity()));
-        req.setAttribute("limit", limit);
-        req.setAttribute("currentPage", currentPage);
-        req.setAttribute("maxPages", Math.ceil((double) size / limit));
-        req.setAttribute("uriPage", URI_PAGE);
-        req.setAttribute("uriLimit", URI_LIMIT);
-        req.setAttribute("uriSearch", URI_SEARCH);
+		// get the current page by (url parameter)
+		if (isInteger(req.getParameter(URI_PAGE)) && Integer.parseInt(req.getParameter(URI_PAGE)) >= 1) {
+			currentPage = Integer.parseInt(req.getParameter(URI_PAGE));
+		}
 
-        this.getServletContext().getRequestDispatcher("/WEB-INF/view/dashboard.jsp").forward(req, resp);
-    }
+		// get the limit
+		if (isInteger(req.getParameter(URI_LIMIT))) {
+			limit = Integer.parseInt(req.getParameter(URI_LIMIT));
+		}
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		if (req.getParameter(URI_ORDER) != null) {
+			order = req.getParameter(URI_ORDER);
+		}
 
-        ComputerServiceImpl computerService = new ComputerServiceImpl();
+		if (req.getParameter(URI_COLUMN) != null) {
+			column = req.getParameter(URI_COLUMN);
+		}
 
-        String[] selection = req.getParameter("selection").split(",");
+		// search
+		if (req.getParameter(URI_SEARCH) != null) {
+			String regex = req.getParameter(URI_SEARCH);
+			req.setAttribute("search", regex);
+			pager = computerService.getPage(limit, (currentPage - 1) * limit, regex, column, order);
+			size = computerService.count(regex);
+		} else {
+			pager = computerService.getPage(limit, (currentPage - 1) * limit, column, order);
+			size = computerService.count();
+		}
 
-        for (int i = 0; i < selection.length; i++) {
+		req.setAttribute("listComputer", ComputerMapper.mapperToDTO(pager.getListEntity()));
+		req.setAttribute("limit", limit);
+		req.setAttribute("currentPage", currentPage);
+		req.setAttribute("maxPages", Math.ceil((double) size / limit));
+		req.setAttribute("uriPage", URI_PAGE);
+		req.setAttribute("uriLimit", URI_LIMIT);
+		req.setAttribute("uriSearch", URI_SEARCH);
 
-            if (isInteger(selection[i])) {
-                computerService.remove(Integer.parseInt(selection[i]));
-            } else {
-                LOGGER.debug("{} not a number", selection[i]);
-            }
-        }
-        
-        doGet(req, resp);
-    }
+		this.getServletContext().getRequestDispatcher("/WEB-INF/view/dashboard.jsp").forward(req, resp);
+	}
 
-    private boolean isInteger(String s) {
-        try {
-            Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-            return false;
-        } catch (NullPointerException e) {
-            return false;
-        }
-        return true;
-    }
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		String[] selection = req.getParameter("selection").split(",");
+
+		List<Integer> list_id = new ArrayList<>(selection.length);
+		
+		for (int i = 0; i < selection.length; i++) {
+
+			if (isInteger(selection[i])) {
+				list_id.add(Integer.parseInt(selection[i]));
+			} else {
+				LOGGER.debug("{} not a number", selection[i]);
+			}
+		}
+		computerService.remove(list_id);
+		doGet(req, resp);
+	}
+
+	private boolean isInteger(String s) {
+		try {
+			Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			return false;
+		} catch (NullPointerException e) {
+			return false;
+		}
+		return true;
+	}
 }

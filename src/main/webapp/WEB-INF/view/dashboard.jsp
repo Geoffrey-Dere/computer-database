@@ -26,7 +26,7 @@
 	<section id="main">
 	<div class="container">
 
-		<h1 id="homeTitle">${fn:length(listComputer)} Computers found</h1>
+		<h1 id="homeTitle">${fn:length(listComputer)}Computers found</h1>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
 				<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -87,11 +87,8 @@ s					</c:url>
 									value="${computer.name}" />
 						</a></td>
 						<td><c:out value="${computer.introduced}" /></td>
-						<td><c:out value="${computer.discontinued}" /></td>
-
-						<td><c:if test="${computer.company.isPresent()}">
-								<c:out value="${computer.company.get().name}" />
-							</c:if></td>
+						<td><c:out value="${computer.discontinued}"/></td>
+						<td><c:out value="${computer.companyName}"/></td>
 
 					</tr>
 				</c:forEach>

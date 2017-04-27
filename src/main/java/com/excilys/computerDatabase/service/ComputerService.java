@@ -48,6 +48,6 @@ public interface ComputerService {
      * @param offset the offset
      * @return the pager with the companies
      */
-    Pager<Computer> getPage(long limit, long offset);
+    Pager<Computer> getPage(long limit, long offset, String column, String order);
 
 }

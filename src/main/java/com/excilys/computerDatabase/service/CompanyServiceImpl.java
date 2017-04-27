@@ -39,13 +39,15 @@ public class CompanyServiceImpl implements CompanyService {
 
         try {
             connection.setAutoCommit(false);
-            new ComputerServiceImpl().removeByCompanyId(company.getId(), connection);
+            new ComputerServiceImpl().removeByCompanyId(company.getId());
             companyDAO.delete(company);
             connection.commit();
             return true ;
         } catch (SQLException | ExceptionDAO e) {
             e.printStackTrace();
             connection.rollback();
+        } finally{
+        	connection.close();
         }
         return false;
     }

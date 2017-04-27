@@ -2,33 +2,40 @@ package com.excilys.computerDatabase.dto;
 
 public class CompanyDTO {
 
-    private long id;
-    private String name;
+	private long id;
+	private String name;
 
-    /**
-     * @param builder the builder
-     */
-    public CompanyDTO() {
+	/**
+	 * @param builder
+	 *            the builder
+	 */
+	public CompanyDTO() {
 
-    }
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public CompanyDTO(long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    public String toString() {
-        return "ComputerDTO("+this.id+" , " + this.name + ")";    
-    }}
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "ComputerDTO(" + this.id + " , " + this.name + ")";
+	}
+}
