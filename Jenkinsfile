@@ -3,7 +3,8 @@ pipeline {
     stages { 
         stage('Test') { 
             steps { 
-               echo 'test pipeline.' 
+               echo 'test pipeline.' ;
+               mvn package ;
             }
         }
     }
