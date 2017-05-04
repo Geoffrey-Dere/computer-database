@@ -22,11 +22,15 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.excilys.computerDatabase.model.Computer;
 
 public class TestComputerDAO {
 
+	
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestComputerDAO.class);
 	private static IDatabaseConnection dbUnitConnection;
 	private static IDataSet dataSet;
 
@@ -52,6 +56,9 @@ public class TestComputerDAO {
 		base = prop.getProperty(BASE);
 		user = prop.getProperty(USER);
 		password = prop.getProperty(PASSWORD);
+		
+		LOGGER.debug("initialisation : {}", base);
+
 
 		jdbcConnection = DriverManager.getConnection(base, user, password);
 

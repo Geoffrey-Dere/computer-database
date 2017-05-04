@@ -28,6 +28,7 @@ public enum ConnectionManager {
     static {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Properties prop = new Properties();
+        LOGGER.debug("initialisation");
         try (InputStream resourceStream = classLoader.getResourceAsStream("config/hikari.properties")) {
             prop.load(resourceStream);
             config = new HikariConfig(prop);
