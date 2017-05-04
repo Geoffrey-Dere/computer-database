@@ -1,0 +1,14 @@
+node {
+    
+        stage("setup"){
+            git branch:"dev", url:"https://github.com/Geoffrey-Dere/computer-database"
+        }
+
+         withDockerContainer(args: '-d --network=my-network' , image: 'mymaven:latest') {
+         stage('test') {
+               sh "mvn clean package"
+          }
+        }
+    }
+    
+
