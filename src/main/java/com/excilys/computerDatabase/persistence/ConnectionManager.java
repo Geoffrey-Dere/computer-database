@@ -21,7 +21,7 @@ public enum ConnectionManager {
     private static HikariDataSource hikari;
     private static HikariConfig config;
 
-    private static final String PATH_FILE = "config/bdd.properties";
+    private static final String PATH_FILE = "config/hikari.properties";
 
     private ThreadLocal<Connection> connection = new ThreadLocal<>();
 

@@ -34,7 +34,7 @@ public class TestComputerDAO {
 
 	private static final String PATH_FILE = "config/bdd.properties";
 	private static final String BASE = "base";
-	private static final String USER = "user";
+	private static final String USER = "username";
 	private static final String PASSWORD = "password";
 
 	private static String base;

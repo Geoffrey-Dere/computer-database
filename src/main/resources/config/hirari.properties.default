@@ -1,4 +1,9 @@
-driverClassName=driver
+driverClassName=com.mysql.jdbc.Driver
+jdbcUrl=jdbcurl
 username=user
 password=password
-jdbcUrl=url
+dataSource.cachePrepStmts=true
+dataSource.prepStmtCacheSize=250
+dataSource.prepStmtCacheSqlLimit=2048
+minimumIdle=10
+maximumPoolSize=50
