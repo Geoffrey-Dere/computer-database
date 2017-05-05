@@ -4,11 +4,15 @@ node {
             git branch:"dev", url:"https://github.com/Geoffrey-Dere/computer-database"
         }
 
-         withDockerContainer(args: '-d --network=my-network' , image: 'mymaven:latest') {
-         stage('test') {
+         withDockerContainer(args: '-d --network=my-network -v test:/test' , image: 'mymaven:latest') {
+         stage('package') {
                sh "mvn clean package"
           }
+          stage('shared'){
+            sh "cp /var/jenkins_home/workspace/test/target/*.war /test/shared/computerDatabase.war"
+          }
         }
-    }
-    
-
+           stage("deploy"){
+             sh "cp /test/shared/computerDatabase.war /prod/war/computerDatabase.war"
+       }
+}
