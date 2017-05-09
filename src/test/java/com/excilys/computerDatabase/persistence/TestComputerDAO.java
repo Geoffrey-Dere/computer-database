@@ -36,7 +36,7 @@ public class TestComputerDAO {
 
 	private ComputerDAO computerDAO = ComputerDAO.INSTANCE;
 
-	private static final String PATH_FILE = "config/bdd.properties";
+	private static final String PATH_FILE = "hikari/bdd.properties";
 	private static final String BASE = "base";
 	private static final String USER = "username";
 	private static final String PASSWORD = "password";
