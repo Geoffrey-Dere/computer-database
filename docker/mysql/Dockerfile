@@ -7,3 +7,5 @@ ADD 2-PRIVILEGES.sql /docker-entrypoint-initdb.d/2-PRIVILEGES.sql
 ADD 3-ENTRIES.sql /docker-entrypoint-initdb.d/3-ENTRIES.sql
 
 EXPOSE 3306
+
+#docker run -d --name=mysql-prod --net=prod-network --ip=192.168.0.56 mysqlprod

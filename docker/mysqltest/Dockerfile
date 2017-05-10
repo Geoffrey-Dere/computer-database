@@ -7,3 +7,4 @@ ADD 2-PRIVILEGES.sql /docker-entrypoint-initdb.d/2-PRIVILEGES.sql
 
 EXPOSE 3306
 
+docker run -d --name=mysql-test --net=test-network --ip=192.169.0.56 mysqltest
