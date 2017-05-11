@@ -27,13 +27,13 @@ public class PaginationTag extends SimpleTagSupport {
     private String uriSearch;
     private String search;
 
+    /**
+     */
     public PaginationTag() {
-        // TODO Auto-generated constructor stub
     }
 
     @Override
     public void doTag() throws JspException, IOException {
-
         PageContext pageContext = (PageContext) getJspContext();
         JspWriter out = pageContext.getOut();
 
@@ -53,6 +53,11 @@ public class PaginationTag extends SimpleTagSupport {
         printPagination(out, pageLeft, pageRight);
     }
 
+    /**
+     * @param out out
+     * @param pageLeft pageLeft
+     * @param pageRight pageRight
+     */
     private void printPagination(JspWriter out, int pageLeft, int pageRight) {
         try {
             out.println("<ul class=\"pagination\">");
@@ -99,6 +104,10 @@ public class PaginationTag extends SimpleTagSupport {
         }
     }
 
+    /**
+     * @param out out
+     * @throws IOException ioException
+     */
     private void printLimit(JspWriter out) throws IOException {
         out.println("<div class=\"btn-group btn-group-sm pull-right\" role=\"group\">");
         out.println("<a type=\"button\" class=\"btn btn-default\" href=" + link(1, 10) + " >10</a>");
@@ -108,8 +117,12 @@ public class PaginationTag extends SimpleTagSupport {
 
     }
 
+    /**
+     * @param page page
+     * @param limit limit
+     * @return string
+     */
     private String link(int page, int limit) {
-
         String url = String.format("?%s=%d&%s=%s", uri, page, uriLimit, limit);
 
         if (uriSearch != null && search != null && !search.isEmpty()) {

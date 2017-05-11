@@ -13,6 +13,10 @@ public class ComputerValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerValidator.class);
     private static final String REGEX_NAME = "^[a-zA-Z0-9 ]*$";
 
+    /**
+     * @param computer computer
+     * @return true if the computer is valid
+     */
     public static boolean isValid(Computer computer) {
 
         if (computer == null) {
@@ -22,18 +26,27 @@ public class ComputerValidator {
         return isNameValid(computer.getName()) && isDatesValid(computer.getIntroduced(), computer.getDiscontinued());
     }
 
+    /**
+     * @param name name
+     * @return true if the name is valid
+     */
     private static boolean isNameValid(String name) {
         if (name.isEmpty()) {
             throw new ValidatorException("the name of the computer is empty");
         }
 
         if (!name.matches(REGEX_NAME)) {
-           // throw new ValidatorException("Name must be alphanumeric");
-        	return true;
+            // throw new ValidatorException("Name must be alphanumeric");
+            return true;
         }
         return true;
     }
 
+    /**
+     * @param introduced introduced
+     * @param discontinued discontinued
+     * @return true if valid
+     */
     private static boolean isDatesValid(Optional<LocalDate> introduced, Optional<LocalDate> discontinued) {
 
         if (!introduced.isPresent() && !discontinued.isPresent()) {

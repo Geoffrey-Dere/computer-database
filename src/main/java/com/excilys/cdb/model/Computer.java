@@ -25,10 +25,15 @@ public class Computer {
 
     private Company company;
 
+    /**
+     */
     public Computer() {
 
     }
 
+    /**
+     * @param name name
+     */
     public Computer(String name) {
         this.name = name;
     }
@@ -79,8 +84,8 @@ public class Computer {
     }
 
     /**
-     * function equals for Computer class <br/>.
-     * 2 objects are equal if they have the same name and id
+     * function equals for Computer class <br/>
+     * . 2 objects are equal if they have the same name and id
      */
     @Override
     public boolean equals(Object obj) {
@@ -131,8 +136,7 @@ public class Computer {
 
     @Override
     public String toString() {
-        return "Computer(" + id + " , " + name + " , " + introduced + " , " + discontinued + "  " + company
-                + " ) ";
+        return "Computer(" + id + " , " + name + " , " + introduced + " , " + discontinued + "  " + company + " ) ";
     }
 
     public static class BuilderComputer {

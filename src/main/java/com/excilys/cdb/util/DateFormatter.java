@@ -11,13 +11,15 @@ import java.util.Map;
 
 public abstract class DateFormatter {
 
-    private static DateTimeFormatter formatter;
+    /**
+     */
+    private static final Map<DateTimeFormatter, String> PATTERN = new HashMap<DateTimeFormatter, String>();
 
-    private static final Map<DateTimeFormatter, String> pattern = new HashMap<DateTimeFormatter, String>();
+    private static DateTimeFormatter formatter;
 
     static {
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        pattern.put(formatter, "yyyy-MM-dd");
+        PATTERN.put(formatter, "yyyy-MM-dd");
     }
 
     /**
@@ -30,17 +32,19 @@ public abstract class DateFormatter {
     }
 
     /**
-     * @param date The date to be transformed 
+     * @param date The date to be transformed
      * @return The date in string
-    * @throws DateTimeParseException if the text cannot be parsed
+     * @throws DateTimeParseException if the text cannot be parsed
      */
-    public static String LocalDateToString(LocalDate date) {
+    public static String localDateToString(LocalDate date) {
         return date.format(formatter);
     }
 
-    
+    /**
+     * @return current pattern
+     */
     public static String getCurrentPattern() {
-        return pattern.get(formatter);
+        return PATTERN.get(formatter);
     }
 
     /**

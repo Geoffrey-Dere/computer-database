@@ -1,6 +1,5 @@
 package com.excilys.cdb.service;
 
-
 import java.util.Optional;
 
 import com.excilys.cdb.model.Computer;
@@ -30,14 +29,14 @@ public interface ComputerService {
 
     /**
      * update a computer on the database.
-     * @param c  the computer
+     * @param c the computer
      * @return true if the computer has been updated and false otherwise
      */
     boolean update(Computer c);
 
     /**
      * delete a computer on the database.
-     * @param c  the computer
+     * @param c the computer
      * @return true if the computer has been updated and false otherwise
      */
     boolean remove(Computer c);
@@ -45,6 +44,8 @@ public interface ComputerService {
     /**
      * @param limit the limit
      * @param offset the offset
+     * @param column column
+     * @param order order
      * @return the pager with the companies
      */
     Pager<Computer> getPage(long limit, long offset, String column, String order);

@@ -11,6 +11,10 @@ public class CompanyValidator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyValidator.class);
 
+    /**
+     * @param company company
+     * @return bool success
+     */
     public static boolean isValid(Company company) {
 
         if (company == null) {
@@ -20,6 +24,10 @@ public class CompanyValidator {
         return isNameValid(company.getName());
     }
 
+    /**
+     * @param name name
+     * @return true if success
+     */
     private static boolean isNameValid(String name) {
         if (name.isEmpty()) {
             throw new ValidatorException("the name of the company is empty");

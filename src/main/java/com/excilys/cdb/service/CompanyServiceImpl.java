@@ -27,12 +27,20 @@ public class CompanyServiceImpl implements CompanyService {
         return company;
     }
 
+    /**
+     * @return list of companies
+     */
     public List<Company> getAll() {
 
         List<Company> listCompany = companyDAO.findAll();
         return listCompany;
     }
 
+    /**
+     * @param company company
+     * @return success
+     * @throws SQLException exception
+     */
     public boolean removeCascade(Company company) throws SQLException {
 
         Connection connection = ConnectionManager.INSTANCE.getConnection();
@@ -42,12 +50,12 @@ public class CompanyServiceImpl implements CompanyService {
             new ComputerServiceImpl().removeByCompanyId(company.getId());
             companyDAO.delete(company);
             connection.commit();
-            return true ;
+            return true;
         } catch (SQLException | ExceptionDAO e) {
             e.printStackTrace();
             connection.rollback();
-        } finally{
-        	connection.close();
+        } finally {
+            connection.close();
         }
         return false;
     }

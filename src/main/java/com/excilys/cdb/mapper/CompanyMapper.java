@@ -21,6 +21,10 @@ public class CompanyMapper {
         return companyDTO;
     }
 
+    /**
+     * @param list list of company
+     * @return list of companyDTO
+     */
     public static List<CompanyDTO> mapperToDTO(List<Company> list) {
 
         List<CompanyDTO> listDTO = new ArrayList<>();
@@ -32,13 +36,17 @@ public class CompanyMapper {
     }
 
     /**
-     * @param c the company dto 
+     * @param c the company dto
      * @return the object
      */
     public static Company mapperToModel(CompanyDTO c) {
         return new Company.Builder(c.getName()).id(c.getId()).build();
     }
 
+    /**
+     * @param listDTO list of computerDTO
+     * @return list of company
+     */
     public static List<Company> mapperToModel(List<CompanyDTO> listDTO) {
 
         List<Company> list = new ArrayList<>();

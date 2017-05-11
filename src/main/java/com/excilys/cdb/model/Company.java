@@ -1,8 +1,8 @@
 package com.excilys.cdb.model;
 
 /**
- * Class company <br/>.
- * Represents a company
+ * Class company <br/>
+ * . Represents a company
  * @author Geoffrey
  */
 public class Company {
@@ -17,14 +17,15 @@ public class Company {
      */
     private String name;
 
-    /**
-     * @param builder the builder
-     */
-
+   /**
+    */
     public Company() {
 
     }
 
+    /**
+     * @param name name
+     */
     public Company(String name) {
         this.name = name;
     }
@@ -46,8 +47,8 @@ public class Company {
     }
 
     /**
-     * function equals for Company class <br/>.
-     * 2 objects 'Company' are equal if they have the same name and id
+     * function equals for Company class <br/>
+     * . 2 objects 'Company' are equal if they have the same name and id
      */
     @Override
     public boolean equals(Object obj) {

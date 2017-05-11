@@ -27,11 +27,15 @@ public class ComputerServiceImpl implements ComputerService {
         // TODO Auto-generated constructor stub
     }
 
+    /**
+     */
     @Override
     public Pager<Computer> getAll() {
         return getPage(Long.MAX_VALUE, 0, "", " ");
     }
 
+    /**
+     */
     @Override
     public Pager<Computer> getPage(long limit, long offset, String column, String order) {
         List<Computer> listComputer = computerDAO.findAll(limit, offset, column, order);
@@ -39,6 +43,14 @@ public class ComputerServiceImpl implements ComputerService {
         return builder.build();
     }
 
+    /**
+     * @param limit limit
+     * @param offset offset
+     * @param regex regex
+     * @param column column
+     * @param order order
+     * @return page of computers
+     */
     public Pager<Computer> getPage(long limit, long offset, String regex, String column, String order) {
         List<Computer> listComputer = computerDAO.findByName(limit, offset, regex, column, order);
         BuilderPage<Computer> builder = new BuilderPage<>(listComputer);
@@ -76,6 +88,10 @@ public class ComputerServiceImpl implements ComputerService {
         return computerDAO.delete(c);
     }
 
+    /**
+     * @param id id
+     * @return boolean success
+     */
     public boolean remove(int id) {
         Computer computer = new Computer();
         computer.setId(id);
@@ -83,20 +99,32 @@ public class ComputerServiceImpl implements ComputerService {
 
     }
 
+    /**
+     * @return count
+     */
     public int count() {
         return computerDAO.count();
     }
 
+    /**
+     * @param name name
+     * @return count of computer
+     */
     public int count(String name) {
         return computerDAO.count(name);
     }
 
+    /**
+     * @param id id
+     */
     public void removeByCompanyId(long id) {
         computerDAO.deleteByCompany(id);
-
     }
 
-	public void remove(List<Integer> list_id) {
-computerDAO.remove(list_id);		
-	}
+    /**
+     * @param listId list of id
+     */
+    public void remove(List<Integer> listId) {
+        computerDAO.remove(listId);
+    }
 }
