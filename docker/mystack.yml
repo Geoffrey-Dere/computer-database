@@ -1,0 +1,24 @@
+jenkins:
+  expose:
+    - '50000'
+  image: 'xercasy/myjenkins:latest'
+  links:
+    - mysqltest
+  ports:
+    - '8081:8080'
+  volumes:
+    - '/var/run/docker.sock:/var/run/docker.sock'
+    - '/usr/bin/docker:/usr/bin/docker'
+    - '/test:/var/jenkins_home/workspace/cdb'
+mysqlprod:
+  image: 'xercasy/mysqlprod:latest'
+  ports:
+    - '3307'
+mysqltest:
+  image: 'xercasy/mysqltest:latest'
+  ports:
+    - '3306'
+tomcat:
+  image: 'xercasy/tomcat:latest'
+  ports:
+    - '8080:8080'
