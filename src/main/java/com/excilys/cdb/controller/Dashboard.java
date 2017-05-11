@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Pager;
-import com.excilys.cdb.service.ComputerServiceImpl;
+import com.excilys.cdb.service.impl.ComputerServiceImpl;
 
 public class Dashboard extends HttpServlet {
 

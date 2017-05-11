@@ -1,4 +1,4 @@
-package com.excilys.cdb.service;
+package com.excilys.cdb.service.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -9,6 +9,7 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.CompanyDAO;
 import com.excilys.cdb.persistence.ConnectionManager;
 import com.excilys.cdb.persistence.ExceptionDAO;
+import com.excilys.cdb.service.CompanyService;
 
 public class CompanyServiceImpl implements CompanyService {
 

@@ -1,4 +1,4 @@
-package com.excilys.cdb.service;
+package com.excilys.cdb.service.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +10,8 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Pager;
 import com.excilys.cdb.model.Pager.BuilderPage;
 import com.excilys.cdb.persistence.ComputerDAO;
+import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.service.ServiceException;
 import com.excilys.cdb.validator.ComputerValidator;
 import com.excilys.cdb.validator.ValidatorException;
 
