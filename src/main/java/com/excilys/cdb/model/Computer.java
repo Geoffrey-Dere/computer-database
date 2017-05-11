@@ -3,6 +3,9 @@ package com.excilys.cdb.model;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import com.google.common.annotations.Beta;
+
+
 public class Computer {
 
     private long id;

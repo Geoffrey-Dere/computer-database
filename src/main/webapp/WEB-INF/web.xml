@@ -6,7 +6,7 @@
 
 	<servlet>
 		<servlet-name>AddComputer</servlet-name>
-		<servlet-class>com.excilys.computerDatabase.controller.AddComputer</servlet-class>
+		<servlet-class>com.excilys.cdb.controller.AddComputer</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -16,7 +16,7 @@
 
 	<servlet>
 		<servlet-name>Dashboard</servlet-name>
-		<servlet-class>com.excilys.computerDatabase.controller.Dashboard</servlet-class>
+		<servlet-class>com.excilys.cdb.controller.Dashboard</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -26,7 +26,7 @@
 
 	<servlet>
 		<servlet-name>EditComputer</servlet-name>
-		<servlet-class>com.excilys.computerDatabase.controller.EditComputer</servlet-class>
+		<servlet-class>com.excilys.cdb.controller.EditComputer</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
