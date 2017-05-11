@@ -6,9 +6,7 @@
 	<name>computerDatabase Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<packaging>war</packaging>
-	<version>3.0.0-RELEASE</version>
-
-
+	<version>4.0.1-SNAPSHOT</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,6 +31,7 @@
 		<org.seleniumhq.selenium>3.3.0</org.seleniumhq.selenium>
 		<selenium-chrome-driver>3.3.0</selenium-chrome-driver>
 		<io.github.bonigarcia>1.6.2</io.github.bonigarcia>
+		<cobertura>2.7</cobertura>
 	</properties>
 
 	<dependencies>
@@ -55,7 +54,6 @@
 			<version>${org.mockito}</version>
 			<scope>test</scope>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -109,7 +107,6 @@
 			<version>${javax.servlet.jsp}</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.dbunit/dbunit -->
 		<dependency>
 			<groupId>org.dbunit</groupId>
 			<artifactId>dbunit</artifactId>
@@ -137,11 +134,19 @@
 			<version>${io.github.bonigarcia}</version>
 			<scope>test</scope>
 		</dependency>
-
-
 	</dependencies>
 
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cobertura-maven-plugin</artifactId>
+					<version>${cobertura}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<plugins>
 			<!-- Compilateur JDK Java -->
 			<plugin>
@@ -162,11 +167,18 @@
 					<configLocation>${maven-checkstyle-plugin.configLocation}</configLocation>
 				</configuration>
 			</plugin>
+
+			<!-- couvreur de test Cobertura -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</build>
 
 	<reporting>
 		<plugins>
+
 			<!-- Vérificaion de styles -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -175,8 +187,6 @@
 				<configuration>
 					<configLocation>${maven-checkstyle-plugin.configLocation}</configLocation>
 				</configuration>
-
-
 				<reportSets>
 					<reportSet>
 						<reports>
@@ -184,6 +194,13 @@
 						</reports>
 					</reportSet>
 				</reportSets>
+			</plugin>
+
+			<!-- couvreur de test Cobertura -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>${cobertura}</version>
 			</plugin>
 		</plugins>
 	</reporting>
