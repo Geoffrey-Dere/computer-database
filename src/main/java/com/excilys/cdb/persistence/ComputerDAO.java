@@ -12,14 +12,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.mapper.MapperComputer;
 
-public enum ComputerDAO implements DAO<Computer> {
-
-    INSTANCE;
+@Repository
+public class ComputerDAO implements DAO<Computer> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
     private static final String SQL_FIND_BY_ID = "select * from computer  LEFT OUTER JOIN company on computer.company_id = company.id where computer.id = ? ";
@@ -34,7 +39,11 @@ public enum ComputerDAO implements DAO<Computer> {
     private static final String SQL_FIND = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id  ";
     private static final String SQL_FIND_BY_COMPANY = "select id from computer where company_id = ?";
 
-    private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
+    @Autowired
+    private ConnectionManager connectionManager;
+
+    @Autowired
+    private DataSource datasource;
 
     @Override
     public boolean create(Computer obj) {
@@ -58,13 +67,12 @@ public enum ComputerDAO implements DAO<Computer> {
                 success = true;
             }
             rs.close();
+            return success;
 
         } catch (SQLException e) {
             LOGGER.error("sql exception : function create new computer ");
             throw new ExceptionDAO("error create new computer", e);
         }
-        LOGGER.debug("no computer has been inserted");
-        return success;
     }
 
     @Override
@@ -219,7 +227,7 @@ public enum ComputerDAO implements DAO<Computer> {
                 PreparedStatement statement = connection
                         .prepareStatement(SQL_FIND + "order by " + column + " " + order + " limit ? offset ?")) {
 
-            LOGGER.debug("test : column = {}, order = {}", column, order);
+            LOGGER.debug("COUCOU TOI {}", this.datasource);
 
             connection.setReadOnly(true);
             statement.setLong(1, limit);
@@ -353,7 +361,7 @@ public enum ComputerDAO implements DAO<Computer> {
      */
     public boolean deleteByCompany(long companyId) {
 
-        Connection connection = ConnectionManager.INSTANCE.getConnection();
+        Connection connection = null ; //= ConnectionManager.INSTANCE.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(SQL_DELETE_BY_COMPANY)) {
 
             connection.setReadOnly(false);

@@ -10,13 +10,14 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.mapper.MapperCompany;
 
-public enum CompanyDAO implements DAO<Company> {
-
-    INSTANCE;
+@Repository
+public class CompanyDAO implements DAO<Company> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 
@@ -24,7 +25,8 @@ public enum CompanyDAO implements DAO<Company> {
     private static final String SQL_FIND_BY_ID = "select * from company where id = ? ;";
     private static final String SQL_DELETE = "delete from company where id = ? ";
 
-    private ConnectionManager connectionManager = ConnectionManager.INSTANCE;
+    @Autowired
+    private ConnectionManager connectionManager;
 
     @Override
     public boolean create(Company obj) {

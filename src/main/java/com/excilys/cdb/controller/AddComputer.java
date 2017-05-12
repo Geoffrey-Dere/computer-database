@@ -3,6 +3,7 @@ package com.excilys.cdb.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.mapper.CompanyMapper;
@@ -25,8 +28,16 @@ public class AddComputer extends HttpServlet {
     /**
      */
     private static final long serialVersionUID = 1L;
-    private static ComputerServiceImpl computerService = new ComputerServiceImpl();
-    private static CompanyServiceImpl companyService = new CompanyServiceImpl();
+
+    @Autowired
+    private ComputerServiceImpl computerService;
+    @Autowired
+    private CompanyServiceImpl companyService;
+
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

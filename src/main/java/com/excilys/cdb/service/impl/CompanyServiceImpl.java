@@ -1,25 +1,26 @@
 package com.excilys.cdb.service.impl;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.CompanyDAO;
-import com.excilys.cdb.persistence.ConnectionManager;
-import com.excilys.cdb.persistence.ExceptionDAO;
+import com.excilys.cdb.persistence.ComputerDAO;
 import com.excilys.cdb.service.CompanyService;
 
+@Service
 public class CompanyServiceImpl implements CompanyService {
 
-    private CompanyDAO companyDAO = CompanyDAO.INSTANCE;
+    @Autowired
+    private CompanyDAO companyDAO;
 
-    /**
-     */
-    public CompanyServiceImpl() {
-        // TODO Auto-generated constructor stub
-    }
+    @Autowired
+    private ComputerDAO computerDAO;
 
     @Override
     public Optional<Company> get(long id) {
@@ -42,22 +43,12 @@ public class CompanyServiceImpl implements CompanyService {
      * @return success
      * @throws SQLException exception
      */
+    @Transactional
     public boolean removeCascade(Company company) throws SQLException {
 
-        Connection connection = ConnectionManager.INSTANCE.getConnection();
-
-        try {
-            connection.setAutoCommit(false);
-            new ComputerServiceImpl().removeByCompanyId(company.getId());
-            companyDAO.delete(company);
-            connection.commit();
-            return true;
-        } catch (SQLException | ExceptionDAO e) {
-            e.printStackTrace();
-            connection.rollback();
-        } finally {
-            connection.close();
+        if (companyDAO.delete(company)) {
+            computerDAO.deleteByCompany(company.getId());
         }
-        return false;
+        return true;
     }
 }

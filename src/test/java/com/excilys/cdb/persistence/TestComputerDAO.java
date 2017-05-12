@@ -22,24 +22,32 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.cdb.model.Computer;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes=AppConfiguration.class)
 public class TestComputerDAO {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestComputerDAO.class);
     private static IDatabaseConnection dbUnitConnection;
     private static IDataSet dataSet;
 
-    private ComputerDAO computerDAO = ComputerDAO.INSTANCE;
-
     private static final String PATH_FILE = "config/hikari.properties";
     private static final String BASE = "jdbcUrl";
     private static final String USER = "username";
     private static final String PASSWORD = "password";
-
+    
+    @Autowired
+    private ComputerDAO computerDAO ;
+    
+    
     private static String base;
     private static String user;
     private static String password;
