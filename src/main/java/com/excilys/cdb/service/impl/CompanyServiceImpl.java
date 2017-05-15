@@ -13,7 +13,7 @@ import com.excilys.cdb.persistence.CompanyDAO;
 import com.excilys.cdb.persistence.ComputerDAO;
 import com.excilys.cdb.service.CompanyService;
 
-@Service
+@Service()
 public class CompanyServiceImpl implements CompanyService {
 
     @Autowired

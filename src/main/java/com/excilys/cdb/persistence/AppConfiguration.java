@@ -21,6 +21,9 @@ public class AppConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfiguration.class);
 
+    /**
+     * @return the dataSource
+     */
     @Bean
     public DataSource dataSource() {
 

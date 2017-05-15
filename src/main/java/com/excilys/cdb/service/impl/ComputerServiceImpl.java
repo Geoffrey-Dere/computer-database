@@ -29,12 +29,6 @@ public class ComputerServiceImpl implements ComputerService {
 
     /**
      */
-    public ComputerServiceImpl() {
-        // TODO Auto-generated constructor stub
-    }
-
-    /**
-     */
     @Override
     public Pager<Computer> getAll() {
         return getPage(Long.MAX_VALUE, 0, "", " ");

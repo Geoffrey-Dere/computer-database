@@ -34,7 +34,7 @@ public class AddComputer extends HttpServlet {
     @Autowired
     private CompanyServiceImpl companyService;
 
-    @Override 
+    @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
