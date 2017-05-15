@@ -11,32 +11,44 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
+@EnableWebMvc
 @ComponentScan(basePackages = "com.excilys.cdb")
 public class AppConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfiguration.class);
+    private static final String PATH_FILE = "config/hikari.properties";
 
     /**
      * @return the dataSource
      */
-    @Bean
-    public DataSource dataSource() {
+    private DataSource dataSource() {
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Properties prop = new Properties();
-        try (InputStream resourceStream = classLoader.getResourceAsStream(ConnectionManager.PATH_FILE)) {
+        try (InputStream resourceStream = classLoader.getResourceAsStream(PATH_FILE)) {
             prop.load(resourceStream);
             HikariConfig config = new HikariConfig(prop);
             HikariDataSource hikari = new HikariDataSource(config);
             return hikari;
         } catch (IOException e) {
-            LOGGER.error("can't read the file {} ", ConnectionManager.PATH_FILE);
-            throw new ExceptionDAO("error to read the file " + ConnectionManager.PATH_FILE, e);
+            LOGGER.error("can't read the file {} ", PATH_FILE);
+            throw new ExceptionDAO("error to read the file " + PATH_FILE, e);
         }
     }
+
+    /**
+     * @return
+     */
+    @Bean
+    public JdbcTemplate jdbcTemplate() {
+        return new JdbcTemplate(dataSource());
+    }
+
 }

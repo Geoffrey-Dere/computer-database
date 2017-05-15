@@ -3,12 +3,13 @@ package com.excilys.cdb.persistence.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.jdbc.core.RowMapper;
+
 import com.excilys.cdb.model.Company;
+import com.excilys.cdb.persistence.CompanyDAO;
 
-public abstract class MapperCompany {
+public class MapperCompany implements RowMapper<Company> {
 
-    public static final String ID = "Company.id";
-    public static final String NAME = "Company.name";
 
     /**
      * @param res the resultset
@@ -17,9 +18,17 @@ public abstract class MapperCompany {
      */
     public static Company mapperCompany(ResultSet res) throws SQLException {
 
-        long id = res.getLong(ID);
-        String name = res.getString(NAME);
+        long id = res.getLong(CompanyDAO.ID);
+        String name = res.getString(CompanyDAO.NAME);
 
+        return new Company.Builder(name).id(id).build();
+    }
+
+    @Override
+    public Company mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+        long id = rs.getLong(CompanyDAO.ID);
+        String name = rs.getString(CompanyDAO.NAME);
         return new Company.Builder(name).id(id).build();
     }
 

@@ -1,16 +1,12 @@
 package com.excilys.cdb.persistence;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.Company;
@@ -25,84 +21,40 @@ public class CompanyDAO implements DAO<Company> {
     private static final String SQL_FIND_BY_ID = "select * from company where id = ? ;";
     private static final String SQL_DELETE = "delete from company where id = ? ";
 
+    public static final String ID = "Company.id";
+    public static final String NAME = "Company.name";
+
     @Autowired
-    private ConnectionManager connectionManager;
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public boolean create(Company obj) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    // use for transaction
     public boolean delete(Company obj) {
-        Connection connection = connectionManager.getConnection();
-
-        try (PreparedStatement statement = connection.prepareStatement(SQL_DELETE)) {
-
-            connection.setReadOnly(false);
-            statement.setLong(1, obj.getId());
-            return statement.executeUpdate() == 1;
-
-        } catch (SQLException e) {
-            LOGGER.error("sql exception : function find ");
-        }
-        return false;
+        LOGGER.debug("delete company {}", obj.toString());
+        return this.jdbcTemplate.update(SQL_DELETE, obj.getId()) == 1;
     }
 
     @Override
     public boolean update(Company obj) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public Optional<Company> find(long id) {
 
-        Company company = null;
-
-        try (Connection connection = connectionManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID)) {
-
-            connection.setReadOnly(true);
-            statement.setString(1, String.valueOf(id));
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                company = MapperCompany.mapperCompany(result);
-            }
-
-            result.close();
-            return Optional.ofNullable(company);
-
-        } catch (SQLException e) {
-            LOGGER.error("sql exception : function find ");
-            throw new ExceptionDAO("error find one companie", e);
-        }
+        LOGGER.debug("find company with id = {}", id);
+        return Optional
+                .ofNullable(this.jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new MapperCompany(), String.valueOf(id)));
     }
 
     @Override
     public List<Company> findAll() {
 
-        List<Company> list = new ArrayList<>();
-
-        try (Connection connection = connectionManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL)) {
-
-            connection.setReadOnly(false);
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                list.add(MapperCompany.mapperCompany(result));
-            }
-
-            result.close();
-            return list;
-
-        } catch (SQLException e) {
-            LOGGER.error("sql exception : function findAll ");
-            throw new ExceptionDAO("error find all companies", e);
-        }
+        LOGGER.debug("find all companies");
+        return this.jdbcTemplate.query(SQL_FIND_ALL, new MapperCompany());
     }
 }

@@ -4,20 +4,25 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-
-import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.Computer;
@@ -33,64 +38,46 @@ public class ComputerDAO implements DAO<Computer> {
     private static final String SQL_INSERT = "insert into computer(name, introduced, discontinued, company_id)VALUES(?,?,?,?)";
     private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
     private static final String SQL_COUNT = "select count(*) from computer";
-    private static final String SQL_COUNT_REGEX = "select count(*) from computer where computer.name LIKE ?";
     private static final String SQL_FIND_ALL_WITH_COMPANY = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id ";
     private static final String SQL_REGEX = "select * from computer  LEFT OUTER JOIN company on computer.company_id = company.id where computer.name like ? ";
     private static final String SQL_FIND = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id  ";
     private static final String SQL_FIND_BY_COMPANY = "select id from computer where company_id = ?";
 
-    @Autowired
-    private ConnectionManager connectionManager;
+    public static final String ID = "Computer.id";
+    public static final String NAME = "Computer.name";
+    public static final String INTRODUCED = "Computer.introduced";
+    public static final String DISCONTINUED = "Computer.discontinued";
+    public static final String COMPANY_ID = "Computer.company_id";
 
     @Autowired
-    private DataSource datasource;
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public boolean create(Computer obj) {
 
-        boolean success = false;
         LOGGER.debug("inserting new computer {}", obj);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        try (Connection connection = connectionManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_INSERT,
-                        Statement.RETURN_GENERATED_KEYS)) {
-
-            connection.setReadOnly(false);
-            this.setStatement(statement, obj);
-            statement.executeUpdate();
-
-            ResultSet rs = statement.getGeneratedKeys();
-
-            if (rs.next()) {
-                obj.setId(rs.getInt(1));
-                LOGGER.debug("computer inserted");
-                success = true;
+        int row = this.jdbcTemplate.update(new PreparedStatementCreator() {
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                PreparedStatement ps = connection.prepareStatement(SQL_INSERT);
+                setStatement(ps, obj);
+                return ps;
             }
-            rs.close();
-            return success;
+        }, keyHolder);
 
-        } catch (SQLException e) {
-            LOGGER.error("sql exception : function create new computer ");
-            throw new ExceptionDAO("error create new computer", e);
+        if (row > 0) {
+            obj.setId(keyHolder.getKey().longValue()); // line 72
+            return true;
         }
+        return false;
     }
 
     @Override
     public boolean delete(Computer obj) {
 
-        try (Connection connection = connectionManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_DELETE)) {
-
-            connection.setReadOnly(false);
-            statement.setLong(1, obj.getId());
-            int success = statement.executeUpdate();
-
-            return success == 1;
-
-        } catch (SQLException e) {
-            LOGGER.error("sql exception : error deleting computer");
-            throw new ExceptionDAO("error deleting computer ", e);
-        }
+        LOGGER.debug("delete computer {}", obj.toString());
+        return this.jdbcTemplate.update(SQL_DELETE, obj.getId()) == 1;
     }
 
     /**
@@ -107,69 +94,39 @@ public class ComputerDAO implements DAO<Computer> {
     @Override
     public boolean update(Computer obj) {
 
-        try (Connection connection = connectionManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
+        LOGGER.debug("update computer {}", obj.toString());
 
-            LOGGER.trace("update new computer {}", obj);
-            connection.setReadOnly(false);
-            this.setStatement(statement, obj);
-            statement.setLong(5, obj.getId());
-            int success = statement.executeUpdate();
-            return success == 1;
+        Timestamp intro = null, discon = null;
+        Long companyId = null;
 
-        } catch (SQLException e) {
-            LOGGER.error("error updating computer");
-            throw new ExceptionDAO("error updating computer ", e);
+        if (obj.getIntroduced().isPresent()) {
+            intro = timeFromDateLocal(obj.getIntroduced().get());
         }
+
+        if (obj.getDiscontinued().isPresent()) {
+            discon = timeFromDateLocal(obj.getDiscontinued().get());
+        }
+
+        if (obj.getCompany().isPresent()) {
+            companyId = obj.getCompany().get().getId();
+        }
+
+        return this.jdbcTemplate.update(SQL_UPDATE, obj.getName(), intro, discon, companyId, obj.getId()) == 1;
     }
 
     @Override
     public Optional<Computer> find(long id) {
 
-        try (Connection connection = connectionManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID)) {
-
-            connection.setReadOnly(true);
-            statement.setString(1, String.valueOf(id));
-            ResultSet res = statement.executeQuery();
-
-            if (res.next()) {
-                Computer computer = MapperComputer.mapperComputer(res, true);
-                res.close();
-                return Optional.of(computer);
-            } else {
-                res.close();
-                return Optional.empty();
-            }
-
-        } catch (SQLException e) {
-            LOGGER.error("error to find a computer ");
-            throw new ExceptionDAO("error to find a computer ", e);
-        }
+        LOGGER.debug("find computer with id = {}", id);
+        return Optional
+                .ofNullable(this.jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new MapperComputer(), id));
     }
 
     @Override
     public List<Computer> findAll() {
 
-        List<Computer> list = new ArrayList<>();
-
-        try (Connection connection = connectionManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_WITH_COMPANY)) {
-
-            connection.setReadOnly(true);
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                list.add(MapperComputer.mapperComputer(result, true));
-            }
-
-            result.close();
-            return list;
-
-        } catch (SQLException e) {
-            LOGGER.error("error to find  all computers ");
-            throw new ExceptionDAO("error to find  all computers", e);
-        }
+        LOGGER.debug("find all computer");
+        return this.jdbcTemplate.query(SQL_FIND_ALL_WITH_COMPANY, new MapperComputer());
     }
 
     /**
@@ -178,38 +135,13 @@ public class ComputerDAO implements DAO<Computer> {
      */
     public List<Long> getIdByCompany(long companyId) {
 
-        List<Long> list = new ArrayList<>();
-        try (Connection connection = connectionManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_COMPANY)) {
-
-            connection.setReadOnly(true);
-            statement.setLong(1, companyId);
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                list.add(result.getLong("id"));
+        return this.jdbcTemplate.query(SQL_FIND_BY_COMPANY, new RowMapper<Long>() {
+            @Override
+            public Long mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return rs.getLong(ID);
             }
-            result.close();
-        } catch (SQLException e) {
-            LOGGER.error("error function");
-        }
-        return list;
-    }
 
-    /**
-     * @param localDate the date to transform
-     * @return the date
-     */
-    private Timestamp timeFromDateLocal(LocalDate localDate) {
-
-        Timestamp t = null;
-
-        if (localDate == null) {
-            return null;
-        }
-
-        Date date = Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-        t = new Timestamp(date.getTime());
-        return t;
+        }, companyId);
     }
 
     /**
@@ -221,27 +153,10 @@ public class ComputerDAO implements DAO<Computer> {
      */
     public List<Computer> findAll(long limit, long offset, String column, String order) {
 
-        List<Computer> list = new ArrayList<>();
-        LOGGER.debug(SQL_FIND + "order by " + column + " " + order + "limit ? offset ?");
-        try (Connection connection = connectionManager.getConnection();
-                PreparedStatement statement = connection
-                        .prepareStatement(SQL_FIND + "order by " + column + " " + order + " limit ? offset ?")) {
+        LOGGER.debug("find all limit = {}, offset = {}, column = {}, order = {}", limit, offset, column, order);
 
-            LOGGER.debug("COUCOU TOI {}", this.datasource);
-
-            connection.setReadOnly(true);
-            statement.setLong(1, limit);
-            statement.setLong(2, offset);
-            ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                list.add(MapperComputer.mapperComputer(result, true));
-            }
-            result.close();
-        } catch (SQLException e) {
-            LOGGER.error("error to find  all computers with limit");
-            throw new ExceptionDAO("error to find  all computers with limit", e);
-        }
-        return list;
+        return this.jdbcTemplate.query(SQL_FIND + "order by " + column + " " + order + " limit ? offset ?",
+                new MapperComputer(), limit, offset);
     }
 
     /**
@@ -254,26 +169,11 @@ public class ComputerDAO implements DAO<Computer> {
      */
     public List<Computer> findByName(long limit, long offset, String regex, String column, String order) {
 
-        List<Computer> list = new ArrayList<>();
-        try (Connection connection = connectionManager.getConnection();
-                PreparedStatement statement = connection
-                        .prepareStatement(SQL_REGEX + "order by " + column + " " + order + " limit ? offset ?")) {
+        LOGGER.debug("find all limit = {}, offset = {}, column = {}, order = {}, regex = {}", limit, offset, column,
+                order, regex);
 
-            connection.setReadOnly(true);
-            statement.setString(1, regex + "%");
-            statement.setLong(2, limit);
-            statement.setLong(3, offset);
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                list.add(MapperComputer.mapperComputer(result, true));
-            }
-            result.close();
-            return list;
-        } catch (SQLException e) {
-            LOGGER.error("error to find  computer with regex");
-            throw new ExceptionDAO("error to find  computer with regex", e);
-        }
+        return this.jdbcTemplate.query(SQL_REGEX + "order by " + column + " " + order + " limit ? offset ?",
+                new MapperComputer(), regex, limit, offset);
     }
 
     /**
@@ -281,23 +181,7 @@ public class ComputerDAO implements DAO<Computer> {
      */
     public int count() {
 
-        int count = 0;
-        try (Connection connection = connectionManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_COUNT)) {
-
-            connection.setReadOnly(true);
-            ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                count = result.getInt(1);
-            }
-
-            result.close();
-            return count;
-        } catch (SQLException e) {
-            LOGGER.error("error count");
-        }
-        return 0;
+        return this.jdbcTemplate.queryForObject(SQL_COUNT, Integer.class);
     }
 
     /**
@@ -306,23 +190,30 @@ public class ComputerDAO implements DAO<Computer> {
      */
     public int count(String name) {
 
-        int res = 0;
-        ResultSet result;
-        try (Connection connection = connectionManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_COUNT_REGEX)) {
+        return this.jdbcTemplate.queryForObject(SQL_COUNT, Integer.class, name + "%");
+    }
 
-            connection.setReadOnly(true);
-            statement.setString(1, name + "%");
-            result = statement.executeQuery();
-            if (result.next()) {
-                res = result.getInt(1);
-            }
-            result.close();
-        } catch (SQLException e) {
-            LOGGER.error("error count with regex : {}", e.getMessage());
-        }
-        LOGGER.debug("count =  {}", res);
-        return res;
+    /**
+     * @param companyId companyiD
+     * @return bool success
+     */
+    public boolean deleteByCompany(long companyId) {
+
+        return this.jdbcTemplate.queryForObject(SQL_DELETE_BY_COMPANY, Integer.class, companyId) >= 1;
+    }
+
+    /**
+     * @param listId list
+     */
+    public void remove(List<Integer> listId) {
+
+        String query = "delete from computer where id in (:ids)";
+
+        LOGGER.debug("test = {}", listId);
+
+        NamedParameterJdbcTemplate namedTemplate = new NamedParameterJdbcTemplate(this.jdbcTemplate);
+        Map<String, List> params = Collections.singletonMap("ids", listId);
+        namedTemplate.update(query, params);
     }
 
     /**
@@ -356,45 +247,11 @@ public class ComputerDAO implements DAO<Computer> {
     }
 
     /**
-     * @param companyId companyiD
-     * @return bool success
+     * @param localDate the date to transform
+     * @return the date
      */
-    public boolean deleteByCompany(long companyId) {
-
-        try (Connection connection = connectionManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_DELETE_BY_COMPANY)) {
-
-            connection.setReadOnly(false);
-            statement.setLong(1, companyId);
-            return statement.executeUpdate() >= 1;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+    private Timestamp timeFromDateLocal(LocalDate localDate) {
+        return Timestamp.valueOf(localDate.atStartOfDay());
     }
 
-    /**
-     * @param listId list
-     */
-    public void remove(List<Integer> listId) {
-
-        String query = "delete from computer where id in (";
-
-        for (int id : listId) {
-            query += id + ",";
-        }
-
-        query += "0)";
-        try (Connection connection = connectionManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(query)) {
-
-            connection.setReadOnly(false);
-
-            statement.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

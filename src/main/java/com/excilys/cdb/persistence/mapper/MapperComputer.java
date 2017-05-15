@@ -3,16 +3,13 @@ package com.excilys.cdb.persistence.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.jdbc.core.RowMapper;
+
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Computer.BuilderComputer;
+import com.excilys.cdb.persistence.ComputerDAO;
 
-public abstract class MapperComputer {
-
-    public static final String ID = "Computer.id";
-    public static final String NAME = "Computer.name";
-    public static final String INTRODUCED = "Computer.introduced";
-    public static final String DISCONTINUED = "Computer.discontinued";
-    public static final String COMPANY_ID = "Computer.company_id";
+public class MapperComputer implements RowMapper<Computer> {
 
     /**
      * @param res the result
@@ -22,22 +19,46 @@ public abstract class MapperComputer {
      */
     public static Computer mapperComputer(ResultSet res, boolean jointureCompany) throws SQLException {
 
-        long id = res.getLong(ID);
-        String name = res.getString(NAME);
+        long id = res.getLong(ComputerDAO.ID);
+        String name = res.getString(ComputerDAO.NAME);
 
         BuilderComputer builder = new BuilderComputer(name);
         builder.id(id);
 
-        if (res.getDate(INTRODUCED) != null) {
-            builder.introduced(res.getDate(INTRODUCED).toLocalDate());
+        if (res.getDate(ComputerDAO.INTRODUCED) != null) {
+            builder.introduced(res.getDate(ComputerDAO.INTRODUCED).toLocalDate());
         }
 
-        if (res.getDate(DISCONTINUED) != null) {
-            builder.discontinued(res.getDate(DISCONTINUED).toLocalDate());
+        if (res.getDate(ComputerDAO.DISCONTINUED) != null) {
+            builder.discontinued(res.getDate(ComputerDAO.DISCONTINUED).toLocalDate());
         }
 
-        if (jointureCompany && res.getLong(COMPANY_ID) != 0) {
+        if (jointureCompany && res.getLong(ComputerDAO.COMPANY_ID) != 0) {
             builder.company(MapperCompany.mapperCompany(res));
+        }
+
+        return builder.build();
+    }
+
+    @Override
+    public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+        long id = rs.getLong(ComputerDAO.ID);
+        String name = rs.getString(ComputerDAO.NAME);
+
+        BuilderComputer builder = new BuilderComputer(name);
+        builder.id(id);
+
+        if (rs.getDate(ComputerDAO.INTRODUCED) != null) {
+            builder.introduced(rs.getDate(ComputerDAO.INTRODUCED).toLocalDate());
+        }
+
+        if (rs.getDate(ComputerDAO.DISCONTINUED) != null) {
+            builder.discontinued(rs.getDate(ComputerDAO.DISCONTINUED).toLocalDate());
+        }
+
+        if (rs.getLong(ComputerDAO.COMPANY_ID) != 0) {
+            builder.company(new MapperCompany().mapRow(rs, rowNum));
         }
 
         return builder.build();
