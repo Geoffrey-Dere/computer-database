@@ -361,8 +361,8 @@ public class ComputerDAO implements DAO<Computer> {
      */
     public boolean deleteByCompany(long companyId) {
 
-        Connection connection = null ; //= ConnectionManager.INSTANCE.getConnection();
-        try (PreparedStatement statement = connection.prepareStatement(SQL_DELETE_BY_COMPANY)) {
+        try (Connection connection = connectionManager.getConnection();
+                PreparedStatement statement = connection.prepareStatement(SQL_DELETE_BY_COMPANY)) {
 
             connection.setReadOnly(false);
             statement.setLong(1, companyId);

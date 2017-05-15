@@ -25,7 +25,7 @@ public class ComputerServiceImpl implements ComputerService {
     /**
      */
     @Autowired
-    private ComputerDAO computerDAO ;
+    private ComputerDAO computerDAO;
 
     /**
      */
