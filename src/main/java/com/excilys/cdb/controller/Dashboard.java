@@ -15,7 +15,7 @@ import com.excilys.cdb.model.Pager;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping(value={"/", "dashboard"})
 public class Dashboard {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Dashboard.class);

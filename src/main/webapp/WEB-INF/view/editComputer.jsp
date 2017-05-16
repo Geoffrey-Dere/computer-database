@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <head>
 <title>Computer Database</title>
@@ -14,8 +15,8 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
-		<a class="navbar-brand" href="dashboard"> Application -
-			Computer Database </a>
+		<a class="navbar-brand" href="dashboard"> Application - Computer
+			Database </a>
 	</div>
 	</header>
 	<section id="main">
@@ -27,33 +28,31 @@
 				</div>
 				<h1>Edit Computer</h1>
 
-				<form action="editComputer" method="POST">
-					<input type="hidden" value="${computer.id}" id="id" name="id" />
-					<!-- TODO: Change this value with the computer id -->
+				<form:form action="editComputer" method="POST"
+					commandName="computer">
+					<form:input type="hidden" path="id" id="id" name="id" />
 					<fieldset>
 						<div class="form-group">
-							<label for="computerName">Computer name</label> <input
-								type="text" class="form-control" id="computerName"
-								name="computerName" placeholder="Computer name"
-								value="${computer.name}">
+							<label for="computerName">Computer name</label>
+							<form:input type="text" class="form-control" id="computerName"
+								name="computerName" placeholder="Computer name" path="name" />
 						</div>
 						<div class="form-group">
-							<label for="introduced">Introduced date</label> <input
-								type="date" class="form-control" id="introduced"
+							<label for="introduced">Introduced date</label>
+							<form:input type="date" class="form-control" id="introduced"
 								name="introduced" placeholder="Introduced date"
-								value="${computer.introduced}">
+								path="introduced" />
 						</div>
 						<div class="form-group">
-							<label for="discontinued">Discontinued date</label> <input
-								type="date" class="form-control" id="discontinued"
+							<label for="discontinued">Discontinued date</label>
+							<form:input type="date" class="form-control" id="discontinued"
 								name="discontinued" placeholder="Discontinued date"
-								value="${computer.discontinued}">
+								path="discontinued" />
 						</div>
 						<div class="form-group">
 
 
-							<label for="companyId">Company</label> 
-							<select
+							<label for="companyId">Company</label> <select
 								class="form-control" id="companyId" name="companyID">
 								<option value="0"
 									<c:if test="${computer.companyId eq 0}"> selected </c:if>>--</option>
@@ -74,7 +73,7 @@
 						<input type="submit" value="Edit" class="btn btn-primary">
 						or <a href="<c:url value="dashboard"/>" class="btn btn-default">Cancel</a>
 					</div>
-				</form>
+				</form:form>
 			</div>
 		</div>
 	</div>

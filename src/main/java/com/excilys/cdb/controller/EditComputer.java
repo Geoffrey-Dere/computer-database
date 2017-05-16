@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,6 +52,8 @@ public class EditComputer {
             computer = computerService.get(Integer.parseInt(id));
             if (computer.isPresent()) {
                 mv.addObject("computer", ComputerMapper.mapperToDTO(computer.get()));
+            } else {
+                return new ModelAndView("dashboard");
             }
         }
         List<Company> listCompany = companyService.getAll();
@@ -61,33 +64,9 @@ public class EditComputer {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String addComputer(@RequestParam(value = "computerName") String name,
-            @RequestParam(value = "introduced") String introduced,
-            @RequestParam(value = "discontinued") String discontinued,
-            @RequestParam(value = "companyID") String companyID) {
+    public String addComputer(@ModelAttribute("computer") ComputerDTO computerDTO) {
 
-        ComputerDTO computerDTO = new ComputerDTO();
-
-        name = name.trim();
-        introduced = introduced.trim();
-        discontinued = discontinued.trim();
-        companyID = companyID.trim();
-
-        if (isInteger(companyID)) {
-            computerDTO.setId(Long.parseLong(companyID));
-        }
-
-        computerDTO.setName(name);
-        computerDTO.setIntroduced(introduced);
-        computerDTO.setDiscontinued(discontinued);
-
-        try {
-            computerDTO.setCompanyId(Long.parseLong(companyID));
-        } catch (java.lang.NumberFormatException e) {
-            LOGGER.debug("{} isn't a number", companyID);
-        }
-
-        LOGGER.trace("updatating new object computerDTO  : {}", computerDTO);
+        LOGGER.trace("updatating object computerDTO  : {}", computerDTO);
 
         try {
             computerService.update(ComputerMapper.mapperToModel(computerDTO));

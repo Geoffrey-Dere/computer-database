@@ -1,40 +1,44 @@
 package com.excilys.cdb.validator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
 
-import com.excilys.cdb.model.Company;
+import com.excilys.cdb.dto.CompanyDTO;
+import com.excilys.cdb.persistence.CompanyDAO;
 
-public class CompanyValidator {
+public class CompanyValidator implements Validator {
 
     private static final String REGEX_NAME = "^[a-zA-Z0-9 ]*$";
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyValidator.class);
-
-    /**
-     * @param company company
-     * @return bool success
-     */
-    public static boolean isValid(Company company) {
-
-        if (company == null) {
-            LOGGER.debug("company is null");
-            throw new ValidatorException("no company selected");
-        }
-        return isNameValid(company.getName());
-    }
 
     /**
      * @param name name
      * @return true if success
      */
-    private static boolean isNameValid(String name) {
+    private static String isNameValid(String name) {
         if (name.isEmpty()) {
-            throw new ValidatorException("the name of the company is empty");
+            return "name is empty";
         }
         if (!name.matches(REGEX_NAME)) {
-            throw new ValidatorException("Company's name must be alphanumeric");
+            return "Company's name must be alphanumeric";
         }
-        return true;
+        return "";
+    }
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return CompanyDAO.class.equals(clazz);
+    }
+
+    @Override
+    public void validate(Object obj, Errors e) {
+
+        ValidationUtils.rejectIfEmpty(e, "name", "name.empty");
+
+        CompanyDTO companyDTO = (CompanyDTO) obj;
+        String checkName = isNameValid(companyDTO.getName());
+        if (checkName != "") {
+            e.reject("name", checkName);
+        }
     }
 }

@@ -12,27 +12,27 @@ public class TestCompanyValidator {
 
     Company company;
 
-    @Before
-    public void before() {
-        company = Mockito.mock(Company.class);
-    }
-
-    @Test(expected = ValidatorException.class)
-    public void testIsValidNull() {
-        CompanyValidator.isValid(null);
-    }
-
-    @Test(expected = ValidatorException.class)
-    public void TestIsValidNameError() {
-        Mockito.when(company.getName()).thenReturn("name@<false");
-        CompanyValidator.isValid(company);
-    }
-
-    @Test
-    public void TestIsValid() {
-        Mockito.when(company.getName()).thenReturn("name of the computer");
-        assertTrue(CompanyValidator.isValid(company));
-
-    }
+//    @Before
+//    public void before() {
+//        company = Mockito.mock(Company.class);
+//    }
+//
+//    @Test(expected = ValidatorException.class)
+//    public void testIsValidNull() {
+//        CompanyValidator.isValid(null);
+//    }
+//
+//    @Test(expected = ValidatorException.class)
+//    public void TestIsValidNameError() {
+//        Mockito.when(company.getName()).thenReturn("name@<false");
+//        CompanyValidator.isValid(company);
+//    }
+//
+//    @Test
+//    public void TestIsValid() {
+//        Mockito.when(company.getName()).thenReturn("name of the computer");
+//        assertTrue(CompanyValidator.isValid(company));
+//
+//    }
 
 }

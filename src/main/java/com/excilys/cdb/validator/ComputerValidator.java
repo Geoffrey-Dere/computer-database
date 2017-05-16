@@ -5,40 +5,46 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
 
+import com.excilys.cdb.dto.CompanyDTO;
+import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.persistence.ComputerDAO;
 
-public class ComputerValidator {
+public class ComputerValidator implements Validator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerValidator.class);
     private static final String REGEX_NAME = "^[a-zA-Z0-9 ]*$";
 
-    /**
-     * @param computer computer
-     * @return true if the computer is valid
-     */
-    public static boolean isValid(Computer computer) {
+    private final Validator companyValidator;
 
-        if (computer == null) {
-            LOGGER.debug("computer is null");
-            throw new ValidatorException("computer is null");
+    public ComputerValidator(Validator companyValidator) {
+        if (companyValidator == null) {
+            throw new IllegalArgumentException("The supplied [Validator] is " + "required and must not be null.");
         }
-        return isNameValid(computer.getName()) && isDatesValid(computer.getIntroduced(), computer.getDiscontinued());
+        if (!companyValidator.supports(CompanyDTO.class)) {
+            throw new IllegalArgumentException(
+                    "The supplied [Validator] must " + "support the validation of [Address] instances.");
+        }
+        this.companyValidator = companyValidator;
     }
 
     /**
      * @param name name
      * @return true if the name is valid
      */
-    private static boolean isNameValid(String name) {
+    private static String isNameValid(String name) {
         if (name.isEmpty()) {
-            throw new ValidatorException("the name of the computer is empty");
+            return "the name of the computer is empty";
         }
 
         if (!name.matches(REGEX_NAME)) {
-            throw new ValidatorException("Name must be alphanumeric");
+            return "Name must be alphanumeric";
         }
-        return true;
+        return "";
     }
 
     /**
@@ -65,5 +71,32 @@ public class ComputerValidator {
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean supports(Class<?> arg0) {
+        return ComputerDTO.class.isAssignableFrom(arg0);
+    }
+
+    @Override
+    public void validate(Object arg, Errors e) {
+        ValidationUtils.rejectIfEmpty(e, "name", "name.empty");
+
+        ComputerDTO computerDTO = (ComputerDTO) arg;
+
+        try {
+            e.pushNestedPath("address");
+            CompanyDTO companyDTO = new CompanyDTO(0, computerDTO.getCompanyName());
+            ValidationUtils.invokeValidator(this.companyValidator, companyDTO, e);
+        } finally {
+            e.popNestedPath();
+        }
+
+        String checkName = isNameValid(computerDTO.getName());
+        if (checkName != "") {
+            e.reject("name", checkName);
+        }
+        //TODO
+        // custom validator
     }
 }
