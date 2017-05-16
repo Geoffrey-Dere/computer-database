@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.excilys.cdb.model.Company;
+import com.excilys.cdb.persistence.CompanyDAO;
 
 public class TestMapperCompany {
 
@@ -33,8 +34,8 @@ public class TestMapperCompany {
         Mockito.when(result.getRow()).thenReturn(1);
         Mockito.when(result.next()).thenReturn(true);
 
-        Mockito.when(result.getLong(MapperCompany.ID)).thenReturn(1L);
-        Mockito.when(result.getString(MapperCompany.NAME)).thenReturn("asus");
+        Mockito.when(result.getLong(CompanyDAO.ID)).thenReturn(1L);
+        Mockito.when(result.getString(CompanyDAO.NAME)).thenReturn("asus");
 
         Company company = MapperCompany.mapperCompany(result);
 

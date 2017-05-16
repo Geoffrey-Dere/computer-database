@@ -13,7 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.mapper.CompanyMapper;
@@ -24,11 +29,9 @@ import com.excilys.cdb.service.ServiceException;
 import com.excilys.cdb.service.impl.CompanyServiceImpl;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
 
-public class EditComputer extends HttpServlet {
-
-    /**
-     */
-    private static final long serialVersionUID = 1L;
+@Controller
+@RequestMapping(value = "/editComputer")
+public class EditComputer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EditComputer.class);
 
@@ -38,44 +41,40 @@ public class EditComputer extends HttpServlet {
     @Autowired
     private CompanyServiceImpl companyService;
 
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
-    }
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView home(@RequestParam(value = "id") String id) {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        String id = req.getParameter("id");
+        ModelAndView mv = new ModelAndView("editComputer");
         Optional<Computer> computer = Optional.empty();
 
         if (isInteger(id)) {
             computer = computerService.get(Integer.parseInt(id));
             if (computer.isPresent()) {
-                req.setAttribute("computer", ComputerMapper.mapperToDTO(computer.get()));
+                mv.addObject("computer", ComputerMapper.mapperToDTO(computer.get()));
             }
         }
-
         List<Company> listCompany = companyService.getAll();
-        req.setAttribute("listCompany", CompanyMapper.mapperToDTO(listCompany));
+        mv.addObject("listCompany", CompanyMapper.mapperToDTO(listCompany));
 
-        this.getServletContext().getRequestDispatcher("/WEB-INF/view/editComputer.jsp").forward(req, resp);
+        return mv;
+
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @RequestMapping(method = RequestMethod.POST)
+    public String addComputer(@RequestParam(value = "computerName") String name,
+            @RequestParam(value = "introduced") String introduced,
+            @RequestParam(value = "discontinued") String discontinued,
+            @RequestParam(value = "companyID") String companyID) {
 
         ComputerDTO computerDTO = new ComputerDTO();
 
-        String computerId = req.getParameter("id").trim();
-        String name = req.getParameter("computerName").trim();
-        String introduced = req.getParameter("introduced").trim();
-        String discontinued = req.getParameter("discontinued").trim();
-        String companyId = req.getParameter("companyID").trim();
+        name = name.trim();
+        introduced = introduced.trim();
+        discontinued = discontinued.trim();
+        companyID = companyID.trim();
 
-        if (isInteger(computerId)) {
-            computerDTO.setId(Long.parseLong(computerId));
+        if (isInteger(companyID)) {
+            computerDTO.setId(Long.parseLong(companyID));
         }
 
         computerDTO.setName(name);
@@ -83,9 +82,9 @@ public class EditComputer extends HttpServlet {
         computerDTO.setDiscontinued(discontinued);
 
         try {
-            computerDTO.setCompanyId(Long.parseLong(companyId));
+            computerDTO.setCompanyId(Long.parseLong(companyID));
         } catch (java.lang.NumberFormatException e) {
-            LOGGER.debug("{} isn't a number", companyId);
+            LOGGER.debug("{} isn't a number", companyID);
         }
 
         LOGGER.trace("updatating new object computerDTO  : {}", computerDTO);
@@ -93,9 +92,9 @@ public class EditComputer extends HttpServlet {
         try {
             computerService.update(ComputerMapper.mapperToModel(computerDTO));
         } catch (ServiceException e) {
-            req.setAttribute("error", e.getMessage());
+
         }
-        resp.sendRedirect("dashboard");
+        return "redirect:/";
     }
 
     /**

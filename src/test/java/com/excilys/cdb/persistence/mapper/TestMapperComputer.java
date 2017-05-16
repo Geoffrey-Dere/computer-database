@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.persistence.ComputerDAO;
 import com.excilys.cdb.util.DateFormatter;
 
 public class TestMapperComputer {
@@ -36,11 +37,11 @@ public class TestMapperComputer {
         Mockito.when(result.getRow()).thenReturn(1);
         Mockito.when(result.next()).thenReturn(true);
 
-        Mockito.when(result.getLong(MapperComputer.ID)).thenReturn(1L);
-        Mockito.when(result.getString(MapperComputer.NAME)).thenReturn("computer alpha");
-        Mockito.when(result.getDate(MapperComputer.INTRODUCED)).thenReturn(DateFormatter.sqlDate("2010-02-22"));
-        Mockito.when(result.getDate(MapperComputer.DISCONTINUED)).thenReturn(DateFormatter.sqlDate("2010-02-23"));
-        Mockito.when(result.getLong(MapperComputer.COMPANY_ID)).thenReturn(2L);
+        Mockito.when(result.getLong(ComputerDAO.ID)).thenReturn(1L);
+        Mockito.when(result.getString(ComputerDAO.NAME)).thenReturn("computer alpha");
+        Mockito.when(result.getDate(ComputerDAO.INTRODUCED)).thenReturn(DateFormatter.sqlDate("2010-02-22"));
+        Mockito.when(result.getDate(ComputerDAO.DISCONTINUED)).thenReturn(DateFormatter.sqlDate("2010-02-23"));
+        Mockito.when(result.getLong(ComputerDAO.COMPANY_ID)).thenReturn(2L);
 
         Computer computer = MapperComputer.mapperComputer(result, false);
 

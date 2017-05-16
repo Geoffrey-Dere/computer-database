@@ -12,15 +12,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.resource.PathResourceResolver;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-@Configuration
 @EnableWebMvc
+@Configuration
 @ComponentScan(basePackages = "com.excilys.cdb")
-public class AppConfiguration {
+public class AppConfiguration extends WebMvcConfigurerAdapter{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfiguration.class);
     private static final String PATH_FILE = "config/hikari.properties";
@@ -50,5 +56,27 @@ public class AppConfiguration {
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
     }
-
+    
+    @Bean
+    public ViewResolver viewResolver() {
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setViewClass(JstlView.class);
+        viewResolver.setPrefix("/WEB-INF/view/");
+        viewResolver.setSuffix(".jsp");
+ 
+        return viewResolver;
+    }
+    
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry
+//          .addResourceHandler("/js/**", "/css/**", "/fonts/**")
+//          .addResourceLocations("/js/", "/css/", "/fonts/")
+//          .setCachePeriod(3600)
+//          .resourceChain(true)
+//          .addResolver(new PathResourceResolver());
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
+   
+ 
 }

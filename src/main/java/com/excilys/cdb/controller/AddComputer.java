@@ -1,18 +1,15 @@
 package com.excilys.cdb.controller;
 
-import java.io.IOException;
 import java.util.List;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.mapper.CompanyMapper;
@@ -22,60 +19,59 @@ import com.excilys.cdb.service.ServiceException;
 import com.excilys.cdb.service.impl.CompanyServiceImpl;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
 
-public class AddComputer extends HttpServlet {
+@Controller
+@RequestMapping("/add")
+public class AddComputer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
-    /**
-     */
-    private static final long serialVersionUID = 1L;
 
     @Autowired
     private ComputerServiceImpl computerService;
     @Autowired
     private CompanyServiceImpl companyService;
 
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
-    }
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView homee() {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        ModelAndView mv = new ModelAndView("addComputer");
         List<Company> listCompany = companyService.getAll();
-        req.setAttribute("listCompany", CompanyMapper.mapperToDTO(listCompany));
-        this.getServletContext().getRequestDispatcher("/WEB-INF/view/addComputer.jsp").forward(req, resp);
+        mv.addObject("listCompany", CompanyMapper.mapperToDTO(listCompany));
 
+        return mv;
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @RequestMapping(method = RequestMethod.POST)
+    public String addComputer(@RequestParam(value = "computerName") String name,
+            @RequestParam(value = "introduced") String introduced,
+            @RequestParam(value = "discontinued") String discontinued,
+            @RequestParam(value = "companyID") String companyID) {
+
+        name = name.trim();
+        introduced = introduced.trim();
+        discontinued = discontinued.trim();
+        companyID = companyID.trim();
 
         ComputerDTO computerDTO = new ComputerDTO();
-
-        String name = (req.getParameter("computerName") != null) ? req.getParameter("computerName").trim() : "";
-        String introduced = (req.getParameter("introduced") != null) ? req.getParameter("introduced").trim() : "";
-        String discontinued = (req.getParameter("discontinued") != null) ? req.getParameter("discontinued").trim() : "";
-        String companyId = req.getParameter("companyID").trim();
 
         computerDTO.setName(name);
         computerDTO.setIntroduced(introduced);
         computerDTO.setDiscontinued(discontinued);
 
-        long id = 0;
         try {
-            id = Long.parseLong(companyId);
+            long id = Long.parseLong(companyID);
+            computerDTO.setCompanyId(id);
         } catch (java.lang.NumberFormatException e) {
-            LOGGER.debug("{} isn't a number", companyId);
+            LOGGER.debug("{} isn't a number", companyID);
         }
 
         try {
             LOGGER.debug("inserting new object computerDTO  : {}", computerDTO);
             computerService.add(ComputerMapper.mapperToModel(computerDTO));
         } catch (ServiceException e) {
-            req.setAttribute("error", e.getMessage());
+            LOGGER.debug("erreur");
         }
-        resp.sendRedirect("dashboard");
+
+        return "redirect:/";
     }
+
 }
