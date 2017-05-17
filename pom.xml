@@ -7,10 +7,10 @@
 	<url>http://maven.apache.org</url>
 	<packaging>war</packaging>
 	<version>5.0.0-RELEASE</version>
-	
+
 
 	<properties>
-	 <failOnMissingWebXml>false</failOnMissingWebXml>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
@@ -36,6 +36,8 @@
 		<cobertura>2.7</cobertura>
 		<springframework>4.3.8.RELEASE</springframework>
 		<springboot>1.5.2.RELEASE</springboot>
+		<hibernate.validator.version>5.4.1.Final</hibernate.validator.version>
+		<javax.validation.version>1.1.0.Final</javax.validation.version>
 	</properties>
 
 	<dependencies>
@@ -182,6 +184,18 @@
 			<version>${springframework}	</version>
 		</dependency>
 
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${javax.validation.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate.validator.version}</version>
+		</dependency>
+
+
 
 	</dependencies>
 
@@ -204,9 +218,9 @@
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
-					
-                
-      
+
+
+
 				</configuration>
 			</plugin>
 

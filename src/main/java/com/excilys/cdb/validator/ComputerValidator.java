@@ -1,102 +1,56 @@
 package com.excilys.cdb.validator;
 
-import java.time.LocalDate;
-import java.util.Optional;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
-import org.springframework.validation.Validator;
 
-import com.excilys.cdb.dto.CompanyDTO;
 import com.excilys.cdb.dto.ComputerDTO;
-import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.persistence.ComputerDAO;
 
-public class ComputerValidator implements Validator {
+public class ComputerValidator implements ConstraintValidator<Computer, ComputerDTO> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerValidator.class);
-    private static final String REGEX_NAME = "^[a-zA-Z0-9 ]*$";
+    private static final String REGEX = "^[0-9]{4}-[0-9]{2}-[0-9]{2}$";
 
-    private final Validator companyValidator;
+    @Override
+    public void initialize(final Computer date) {
 
-    public ComputerValidator(Validator companyValidator) {
-        if (companyValidator == null) {
-            throw new IllegalArgumentException("The supplied [Validator] is " + "required and must not be null.");
-        }
-        if (!companyValidator.supports(CompanyDTO.class)) {
-            throw new IllegalArgumentException(
-                    "The supplied [Validator] must " + "support the validation of [Address] instances.");
-        }
-        this.companyValidator = companyValidator;
     }
 
-    /**
-     * @param name name
-     * @return true if the name is valid
-     */
-    private static String isNameValid(String name) {
-        if (name.isEmpty()) {
-            return "the name of the computer is empty";
-        }
+    @Override
+    public boolean isValid(ComputerDTO obj, ConstraintValidatorContext context) {
 
-        if (!name.matches(REGEX_NAME)) {
-            return "Name must be alphanumeric";
-        }
-        return "";
-    }
+        String introduced = obj.getIntroduced();
+        String discontinued = obj.getDiscontinued();
 
-    /**
-     * @param introduced introduced
-     * @param discontinued discontinued
-     * @return true if valid
-     */
-    private static boolean isDatesValid(Optional<LocalDate> introduced, Optional<LocalDate> discontinued) {
-
-        if (!introduced.isPresent() && !discontinued.isPresent()) {
+        if (introduced.isEmpty() && discontinued.isEmpty()) {
             return true;
         }
 
-        if (!introduced.isPresent() && discontinued.isPresent()) {
-            LOGGER.debug("introduced empty ({}} but not discontinued ({})", introduced, discontinued);
-            throw new ValidatorException("introduced empty but not discontinued");
+        if (introduced.isEmpty() && !discontinued.isEmpty()) {
+            context.buildConstraintViolationWithTemplate("{computer.intro.null}").addConstraintViolation();
+            return false;
         }
 
-        if (discontinued.isPresent()) {
-            if (introduced.get().isAfter(discontinued.get())) {
-                LOGGER.debug("introduced ({}} is after that the date it was discontinued ({})", introduced,
-                        discontinued);
-                throw new ValidatorException("introduced after discontinued");
-            }
+        boolean format = true;
+        if (!introduced.matches(REGEX)) {
+            context.buildConstraintViolationWithTemplate("{date introduced format incorrect}").addConstraintViolation();
+            format = false;
+
         }
+
+        if (!discontinued.matches(REGEX)) {
+            context.buildConstraintViolationWithTemplate("{date discontinued format incorrect}")
+                    .addConstraintViolation();
+            format = false;
+        }
+
+        if (!format) {
+            return false;
+        }
+        
         return true;
     }
 
-    @Override
-    public boolean supports(Class<?> arg0) {
-        return ComputerDTO.class.isAssignableFrom(arg0);
-    }
-
-    @Override
-    public void validate(Object arg, Errors e) {
-        ValidationUtils.rejectIfEmpty(e, "name", "name.empty");
-
-        ComputerDTO computerDTO = (ComputerDTO) arg;
-
-        try {
-            e.pushNestedPath("address");
-            CompanyDTO companyDTO = new CompanyDTO(0, computerDTO.getCompanyName());
-            ValidationUtils.invokeValidator(this.companyValidator, companyDTO, e);
-        } finally {
-            e.popNestedPath();
-        }
-
-        String checkName = isNameValid(computerDTO.getName());
-        if (checkName != "") {
-            e.reject("name", checkName);
-        }
-        //TODO
-        // custom validator
-    }
 }
