@@ -1,5 +1,6 @@
 //On load
 $(function() {
+		
     // Default: hide edit mode
     $(".editMode").hide();
     
@@ -47,7 +48,7 @@ $(function() {
     $.fn.toggleEditMode = function() {
         if($(".editMode").is(":visible")) {
             $(".editMode").hide();
-            $("#editComputer").text("Edit");
+            $("#editComputer").text($('#representante_legal').val());
         }
         else {
             $(".editMode").show();

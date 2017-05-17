@@ -6,6 +6,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <head>
 <title>Computer Database</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -36,6 +37,7 @@
 							<label for="computerName">Computer name</label>
 							<form:input type="text" class="form-control" id="computerName"
 								name="computerName" placeholder="Computer name" path="name" />
+							<form:errors path="name" cssClass="error" />
 						</div>
 						<div class="form-group">
 							<label for="introduced">Introduced date</label>
@@ -48,6 +50,7 @@
 							<form:input type="date" class="form-control" id="discontinued"
 								name="discontinued" placeholder="Discontinued date"
 								path="discontinued" />
+							<form:errors cssClass="error" />
 						</div>
 						<div class="form-group">
 

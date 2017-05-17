@@ -1,9 +1,19 @@
 package com.excilys.cdb.dto;
 
+import javax.validation.constraints.Size;
+
+import com.excilys.cdb.validator.Alphanumeric;
+import com.excilys.cdb.validator.Computer;
+
+@Computer
 public class ComputerDTO {
 
     private long id;
+    
+    @Size(min=6, max=15, message ="{size.name}")
+    @Alphanumeric
     private String name;
+    
     private String introduced = "";
     private String discontinued = "";
     private long companyId;

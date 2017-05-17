@@ -1,8 +1,12 @@
 package com.excilys.cdb.controller;
 
+import java.util.Locale;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,7 +19,7 @@ import com.excilys.cdb.model.Pager;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
 
 @Controller
-@RequestMapping(value={"/", "dashboard"})
+@RequestMapping(value = { "/", "dashboard" })
 public class Dashboard {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Dashboard.class);
@@ -31,6 +35,9 @@ public class Dashboard {
     @Autowired
     private ComputerServiceImpl computerService;
 
+    @Autowired
+    private MessageSource messageSource;
+
     // @RequestMapping(method = RequestMethod.GET)
     // public String printHello(ModelMap model) {
     // System.out.println("COUCOU");
@@ -40,7 +47,7 @@ public class Dashboard {
     // }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView home(
+    public ModelAndView home(Locale locale,
             @RequestParam(value = URI_PAGE, required = false, defaultValue = "1") String currentPageString,
             @RequestParam(value = URI_LIMIT, required = false, defaultValue = LIMIT_DEFAULT) String limitString,
             @RequestParam(value = URI_SEARCH, required = false) String regex,
@@ -71,10 +78,13 @@ public class Dashboard {
         mv.addObject("uriLimit", URI_LIMIT);
         mv.addObject("uriSearch", URI_SEARCH);
 
+        String welcome = messageSource.getMessage("welcome.message", null, locale);
+        mv.addObject("message", welcome);
+        Locale currentLocale = LocaleContextHolder.getLocale();
+        mv.addObject("locale", currentLocale);
         return mv;
     }
 
-       
     // @Override
     // protected void doPost(HttpServletRequest req, HttpServletResponse resp)
     // throws ServletException, IOException {

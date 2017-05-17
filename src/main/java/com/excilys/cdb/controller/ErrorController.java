@@ -18,10 +18,5 @@ public class ErrorController {
          
         ModelAndView errorPage = new ModelAndView("404");
         return errorPage;
-        
-     
- 
-    
     }
-    
 }

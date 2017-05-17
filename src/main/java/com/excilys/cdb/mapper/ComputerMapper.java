@@ -77,7 +77,6 @@ public class ComputerMapper {
 
         Computer.BuilderComputer builder = new BuilderComputer(c.getName());
 
-        LOGGER.debug("id = {}", c.getId());
         builder.id(c.getId());
 
         if (!introduced.isEmpty()) {

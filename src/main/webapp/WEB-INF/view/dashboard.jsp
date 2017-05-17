@@ -3,11 +3,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="mylib" uri="../mylib.tld"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <title>dashboard</title>
+<meta http-equiv="Content-Type"
+	content="text/html; charset=windows-1252" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
@@ -25,8 +28,16 @@
 
 	<section id="main">
 	<div class="container">
+		<h1 id="homeTitle">${fn:length(listComputer)}Computersfound</h1>
 
-		<h1 id="homeTitle">${fn:length(listComputer)}Computers found</h1>
+		<h1>Spring MVC Internationalization i18n Example</h1>
+		
+		<c:set var="val"><spring:message code="edit"/></c:set>
+	<input id="representante_legal" type="hidden" value="${val}"/>
+	
+	
+		Language : <a href="?lang=en">English</a> | <a href="?lang=fr">French</a>
+
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
 				<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -38,14 +49,17 @@
 				</form>
 			</div>
 			<div class="pull-right">
-				<a class="btn btn-success" id="addComputer" href="add">Add
-					Computer</a> <a class="btn btn-default" id="editComputer" href="#"
-					onclick="$.fn.toggleEditMode();">Edit</a>
+				<a class="btn btn-success" id="addComputer" href="add"><spring:message
+						code="add.computer" /> </a> <a class="btn btn-default"
+					id="editComputer" href="#" onclick="$.fn.toggleEditMode();"> <spring:message
+						code="edit" /></a>
 			</div>
 		</div>
 	</div>
 
-	<form id="deleteForm" action="${pageContext.request.contextPath}/deleteComputer" method="POST">
+	<form id="deleteForm"
+		action="${pageContext.request.contextPath}/deleteComputer"
+		method="POST">
 		<input type="hidden" name="selection" value="">
 	</form>
 
@@ -53,9 +67,6 @@
 		<table class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<!-- Variable declarations for passing labels as parameters -->
-					<!-- Table header for Computer Name -->
-
 					<th class="editMode" style="width: 60px; height: 22px;"><input
 						type="checkbox" id="selectall" /> <span
 						style="vertical-align: top;"> - <a href="#"
@@ -63,12 +74,12 @@
 								class="fa fa-trash-o fa-lg"></i>
 						</a>
 					</span></th>
-					<th>Computer name</th>
-					<th>Introduced date</th>
+					<th><spring:message code="computer.name" /></th>
+					<th><spring:message code="computer.introduced" /></th>
 					<!-- Table header for Discontinued Date -->
-					<th>Discontinued date</th>
+					<th><spring:message code="computeur.discontinued" /></th>
 					<!-- Table header for Company -->
-					<th>Company</th>
+					<th><spring:message code="computer.company" /></th>
 
 				</tr>
 			</thead>
@@ -87,8 +98,8 @@ s					</c:url>
 									value="${computer.name}" />
 						</a></td>
 						<td><c:out value="${computer.introduced}" /></td>
-						<td><c:out value="${computer.discontinued}"/></td>
-						<td><c:out value="${computer.companyName}"/></td>
+						<td><c:out value="${computer.discontinued}" /></td>
+						<td><c:out value="${computer.companyName}" /></td>
 
 					</tr>
 				</c:forEach>
