@@ -28,14 +28,10 @@
 
 	<section id="main">
 	<div class="container">
-		<h1 id="homeTitle">${fn:length(listComputer)}Computersfound</h1>
+		<h1 id="homeTitle">${fn:length(listComputer)} Computers found</h1>
 
-		<h1>Spring MVC Internationalization i18n Example</h1>
-		
-		<c:set var="val"><spring:message code="edit"/></c:set>
-	<input id="representante_legal" type="hidden" value="${val}"/>
-	
-	
+		<input id="representante_legal" type="hidden" value="${val}" />
+
 		Language : <a href="?lang=en">English</a> | <a href="?lang=fr">French</a>
 
 		<div id="actions" class="form-horizontal">
@@ -80,7 +76,6 @@
 					<th><spring:message code="computeur.discontinued" /></th>
 					<!-- Table header for Company -->
 					<th><spring:message code="computer.company" /></th>
-
 				</tr>
 			</thead>
 			<!-- Browse attribute computers -->
@@ -100,7 +95,6 @@ s					</c:url>
 						<td><c:out value="${computer.introduced}" /></td>
 						<td><c:out value="${computer.discontinued}" /></td>
 						<td><c:out value="${computer.companyName}" /></td>
-
 					</tr>
 				</c:forEach>
 			</tbody>

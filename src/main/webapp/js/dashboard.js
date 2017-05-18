@@ -48,7 +48,7 @@ $(function() {
     $.fn.toggleEditMode = function() {
         if($(".editMode").is(":visible")) {
             $(".editMode").hide();
-            $("#editComputer").text($('#representante_legal').val());
+            $("#editComputer").text($('#Edit').val());
         }
         else {
             $(".editMode").show();

@@ -44,6 +44,7 @@
 							<form:input type="date" class="form-control" id="introduced"
 								name="introduced" placeholder="Introduced date"
 								path="introduced" />
+								<form:errors path="introduced" cssClass="error" />
 						</div>
 						<div class="form-group">
 							<label for="discontinued">Discontinued date</label>

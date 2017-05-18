@@ -2,10 +2,14 @@ package com.excilys.cdb.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,36 +40,23 @@ public class AddComputer {
         ModelAndView mv = new ModelAndView("addComputer");
         List<Company> listCompany = companyService.getAll();
         mv.addObject("listCompany", CompanyMapper.mapperToDTO(listCompany));
+        mv.addObject("computerDTO", new ComputerDTO());
 
         return mv;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String addComputer(@RequestParam(value = "computerName") String name,
-            @RequestParam(value = "introduced") String introduced,
-            @RequestParam(value = "discontinued") String discontinued,
-            @RequestParam(value = "companyID") String companyID) {
+    public String addComputer(@Valid @ModelAttribute("computerDTO") ComputerDTO computerDTO,
+            BindingResult bindingResult) {
 
-        name = name.trim();
-        introduced = introduced.trim();
-        discontinued = discontinued.trim();
-        companyID = companyID.trim();
+        LOGGER.debug("insert new computerDTO : {}", computerDTO);
 
-        ComputerDTO computerDTO = new ComputerDTO();
-
-        computerDTO.setName(name);
-        computerDTO.setIntroduced(introduced);
-        computerDTO.setDiscontinued(discontinued);
-
-        try {
-            long id = Long.parseLong(companyID);
-            computerDTO.setCompanyId(id);
-        } catch (java.lang.NumberFormatException e) {
-            LOGGER.debug("{} isn't a number", companyID);
+        if (bindingResult.hasErrors()) {
+            LOGGER.debug("ERREUR");
+            return "addComputer";
         }
 
         try {
-            LOGGER.debug("inserting new object computerDTO  : {}", computerDTO);
             computerService.add(ComputerMapper.mapperToModel(computerDTO));
         } catch (ServiceException e) {
             LOGGER.debug("erreur");
