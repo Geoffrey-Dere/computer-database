@@ -1,34 +1,20 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<jsp:include page="../component/header.jsp" />
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="mylib" uri="../mylib.tld"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<title>dashboard</title>
-<meta http-equiv="Content-Type"
-	content="text/html; charset=windows-1252" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta charset="utf-8">
-<!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="css/main.css" rel="stylesheet" media="screen">
-</head>
-<body>
-	<header class="navbar navbar-inverse navbar-fixed-top">
-	<div class="container">
-		<a class="navbar-brand" href="dashboard"> Application - Computer
-			Database </a>
-	</div>
-	</header>
+<spring:message code="dashboard.placeholder.search"
+	var="placeholderSearch" />
+<spring:message code="dashboard.button.filter" var="buttonFilter" />
 
-	<section id="main">
+
+<section id="main">
 	<div class="container">
-		<h1 id="homeTitle">${fn:length(listComputer)} Computers found</h1>
+		<h1 id="homeTitle">${fn:length(listComputer)}
+			<spring:message code="dashboard.computer.found" />
+		</h1>
 
 		<input id="representante_legal" type="hidden" value="${val}" />
 
@@ -39,16 +25,16 @@
 				<form id="searchForm" action="#" method="GET" class="form-inline">
 
 					<input type="search" id="searchbox" name="search"
-						class="form-control" placeholder="Search name" /> <input
-						type="submit" id="searchsubmit" value="Filter by name"
+						class="form-control" placeholder="${placeholderSearch}" /> <input
+						type="submit" id="searchsubmit" value="${buttonFilter}"
 						class="btn btn-primary" />
 				</form>
 			</div>
 			<div class="pull-right">
 				<a class="btn btn-success" id="addComputer" href="add"><spring:message
-						code="add.computer" /> </a> <a class="btn btn-default"
+						code="dashboard.add.computer" /> </a> <a class="btn btn-default"
 					id="editComputer" href="#" onclick="$.fn.toggleEditMode();"> <spring:message
-						code="edit" /></a>
+						code="dashboard.edit" /></a>
 			</div>
 		</div>
 	</div>
@@ -70,12 +56,10 @@
 								class="fa fa-trash-o fa-lg"></i>
 						</a>
 					</span></th>
-					<th><spring:message code="computer.name" /></th>
-					<th><spring:message code="computer.introduced" /></th>
-					<!-- Table header for Discontinued Date -->
-					<th><spring:message code="computeur.discontinued" /></th>
-					<!-- Table header for Company -->
-					<th><spring:message code="computer.company" /></th>
+					<th><spring:message code="dashboard.computer.name" /></th>
+					<th><spring:message code="dashboard.computer.introduced" /></th>
+					<th><spring:message code="dashboard.computeur.discontinued" /></th>
+					<th><spring:message code="dashboard.computer.company" /></th>
 				</tr>
 			</thead>
 			<!-- Browse attribute computers -->
@@ -100,9 +84,9 @@ s					</c:url>
 			</tbody>
 		</table>
 	</div>
-	</section>
+</section>
 
-	<footer class="navbar-fixed-bottom">
+<footer class="navbar-fixed-bottom">
 	<div class="container text-center">
 
 		<mylib:pagination currentPage="${currentPage}" limit="${limit}"
@@ -110,10 +94,10 @@ s					</c:url>
 			uriSearch="${uriSearch}" search="${search}" />
 
 	</div>
-	</footer>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/dashboard.js"></script>
+</footer>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/dashboard.js"></script>
 
 </body>
 </html>

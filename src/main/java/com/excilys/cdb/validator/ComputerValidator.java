@@ -1,5 +1,7 @@
 package com.excilys.cdb.validator;
 
+import java.time.LocalDate;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -7,11 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.dto.ComputerDTO;
+import com.excilys.cdb.util.DateFormatter;
 
 public class ComputerValidator implements ConstraintValidator<Computer, ComputerDTO> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerValidator.class);
-    private static final String REGEX = "^[0-9]{4}-[0-9]{2}-[0-9]{2}$";
 
     @Override
     public void initialize(final Computer date) {
@@ -23,34 +25,32 @@ public class ComputerValidator implements ConstraintValidator<Computer, Computer
 
         String introduced = obj.getIntroduced();
         String discontinued = obj.getDiscontinued();
-
+        //
         if (introduced.isEmpty() && discontinued.isEmpty()) {
             return true;
         }
 
+        if (!introduced.matches(DateValidator.REGEX) && !introduced.isEmpty()) {
+            return false;
+        }
+        if (!discontinued.matches(DateValidator.REGEX) && !discontinued.isEmpty()) {
+            return false;
+        }
+
         if (introduced.isEmpty() && !discontinued.isEmpty()) {
-            context.buildConstraintViolationWithTemplate("{computer.intro.null}").addConstraintViolation();
-            return false;
-        }
-
-        boolean format = true;
-        if (!introduced.matches(REGEX)) {
-            context.buildConstraintViolationWithTemplate("{date introduced format incorrect}").addConstraintViolation();
-            format = false;
-
-        }
-
-        if (!discontinued.matches(REGEX)) {
-            context.buildConstraintViolationWithTemplate("{date discontinued format incorrect}")
+            context.buildConstraintViolationWithTemplate("{addComputer.computer.intro.isNull}")
                     .addConstraintViolation();
-            format = false;
-        }
-
-        if (!format) {
             return false;
         }
-        
+
+        LocalDate intro = DateFormatter.stringtoLocalDate(introduced);
+        LocalDate discon = DateFormatter.stringtoLocalDate(discontinued);
+
+        if (intro.isAfter(discon)) {
+            context.buildConstraintViolationWithTemplate("{addComputer.computer.intro.isAfter}")
+                    .addConstraintViolation();
+        }
+
         return true;
     }
-
 }

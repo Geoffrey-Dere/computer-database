@@ -14,9 +14,17 @@ public class ErrorController {
 
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ModelAndView renderErrorPage(HttpServletRequest httpRequest) {
-         
+    public ModelAndView renderErrorPageNotFound(HttpServletRequest httpRequest) {
+
         ModelAndView errorPage = new ModelAndView("404");
+        return errorPage;
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ModelAndView renderErrorPage(HttpServletRequest httpRequest) {
+
+        ModelAndView errorPage = new ModelAndView("500");
         return errorPage;
     }
 }

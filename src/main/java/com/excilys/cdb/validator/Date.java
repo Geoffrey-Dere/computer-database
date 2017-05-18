@@ -9,15 +9,14 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-
 @Documented
-@Constraint(validatedBy = AlphanumericValidator.class)
-@Target( { ElementType.FIELD})
+@Constraint(validatedBy = DateValidator.class)
+@Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Alphanumeric {
+public @interface Date {
 
-    String message() default "{alphanumeric.error}";
-    
+    String message() default "{Date.error.format}";
+
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};

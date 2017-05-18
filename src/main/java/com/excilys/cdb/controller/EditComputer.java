@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
-import javax.validation.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +21,6 @@ import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.ServiceException;
 import com.excilys.cdb.service.impl.CompanyServiceImpl;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
 
@@ -37,9 +35,6 @@ public class EditComputer {
 
     @Autowired
     private CompanyServiceImpl companyService;
-    
-    //@Autowired
-   // private Validator getValidator;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView home(@RequestParam(value = "id") String id) {
@@ -66,17 +61,13 @@ public class EditComputer {
     public String addComputer(@Valid @ModelAttribute("computer") ComputerDTO computerDTO, BindingResult bindingResult) {
 
         LOGGER.debug("updatating object computerDTO  : {}", computerDTO);
-        
-        if(bindingResult.hasErrors()){
-            LOGGER.debug("ERREUR");
-            return "editComputer";
-        } 
-        
-        try {
-            computerService.update(ComputerMapper.mapperToModel(computerDTO));
-        } catch (ServiceException e) {
 
+        if (bindingResult.hasErrors()) {
+            return "editComputer";
         }
+
+        computerService.update(ComputerMapper.mapperToModel(computerDTO));
+
         return "redirect:/";
     }
 

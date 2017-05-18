@@ -1,26 +1,9 @@
-<%@page import="com.excilys.cdb.model.Computer"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<jsp:include page="../component/header.jsp" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<head>
-<title>Computer Database</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="css/main.css" rel="stylesheet" media="screen">
-</head>
-<body>
-	<header class="navbar navbar-inverse navbar-fixed-top">
-	<div class="container">
-		<a class="navbar-brand" href="dashboard"> Application - Computer
-			Database </a>
-	</div>
-	</header>
-	<section id="main">
+
+<section id="main">
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-8 col-xs-offset-2 box">
@@ -29,47 +12,51 @@
 				</div>
 				<h1>Edit Computer</h1>
 
-				<form:form action="editComputer" method="POST"
-					commandName="computer">
+				<form:form action="${pageContext.request.contextPath}/editComputer"
+					method="POST" commandName="computer">
 					<form:input type="hidden" path="id" id="id" name="id" />
 					<fieldset>
 						<div class="form-group">
-							<label for="computerName">Computer name</label>
+							<label for="computerName"><spring:message
+									code="addComputer.Computer.name" /></label>
 							<form:input type="text" class="form-control" id="computerName"
-								name="computerName" placeholder="Computer name" path="name" />
+								name="computerName" placeholder="${placeholderName}" path="name" />
 							<form:errors path="name" cssClass="error" />
 						</div>
 						<div class="form-group">
-							<label for="introduced">Introduced date</label>
+							<label for="introduced"><spring:message
+									code="addComputer.Computer.introduced" /></label>
 							<form:input type="date" class="form-control" id="introduced"
-								name="introduced" placeholder="Introduced date"
-								path="introduced" />
-								<form:errors path="introduced" cssClass="error" />
+								name="introduced" path="introduced"
+								placeholder='${placeholderIntroduced}' />
+							<form:errors path="introduced" cssClass="error" />
 						</div>
 						<div class="form-group">
-							<label for="discontinued">Discontinued date</label>
+							<label for="discontinued"><spring:message
+									code="addComputer.Computer.discontinued" /></label>
 							<form:input type="date" class="form-control" id="discontinued"
-								name="discontinued" placeholder="Discontinued date"
+								name="discontinued" placeholder="${placeholderDiscontinued}"
 								path="discontinued" />
 							<form:errors cssClass="error" />
 						</div>
 						<div class="form-group">
-
-
-							<label for="companyId">Company</label> <select
-								class="form-control" id="companyId" name="companyID">
-								<option value="0"
-									<c:if test="${computer.companyId eq 0}"> selected </c:if>>--</option>
+							<label for="companyId"><spring:message
+									code="addComputer.Company" /></label>
+							<form:select class="form-control" id="companyId" name="companyID"
+								path="companyId">
+								<form:option value="0">--</form:option>
 
 								<c:forEach items="${listCompany}" var="company">
-									<option value="${company.id}"
-										<c:if test="${computer.companyId eq  company.id}"> 
-										<c:out value="selected"/> 
-										</c:if>>${company.name}
-									</option>
+									<c:choose>
+										<c:when test="${computer.companyId eq  company.id}">
+											<form:option value="${company.id}">${company.name}</form:option>
+										</c:when>
+										<c:otherwise>
+											<form:option value="${company.id}">${company.name}</form:option>
+										</c:otherwise>
+									</c:choose>
 								</c:forEach>
-
-							</select>
+							</form:select>
 
 						</div>
 					</fieldset>
@@ -81,6 +68,6 @@
 			</div>
 		</div>
 	</div>
-	</section>
+</section>
 </body>
 </html>

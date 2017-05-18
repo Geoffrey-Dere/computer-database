@@ -26,14 +26,14 @@ public class DeleteComputer {
     @RequestMapping(method = RequestMethod.POST)
     public String delete(@RequestParam(value = PARAM_DELETE) String selection) {
 
+        LOGGER.info("Controller delete computer with param {}", selection);
+
         String[] tabSelection = selection.split(",");
         List<Integer> listId = new ArrayList<>(tabSelection.length);
 
         for (int i = 0; i < tabSelection.length; i++) {
-            if (isInteger(tabSelection[i])) {
+            if (isInteger(tabSelection[i]) > 0) {
                 listId.add(Integer.parseInt(tabSelection[i]));
-            } else {
-                LOGGER.debug("{} not a number", tabSelection[i]);
             }
         }
         computerService.remove(listId);
@@ -44,14 +44,13 @@ public class DeleteComputer {
      * @param s the string
      * @return boolean if he is a number
      */
-    private boolean isInteger(String s) {
+    private int isInteger(String s) {
         try {
-            Integer.parseInt(s);
+            return Integer.parseInt(s);
         } catch (NumberFormatException e) {
-            return false;
+            return -1;
         } catch (NullPointerException e) {
-            return false;
+            return -1;
         }
-        return true;
     }
 }

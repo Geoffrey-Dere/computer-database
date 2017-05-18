@@ -3,17 +3,17 @@ package com.excilys.cdb.validator;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class AlphanumericValidator implements ConstraintValidator<Alphanumeric, String> {
+public class DateValidator implements ConstraintValidator<Date, String> {
 
-      private static final String REGEX= "^[a-zA-Z0-9 ]*$";
-    
+    public static final String REGEX = "^[0-9]{4}-[0-9]{2}-[0-9]{2}$";
+
     @Override
-    public void initialize(Alphanumeric constraintAnnotation) {
+    public void initialize(Date constraintAnnotation) {
     }
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return value.matches(REGEX);
+        return value.isEmpty() || value.matches(REGEX);
     }
 
 }

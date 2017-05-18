@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,18 +36,7 @@ public class Dashboard {
     @Autowired
     private ComputerServiceImpl computerService;
 
-    @Autowired
-    private MessageSource messageSource;
-
-    // @RequestMapping(method = RequestMethod.GET)
-    // public String printHello(ModelMap model) {
-    // System.out.println("COUCOU");
-    // model.addAttribute("message", "Hello Spring MVC Framework!");
-    //
-    // return "hello";
-    // }
-
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public ModelAndView home(Locale locale,
             @RequestParam(value = URI_PAGE, required = false, defaultValue = "1") String currentPageString,
             @RequestParam(value = URI_LIMIT, required = false, defaultValue = LIMIT_DEFAULT) String limitString,
@@ -78,46 +68,6 @@ public class Dashboard {
         mv.addObject("uriLimit", URI_LIMIT);
         mv.addObject("uriSearch", URI_SEARCH);
 
-        String welcome = messageSource.getMessage("welcome.message", null, locale);
-        mv.addObject("message", welcome);
-        Locale currentLocale = LocaleContextHolder.getLocale();
-        mv.addObject("locale", currentLocale);
         return mv;
     }
-
-    // @Override
-    // protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-    // throws ServletException, IOException {
-    //
-    // String[] selection = req.getParameter("selection").split(",");
-    //
-    // List<Integer> listId = new ArrayList<>(selection.length);
-    //
-    // for (int i = 0; i < selection.length; i++) {
-    //
-    // if (isInteger(selection[i])) {
-    // listId.add(Integer.parseInt(selection[i]));
-    // } else {
-    // LOGGER.debug("{} not a number", selection[i]);
-    // }
-    // }
-    // computerService.remove(listId);
-    // doGet(req, resp);
-    // }
-    //
-    // /**
-    // * @param s the string
-    // * @return boolean if he is a number
-    // */
-    // private boolean isInteger(String s) {
-    // try {
-    // Integer.parseInt(s);
-    // } catch (NumberFormatException e) {
-    // return false;
-    // } catch (NullPointerException e) {
-    // return false;
-    // }
-    // return true;
-    // }
-
 }

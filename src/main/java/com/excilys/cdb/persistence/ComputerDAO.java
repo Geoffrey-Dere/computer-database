@@ -31,6 +31,12 @@ import com.excilys.cdb.persistence.mapper.MapperComputer;
 @Repository
 public class ComputerDAO implements DAO<Computer> {
 
+    public static final String ID = "Computer.id";
+    public static final String NAME = "Computer.name";
+    public static final String INTRODUCED = "Computer.introduced";
+    public static final String DISCONTINUED = "Computer.discontinued";
+    public static final String COMPANY_ID = "Computer.company_id";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
     private static final String SQL_FIND_BY_ID = "select * from computer  LEFT OUTER JOIN company on computer.company_id = company.id where computer.id = ? ";
     private static final String SQL_DELETE = "delete from computer where id = ? ";
@@ -40,14 +46,9 @@ public class ComputerDAO implements DAO<Computer> {
     private static final String SQL_COUNT = "select count(*) from computer";
     private static final String SQL_FIND_ALL_WITH_COMPANY = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id ";
     private static final String SQL_REGEX = "select * from computer  LEFT OUTER JOIN company on computer.company_id = company.id where computer.name like ? ";
+    private static final String SQL_COUNT_REGEX = "select count(*) from computer as Computer where " + NAME + " like ? ";
     private static final String SQL_FIND = "select * from computer LEFT OUTER JOIN company on computer.company_id = company.id  ";
     private static final String SQL_FIND_BY_COMPANY = "select id from computer where company_id = ?";
-
-    public static final String ID = "Computer.id";
-    public static final String NAME = "Computer.name";
-    public static final String INTRODUCED = "Computer.introduced";
-    public static final String DISCONTINUED = "Computer.discontinued";
-    public static final String COMPANY_ID = "Computer.company_id";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -118,8 +119,7 @@ public class ComputerDAO implements DAO<Computer> {
     public Optional<Computer> find(long id) {
 
         LOGGER.debug("find computer with id = {}", id);
-        return Optional
-                .ofNullable(this.jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new MapperComputer(), id));
+        return Optional.ofNullable(this.jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new MapperComputer(), id));
     }
 
     @Override
@@ -173,7 +173,7 @@ public class ComputerDAO implements DAO<Computer> {
                 order, regex);
 
         return this.jdbcTemplate.query(SQL_REGEX + "order by " + column + " " + order + " limit ? offset ?",
-                new MapperComputer(), regex, limit, offset);
+                new MapperComputer(), regex+"%", limit, offset);
     }
 
     /**
@@ -190,7 +190,7 @@ public class ComputerDAO implements DAO<Computer> {
      */
     public int count(String name) {
 
-        return this.jdbcTemplate.queryForObject(SQL_COUNT, Integer.class, name + "%");
+        return this.jdbcTemplate.queryForObject(SQL_COUNT_REGEX, Integer.class, name + "%");
     }
 
     /**

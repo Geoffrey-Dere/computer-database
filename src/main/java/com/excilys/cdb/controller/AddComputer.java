@@ -12,14 +12,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
-import com.excilys.cdb.service.ServiceException;
 import com.excilys.cdb.service.impl.CompanyServiceImpl;
 import com.excilys.cdb.service.impl.ComputerServiceImpl;
 
@@ -49,18 +47,12 @@ public class AddComputer {
     public String addComputer(@Valid @ModelAttribute("computerDTO") ComputerDTO computerDTO,
             BindingResult bindingResult) {
 
-        LOGGER.debug("insert new computerDTO : {}", computerDTO);
+        LOGGER.info("Controller add computer : {}", computerDTO);
 
         if (bindingResult.hasErrors()) {
-            LOGGER.debug("ERREUR");
-            return "addComputer";
+            return "redirect:/add";
         }
-
-        try {
-            computerService.add(ComputerMapper.mapperToModel(computerDTO));
-        } catch (ServiceException e) {
-            LOGGER.debug("erreur");
-        }
+        computerService.add(ComputerMapper.mapperToModel(computerDTO));
 
         return "redirect:/";
     }

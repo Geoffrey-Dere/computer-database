@@ -85,10 +85,10 @@ public class AppConfiguration extends WebMvcConfigurerAdapter {
     @Bean(name = "messageSource")
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("/i18/messages");
+        messageSource.setBasenames("/i18/dashboard", "/i18/addComputer", "/i18/editComputer");
         messageSource.setDefaultEncoding("UTF-8");
      
-     //   messageSource.setUseCodeAsDefaultMessage(true);
+       messageSource.setUseCodeAsDefaultMessage(true);
         return messageSource;
     }
 

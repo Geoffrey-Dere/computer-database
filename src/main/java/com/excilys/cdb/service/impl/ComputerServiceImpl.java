@@ -65,7 +65,6 @@ public class ComputerServiceImpl implements ComputerService {
     @Override
     public boolean add(Computer c) {
         try {
-          //  ComputerValidator.isValid(c);
             return computerDAO.create(c);
         } catch (ValidatorException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -75,7 +74,6 @@ public class ComputerServiceImpl implements ComputerService {
     @Override
     public boolean update(Computer c) {
         try {
-         //   ComputerValidator.isValid(c);
             return computerDAO.update(c);
         } catch (ValidatorException e) {
             throw new ServiceException(e.getMessage(), e);
