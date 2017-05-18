@@ -1,5 +1,6 @@
 package com.excilys.cdb.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.excilys.cdb.model.Computer;
@@ -49,5 +50,13 @@ public interface ComputerService {
      * @return the pager with the companies
      */
     Pager<Computer> getPage(long limit, long offset, String column, String order);
+
+    void remove(List<Integer> listId);
+
+    int count();
+
+    Pager<Computer> getPage(long limit, long l, String regex, String column, String order);
+
+    int count(String regex);
 
 }

@@ -20,11 +20,11 @@ public class ErrorController {
         return errorPage;
     }
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ModelAndView renderErrorPage(HttpServletRequest httpRequest) {
-
-        ModelAndView errorPage = new ModelAndView("500");
-        return errorPage;
-    }
+//    @ExceptionHandler(Exception.class)
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    public ModelAndView renderErrorPage(HttpServletRequest httpRequest) {
+//
+//        ModelAndView errorPage = new ModelAndView("500");
+//        return errorPage;
+//    }
 }

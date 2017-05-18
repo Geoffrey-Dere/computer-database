@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.excilys.cdb.service.impl.ComputerServiceImpl;
+import com.excilys.cdb.service.ComputerService;
 
 @Controller
 @RequestMapping("/deleteComputer")
@@ -21,7 +21,7 @@ public class DeleteComputer {
     private static final String PARAM_DELETE = "selection";
 
     @Autowired
-    private ComputerServiceImpl computerService;
+    private ComputerService computerService;
 
     @RequestMapping(method = RequestMethod.POST)
     public String delete(@RequestParam(value = PARAM_DELETE) String selection) {

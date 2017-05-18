@@ -21,8 +21,8 @@ import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.impl.CompanyServiceImpl;
-import com.excilys.cdb.service.impl.ComputerServiceImpl;
+import com.excilys.cdb.service.CompanyService;
+import com.excilys.cdb.service.ComputerService;
 
 @Controller
 @RequestMapping(value = "/editComputer")
@@ -31,10 +31,10 @@ public class EditComputer {
     private static final Logger LOGGER = LoggerFactory.getLogger(EditComputer.class);
 
     @Autowired
-    private ComputerServiceImpl computerService;
+    private ComputerService computerService;
 
     @Autowired
-    private CompanyServiceImpl companyService;
+    private CompanyService companyService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView home(@RequestParam(value = "id") String id) {

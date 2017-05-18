@@ -5,19 +5,16 @@ import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Pager;
-import com.excilys.cdb.service.impl.ComputerServiceImpl;
+import com.excilys.cdb.service.ComputerService;
 
 @Controller
 @RequestMapping(value = { "/", "dashboard" })
@@ -34,7 +31,7 @@ public class Dashboard {
     private static final String COLUMN_ORDER = "computer.name";
 
     @Autowired
-    private ComputerServiceImpl computerService;
+    private ComputerService computerService;
 
     @GetMapping
     public ModelAndView home(Locale locale,

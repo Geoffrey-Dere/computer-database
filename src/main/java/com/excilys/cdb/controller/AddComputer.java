@@ -18,8 +18,8 @@ import com.excilys.cdb.dto.ComputerDTO;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
-import com.excilys.cdb.service.impl.CompanyServiceImpl;
-import com.excilys.cdb.service.impl.ComputerServiceImpl;
+import com.excilys.cdb.service.CompanyService;
+import com.excilys.cdb.service.ComputerService;
 
 @Controller
 @RequestMapping("/add")
@@ -28,9 +28,9 @@ public class AddComputer {
     private static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
 
     @Autowired
-    private ComputerServiceImpl computerService;
+    private ComputerService computerService;
     @Autowired
-    private CompanyServiceImpl companyService;
+    private CompanyService companyService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView homee() {
