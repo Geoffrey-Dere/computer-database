@@ -1,11 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.excilys.computerDatabase</groupId>
+	<groupId>com.excilys.cdb</groupId>
 	<artifactId>computerDatabase</artifactId>
 	<name>computerDatabase Maven Webapp</name>
 	<url>http://maven.apache.org</url>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
 	<version>5.0.0-RELEASE</version>
 
 
@@ -39,6 +39,8 @@
 		<hibernate.validator.version>5.4.1.Final</hibernate.validator.version>
 		<javax.validation.version>1.1.0.Final</javax.validation.version>
 	</properties>
+
+<dependencyManagement>
 
 	<dependencies>
 		<dependency>
@@ -187,6 +189,8 @@
 
 
 	</dependencies>
+	
+	</dependencyManagement>
 
 	<build>
 		<pluginManagement>
@@ -223,7 +227,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- cCobertura -->
+			<!-- Cobertura -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
@@ -260,4 +264,10 @@
 		</plugins>
 	</reporting>
 
+  <modules>
+    <module>computerDatabase-core</module>
+    <module>computerDatabase-persistence</module>
+    <module>computerDatabase-webapp</module>
+    <module>computerDatabase-service</module>
+  </modules>
 </project>
