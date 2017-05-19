@@ -59,7 +59,7 @@ public class AppConfiguration extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/js/**", "/css/**", "/fonts/**", "/i18/**")
                 .addResourceLocations("/js/", "/css/", "/fonts/", "/i18/").setCachePeriod(3600).resourceChain(true)
                 .addResolver(new PathResourceResolver());
-        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+        // registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
     /**

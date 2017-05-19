@@ -2,9 +2,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="mylib" uri="../mylib.tld"%>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <spring:message code="dashboard.placeholder.search"
 	var="placeholderSearch" />
 <spring:message code="dashboard.button.filter" var="buttonFilter" />
@@ -95,8 +94,6 @@ s					</c:url>
 
 	</div>
 </footer>
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
 <script src="js/dashboard.js"></script>
 
 </body>
