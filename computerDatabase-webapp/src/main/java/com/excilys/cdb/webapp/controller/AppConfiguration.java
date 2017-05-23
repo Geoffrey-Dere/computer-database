@@ -1,4 +1,4 @@
-package com.excilys.cdb.controller;
+package com.excilys.cdb.webapp.controller;
 
 import java.util.Locale;
 
@@ -23,8 +23,8 @@ import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
 @Configuration
-@Import(value = { com.excilys.cdb.service.AppConfiguration.class })
-@ComponentScan(basePackages = "com.excilys.cdb.controller")
+@Import(value = { com.excilys.cdb.service.AppConfiguration.class, com.excilys.cdb.persistence.AppConfiguration.class })
+@ComponentScan(basePackages = "com.excilys.cdb.webapp")
 public class AppConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean

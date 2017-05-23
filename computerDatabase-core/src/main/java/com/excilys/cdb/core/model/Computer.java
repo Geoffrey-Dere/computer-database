@@ -1,48 +1,30 @@
-package com.excilys.cdb.model;
+package com.excilys.cdb.core.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "computer")
-public class Computer implements Serializable {
+public class Computer implements Serializable{
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private long id;
 
     /**
      * the name of the computer.
      */
-
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "introduced")
+    /**
+     * the date that the computer was introduced, can be null.
+     */
     private LocalDate introduced = null;
 
-    @Column(name = "discontinued")
+    /**
+     * the date that the computer was introduced, can be null only if the date.
+     * it was introduced is also null.
+     */
     private LocalDate discontinued = null;
 
-    @ManyToOne(targetEntity = Company.class)
-    @JoinColumn(name = "company_id", referencedColumnName = "id")
     private Company company;
 
     /**

@@ -1,4 +1,4 @@
-package com.excilys.cdb.controller;
+package com.excilys.cdb.webapp.controller;
 
 import java.util.List;
 
@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.excilys.cdb.dto.ComputerDTO;
-import com.excilys.cdb.mapper.CompanyMapper;
-import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.webapp.dto.ComputerDTO;
+import com.excilys.cdb.webapp.mapper.CompanyMapper;
+import com.excilys.cdb.webapp.mapper.ComputerMapper;
 
 @Controller
 @RequestMapping("/add")

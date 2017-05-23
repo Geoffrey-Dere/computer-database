@@ -1,4 +1,4 @@
-package com.excilys.cdb.validator;
+package com.excilys.cdb.webapp.validator;
 
 public class ValidatorException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package com.excilys.cdb.controller;
+package com.excilys.cdb.webapp.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.excilys.cdb.dto.ComputerDTO;
-import com.excilys.cdb.mapper.CompanyMapper;
-import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.webapp.dto.ComputerDTO;
+import com.excilys.cdb.webapp.mapper.CompanyMapper;
+import com.excilys.cdb.webapp.mapper.ComputerMapper;
 
 @Controller
 @RequestMapping(value = "/editComputer")

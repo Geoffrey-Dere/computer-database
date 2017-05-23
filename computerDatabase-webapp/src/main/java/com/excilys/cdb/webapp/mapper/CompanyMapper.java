@@ -1,10 +1,10 @@
-package com.excilys.cdb.mapper;
+package com.excilys.cdb.webapp.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.cdb.dto.CompanyDTO;
 import com.excilys.cdb.model.Company;
+import com.excilys.cdb.webapp.dto.CompanyDTO;
 
 public class CompanyMapper {
 

@@ -10,10 +10,17 @@
 		</layout>
 	</appender>
 
-	<logger name="com.excilys.cdb.*" level="debug"
+	<logger name="com.excilys.cdb.core" level="debug"
 		additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
+    
+       <logger
+        name="o.h.engine.internal.TwoPhaseLoad"
+        level="info">
+        <appender-ref ref="STDOUT" />
+    </logger>
+        
 
 	<root level="debug">
 		<appender-ref ref="STDOUT" />

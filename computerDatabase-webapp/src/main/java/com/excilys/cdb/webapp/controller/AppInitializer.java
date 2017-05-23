@@ -1,4 +1,4 @@
-package com.excilys.cdb.controller;
+package com.excilys.cdb.webapp.controller;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

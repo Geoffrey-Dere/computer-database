@@ -1,4 +1,4 @@
-package com.excilys.cdb.controller;
+package com.excilys.cdb.webapp.controller;
 
 import java.util.Locale;
 
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Pager;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.webapp.mapper.ComputerMapper;
 
 @Controller
 @RequestMapping(value = { "/", "dashboard" })
@@ -28,7 +28,7 @@ public class Dashboard {
     private static final String URI_ORDER = "order";
     private static final String ORDER_DEFAULT = "ASC";
     private static final String URI_COLUMN = "column";
-    private static final String COLUMN_ORDER = "computer.name";
+    private static final String COLUMN_ORDER = "name";
 
     @Autowired
     private ComputerService computerService;

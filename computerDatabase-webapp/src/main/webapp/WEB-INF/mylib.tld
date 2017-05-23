@@ -6,7 +6,7 @@
 	<uri>/WEB-INF/</uri>
 	<tag>
 		<name>pagination</name>
-		<tag-class>com.excilys.cdb.controller.PaginationTag</tag-class>
+		<tag-class>com.excilys.cdb.webapp.controller.PaginationTag</tag-class>
 		<body-content>empty</body-content>
 
 		<attribute>

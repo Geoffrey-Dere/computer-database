@@ -3,58 +3,56 @@ package com.excilys.cdb.persistence;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.cdb.model.Company;
-import com.excilys.cdb.persistence.mapper.MapperCompany;
 
 @Repository
-public class CompanyDAO implements DAO<Company> {
+public class CompanyDAO {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
 
-    private static final String SQL_FIND_ALL = "select * from company ;";
-    private static final String SQL_FIND_BY_ID = "select * from company where id = ? ;";
-    private static final String SQL_DELETE = "delete from company where id = ? ";
+    @PersistenceContext(name = "entityManagerFactory")
+    EntityManager em;
 
-    public static final String ID = "Company.id";
-    public static final String NAME = "Company.name";
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    @Override
-    public boolean create(Company obj) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(Company obj) {
-        LOGGER.debug("delete company {}", obj.toString());
-        return this.jdbcTemplate.update(SQL_DELETE, obj.getId()) == 1;
-    }
-
-    @Override
-    public boolean update(Company obj) {
-        return false;
-    }
-
-    @Override
     public Optional<Company> find(long id) {
 
         LOGGER.debug("find company with id = {}", id);
-        return Optional
-                .ofNullable(this.jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new MapperCompany(), String.valueOf(id)));
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Company> cq = builder.createQuery(Company.class);
+        Root<Company> r = cq.from(Company.class);
+        cq.where(r.get("id").in(id));
+
+        return Optional.ofNullable(em.createQuery(cq).getSingleResult());
     }
 
-    @Override
     public List<Company> findAll() {
 
         LOGGER.debug("find all companies");
-        return this.jdbcTemplate.query(SQL_FIND_ALL, new MapperCompany());
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Company> cq = builder.createQuery(Company.class);
+        Root<Company> r = cq.from(Company.class);
+
+        return em.createQuery(cq).getResultList();
+    }
+
+    public boolean delete(Company obj) {
+
+        LOGGER.debug("delete company {}", obj.toString());
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaDelete<Company> delete = builder.createCriteriaDelete(Company.class);
+        Root<Company> r = delete.from(Company.class);
+        delete.where(r.get("id").in(obj.getId()));
+
+        return em.createQuery(delete).executeUpdate() == 1;
     }
 }

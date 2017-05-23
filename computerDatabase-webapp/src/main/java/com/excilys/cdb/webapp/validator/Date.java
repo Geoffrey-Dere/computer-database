@@ -1,4 +1,4 @@
-package com.excilys.cdb.validator;
+package com.excilys.cdb.webapp.validator;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

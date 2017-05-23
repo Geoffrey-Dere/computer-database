@@ -1,34 +1,25 @@
-package com.excilys.cdb.model;
+package com.excilys.cdb.core.model;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  * Class company <br/>
  * . Represents a company
+ * @author Geoffrey
  */
-
-@Entity
-@Table(name = "company")
 public class Company implements Serializable {
 
     /**
-     * 
+     * the id of the company.
      */
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @Column(name = "id")
     private long id;
 
-    @Column(name = "name")
+    /**
+     * the name of the company.
+     */
     private String name;
 
-    /**
+   /**
     */
     public Company() {
 
