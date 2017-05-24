@@ -1,4 +1,4 @@
-package com.excilys.cdb.webapp.controller;
+package com.excilys.cdb.webapp.config;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -7,7 +7,6 @@ import javax.servlet.ServletRegistration.Dynamic;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
-
 
 public class AppInitializer implements WebApplicationInitializer {
 

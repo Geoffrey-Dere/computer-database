@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.excilys.cdb.model.Role;
 import com.excilys.cdb.model.User;
 import com.excilys.cdb.persistence.UserDAO;
+import com.excilys.cdb.service.UserAuthenticated;
 
 @Service
 public class MemberServiceImpl implements UserDetailsService {
@@ -39,16 +40,14 @@ public class MemberServiceImpl implements UserDetailsService {
         }
 
         User user = member.get();
-        LOGGER.debug("test = " + user.getRole());
-        HashSet<GrantedAuthority> h = new HashSet<GrantedAuthority>();
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (Role r : user.getRole())
             authorities.add(new SimpleGrantedAuthority(r.getRole().toUpperCase()));
-        
-        LOGGER.debug("test2 = " + authorities);
 
-        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), authorities);
+        UserAuthenticated userAuth = new UserAuthenticated(user.getName(), user.getPassword(), true, true, true,
+                authorities);
+
+        return userAuth;
     }
-
 }

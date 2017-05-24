@@ -18,6 +18,31 @@
 	<div class="container">
 		<a class="navbar-brand" href="dashboard"> Application - Computer
 			Database </a>
+
+		<ul class="nav navbar-nav navbar-right">
+			<c:choose>
+				<c:when test="${isUserLogged eq  false}">
+					<li><a href="#"><span class="glyphicon glyphicon-user"></span>
+							Sign Up</a></li>
+					<li><a href="login"><span
+							class="glyphicon glyphicon-log-in"></span> <spring:message
+								code="dashboard.login" /></a></li>
+				</c:when>
+				<c:otherwise>
+
+					<li class="dropdown"><a class="dropdown-toggle"
+						data-toggle="dropdown" href="#"> ${user.username} <span
+							class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="logout"><span
+							class="glyphicon glyphicon-log-out"></span> <spring:message
+								code="dashboard.logout" /></a></li>
+						</ul>
+				</c:otherwise>
+			</c:choose>
+		</ul>
+
+
 	</div>
 	</header>
 

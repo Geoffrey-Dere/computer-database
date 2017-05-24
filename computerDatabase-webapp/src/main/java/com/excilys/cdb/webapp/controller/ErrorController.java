@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+@EnableWebMvc
 @ControllerAdvice
 public class ErrorController {
 
@@ -24,6 +26,7 @@ public class ErrorController {
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ModelAndView renderErrorAccessDenied(HttpServletRequest httpRequest) {
+        System.out.println("testtttttt");
 
         ModelAndView errorPage = new ModelAndView("403");
         return errorPage;

@@ -9,11 +9,12 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class Login {
 
-    @RequestMapping(method = RequestMethod.GET, value = "/login")
+    @RequestMapping(value = "/login")
     public String login() {
         return "login";
     }
@@ -24,6 +25,22 @@ public class Login {
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "/dashboard";
+        return "/login";
     }
+
+    public static boolean isUserLogged() {
+        try {
+            return !SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser");
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @RequestMapping(value = "/403")
+    public ModelAndView renderErrorAccessDenied(HttpServletRequest httpRequest) {
+
+        ModelAndView errorPage = new ModelAndView("403");
+        return errorPage;
+    }
+
 }

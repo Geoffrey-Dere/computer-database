@@ -33,8 +33,8 @@ public class AddComputer {
     private ComputerService computerService;
     @Autowired
     private CompanyService companyService;
-
-    @PreAuthorize("hasAuthority('ADMIN')")
+    
+   // @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView homee() {
 

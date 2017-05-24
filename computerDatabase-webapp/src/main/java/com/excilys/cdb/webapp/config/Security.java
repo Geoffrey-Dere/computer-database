@@ -1,4 +1,4 @@
-package com.excilys.cdb.webapp.controller;
+package com.excilys.cdb.webapp.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -46,11 +46,13 @@ public class Security extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests().antMatchers("/ressources/**", "/i18/**", "/js/**", "/fonts/**", "/css/**").permitAll()
-                .antMatchers("/","/dashboard").permitAll()
-               // .antMatchers("/add").access("hasAuthority('ADMIN')")
+        .antMatchers("/login*").anonymous()
+        .anyRequest().authenticated()
+                .antMatchers("dashboard","/add", "/editComputer").access("hasAuthority('ADMIN') ")
                 .anyRequest().authenticated()
-                .and().formLogin().loginPage("/login").permitAll()
-                .and().logout().permitAll();
+                .and().formLogin().loginPage("/login").defaultSuccessUrl("/dashboard")
+                .and().logout().logoutSuccessUrl("/login")
+                .and().exceptionHandling().accessDeniedPage("/403");
     }
 
 }
