@@ -33,7 +33,6 @@ public class ComputerDAO implements DAO<Computer> {
 
         em.persist(obj);
         em.flush();
-        em.refresh(obj);
         return true;
     }
 

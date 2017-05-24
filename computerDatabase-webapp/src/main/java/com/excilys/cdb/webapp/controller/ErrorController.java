@@ -3,6 +3,7 @@ package com.excilys.cdb.webapp.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -20,11 +21,19 @@ public class ErrorController {
         return errorPage;
     }
 
-//    @ExceptionHandler(Exception.class)
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public ModelAndView renderErrorPage(HttpServletRequest httpRequest) {
-//
-//        ModelAndView errorPage = new ModelAndView("500");
-//        return errorPage;
-//    }
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ModelAndView renderErrorAccessDenied(HttpServletRequest httpRequest) {
+
+        ModelAndView errorPage = new ModelAndView("403");
+        return errorPage;
+    }
+
+    // @ExceptionHandler(Exception.class)
+    // @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    // public ModelAndView renderErrorPage(HttpServletRequest httpRequest) {
+    //
+    // ModelAndView errorPage = new ModelAndView("500");
+    // return errorPage;
+    // }
 }

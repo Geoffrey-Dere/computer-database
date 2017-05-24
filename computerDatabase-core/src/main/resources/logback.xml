@@ -1,29 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-		<layout class="ch.qos.logback.classic.PatternLayout">
-			<Pattern>
-				%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} -
-				%msg%n
-			</Pattern>
-		</layout>
-	</appender>
+    <appender
+        name="STDOUT"
+        class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} -%msg%n
+            </Pattern>
+        </layout>
+    </appender>
 
-	<logger name="com.excilys.cdb.core" level="debug"
-		additivity="false">
-		<appender-ref ref="STDOUT" />
-	</logger>
-    
-       <logger
-        name="o.h.engine.internal.TwoPhaseLoad"
-        level="info">
+    <appender
+        name="FILE"
+        class="ch.qos.logback.core.FileAppender">
+        <file>
+            ${user.home}/logs/ComputerDatabase-log.log
+        </file>
+        <append>true</append>
+        <encoder>
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level
+                %logger{36} -
+                %msg%n
+            </Pattern>
+        </encoder>
+    </appender>
+
+    <logger
+        name="com.excilys"
+        level="debug"
+        additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
-        
 
-	<root level="debug">
-		<appender-ref ref="STDOUT" />
-	</root>
+    <logger
+        name="com.zaxxer.hikari"
+        level="debug"
+        additivity="false">
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <root level="DEBUG">
+        <appender-ref ref="FILE" />
+    </root>
+
 
 </configuration>

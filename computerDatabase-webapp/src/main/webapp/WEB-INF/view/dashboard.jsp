@@ -9,6 +9,8 @@
 <spring:message code="dashboard.button.filter" var="buttonFilter" />
 
 
+
+
 <section id="main">
 	<div class="container">
 		<h1 id="homeTitle">${fn:length(listComputer)}
