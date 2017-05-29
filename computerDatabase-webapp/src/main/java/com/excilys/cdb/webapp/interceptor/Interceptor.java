@@ -16,18 +16,18 @@ public class Interceptor extends HandlerInterceptorAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Interceptor.class);
 
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-            ModelAndView modelAndView) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+            throws Exception {
 
         if (Login.isUserLogged()) {
-            LOGGER.debug("ICIIIII...");
+            LOGGER.debug("user is connected");
             Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (object instanceof UserAuthenticated) {
-                LOGGER.debug("ICIIIII");
-                modelAndView.addObject("user", object);
+                request.setAttribute("user", object);
             }
         }
-        modelAndView.addObject("isUserLogged", Login.isUserLogged());
+        request.setAttribute("isUserLogged", Login.isUserLogged());
+
+        return true;
     }
 }

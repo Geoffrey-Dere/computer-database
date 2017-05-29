@@ -53,7 +53,7 @@ public class TestAddComputer {
         WebElement buttonAdd = driver.findElement(By.id("submit"));
         inputName.sendKeys("name is valid");
         buttonAdd.click();
-        assertEquals(driver.getCurrentUrl(), baseUrl + "/?isUserLogged=true");
+        assertEquals(driver.getCurrentUrl(), baseUrl + "/");
     }
     
     private static void login(){
