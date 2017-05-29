@@ -14,7 +14,6 @@ import org.springframework.security.web.authentication.www.DigestAuthenticationF
 
 @EnableWebSecurity
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class Security extends WebSecurityConfigurerAdapter {
 
     @Autowired
