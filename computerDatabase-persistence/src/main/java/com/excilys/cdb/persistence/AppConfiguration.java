@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -49,6 +48,9 @@ public class AppConfiguration {
         }
     }
 
+    /**
+     * @return LocalContainerEntityManagerFactoryBean
+     */
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -61,6 +63,10 @@ public class AppConfiguration {
         return em;
     }
 
+    /**
+     * @param entityManagerFactory eneityManagerFactory
+     * @return the Jpa transaction
+     */
     @Bean
     @Autowired
     public JpaTransactionManager txManager(final EntityManagerFactory entityManagerFactory) {

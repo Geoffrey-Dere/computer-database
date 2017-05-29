@@ -11,13 +11,22 @@ import javax.validation.Payload;
 
 @Documented
 @Constraint(validatedBy = ComputerValidator.class)
-@Target( { ElementType.TYPE})
+@Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Computer {
 
+    /**
+     * @return the message
+     */
     String message() default "";
-    
+
+    /**
+     * @return table of class
+     */
     Class<?>[] groups() default {};
 
+    /**
+     * @return class
+     */
     Class<? extends Payload>[] payload() default {};
 }

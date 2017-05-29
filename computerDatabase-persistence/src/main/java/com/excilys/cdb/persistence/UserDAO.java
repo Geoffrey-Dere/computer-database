@@ -24,6 +24,10 @@ public class UserDAO {
     @PersistenceContext(name = "entityManagerFactory")
     EntityManager em;
 
+    /**
+     * @param obj the user
+     * @return true if the user has been added
+     */
     public boolean create(User obj) {
 
         LOGGER.debug("inserting new user {}", obj);
@@ -32,6 +36,10 @@ public class UserDAO {
         return true;
     }
 
+    /**
+     * @param name name of the user
+     * @return the user
+     */
     public Optional<User> find(String name) {
 
         LOGGER.debug("find user with name = {}", name);
@@ -48,6 +56,10 @@ public class UserDAO {
         }
     }
 
+    /**
+     * @param user user
+     * @return true if the user exist in the database
+     */
     public boolean exist(User user) {
 
         CriteriaBuilder builder = em.getCriteriaBuilder();

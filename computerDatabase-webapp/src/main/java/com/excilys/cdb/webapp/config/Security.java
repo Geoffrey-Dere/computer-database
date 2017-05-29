@@ -20,11 +20,18 @@ public class Security extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    /**
+     * @param auth AuthenticationManagerBuilder
+     * @throws Exception exception
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
     }
 
+    /**
+     * @return DigestAuthenticationEntryPoint
+     */
     @Bean
     public DigestAuthenticationEntryPoint digestEntryPoint() {
         DigestAuthenticationEntryPoint digestAuthenticationEntryPoint = new DigestAuthenticationEntryPoint();
@@ -33,6 +40,10 @@ public class Security extends WebSecurityConfigurerAdapter {
         return digestAuthenticationEntryPoint;
     }
 
+    /**
+     * @param digestAuthenticationEntryPoint digestAuthenticationEntryPoint
+     * @return DigestAuthenticationFilte
+     */
     @Bean
     public DigestAuthenticationFilter digestAuthenticationFilter(
             DigestAuthenticationEntryPoint digestAuthenticationEntryPoint) {
@@ -46,12 +57,9 @@ public class Security extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests().antMatchers("/ressources/**", "/i18/**", "/js/**", "/fonts/**", "/css/**").permitAll()
-        .antMatchers("/login*").anonymous()
-        .anyRequest().authenticated()
-                .antMatchers("dashboard","/add", "/editComputer").access("hasAuthority('ADMIN') ")
-                .anyRequest().authenticated()
-                .and().formLogin().loginPage("/login").defaultSuccessUrl("/dashboard")
-                .and().logout()
+                .antMatchers("/login*").anonymous().anyRequest().authenticated()
+                .antMatchers("dashboard", "/add", "/editComputer").access("hasAuthority('ADMIN') ").anyRequest()
+                .authenticated().and().formLogin().loginPage("/login").defaultSuccessUrl("/dashboard").and().logout()
                 .and().exceptionHandling().accessDeniedPage("/403");
     }
 

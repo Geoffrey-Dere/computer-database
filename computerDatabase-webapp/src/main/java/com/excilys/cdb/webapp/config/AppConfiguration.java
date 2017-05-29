@@ -29,6 +29,9 @@ import com.excilys.cdb.webapp.interceptor.Test;
 @ComponentScan(basePackages = "com.excilys.cdb.webapp")
 public class AppConfiguration extends WebMvcConfigurerAdapter {
 
+    /**
+     * @return the view resolver
+     */
     @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -39,6 +42,9 @@ public class AppConfiguration extends WebMvcConfigurerAdapter {
         return viewResolver;
     }
 
+    /**
+     * @return the message source
+     */
     @Bean(name = "messageSource")
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();

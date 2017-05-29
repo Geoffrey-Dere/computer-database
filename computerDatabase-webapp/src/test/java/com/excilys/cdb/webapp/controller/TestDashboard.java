@@ -54,5 +54,4 @@ public class TestDashboard {
         driver.findElement(By.id("password")).sendKeys("admin");
         driver.findElement(By.id("submit")).click();
     }
-
 }

@@ -33,6 +33,15 @@ public class Dashboard {
     @Autowired
     private ComputerService computerService;
 
+    /**
+     * @param locale locale
+     * @param currentPageString currentPage
+     * @param limitString limit
+     * @param regex regex
+     * @param order order
+     * @param column column
+     * @return the page dashboard
+     */
     @GetMapping
     public ModelAndView home(Locale locale,
             @RequestParam(value = URI_PAGE, required = false, defaultValue = "1") String currentPageString,

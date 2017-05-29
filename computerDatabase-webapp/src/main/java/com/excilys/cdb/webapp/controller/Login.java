@@ -28,6 +28,9 @@ public class Login {
         return "/login";
     }
 
+    /**
+     * @return true if the user is logged
+     */
     public static boolean isUserLogged() {
         try {
             return !SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser");

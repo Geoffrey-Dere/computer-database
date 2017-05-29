@@ -4,11 +4,15 @@ public class UserDTO {
     private String name;
     private String password;
 
-    // private List<String> roles;
-
+    /**
+     */
     public UserDTO() {
     }
 
+    /**
+     * @param name name
+     * @param password password
+     */
     public UserDTO(String name, String password) {
         this.name = name;
         this.password = password;
@@ -49,6 +53,15 @@ public class UserDTO {
         UserDTO user2 = (UserDTO) obj;
 
         return name.equals(user2.name);
+    }
+
+    @Override
+    public int hashCode() {
+
+        final int prime = 73;
+        int result = 1;
+        result = prime * result + (name == null ? 0 : name.hashCode());
+        return result;
     }
 
 }

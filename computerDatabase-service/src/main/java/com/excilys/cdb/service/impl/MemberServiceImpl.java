@@ -1,7 +1,6 @@
 package com.excilys.cdb.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,8 +41,9 @@ public class MemberServiceImpl implements UserDetailsService {
         User user = member.get();
 
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Role r : user.getRole())
+        for (Role r : user.getRole()) {
             authorities.add(new SimpleGrantedAuthority(r.getRole().toUpperCase()));
+        }
 
         UserAuthenticated userAuth = new UserAuthenticated(user.getName(), user.getPassword(), true, true, true,
                 authorities);

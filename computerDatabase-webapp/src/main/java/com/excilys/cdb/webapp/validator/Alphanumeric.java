@@ -9,16 +9,24 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-
 @Documented
 @Constraint(validatedBy = AlphanumericValidator.class)
-@Target( { ElementType.FIELD})
+@Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Alphanumeric {
 
+    /**
+     * @return the message
+     */
     String message() default "{alphanumeric.error}";
-    
+
+    /**
+     * @return table of class
+     */
     Class<?>[] groups() default {};
 
+    /**
+     * @return class
+     */
     Class<? extends Payload>[] payload() default {};
 }

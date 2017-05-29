@@ -5,8 +5,8 @@ import javax.validation.ConstraintValidatorContext;
 
 public class AlphanumericValidator implements ConstraintValidator<Alphanumeric, String> {
 
-      private static final String REGEX= "^[a-zA-Z0-9 ]*$";
-    
+    private static final String REGEX = "^[a-zA-Z0-9 ]*$";
+
     @Override
     public void initialize(Alphanumeric constraintAnnotation) {
     }

@@ -11,20 +11,15 @@ import com.excilys.cdb.webapp.validator.Date;
 public class ComputerDTO {
 
     private long id;
-    
-    @Size(min=6, max=15, message ="{size.name}")
+    @Size(min = 6, max = 15, message = "{size.name}")
     @Alphanumeric
     private String name;
-    
     @Date
     private String introduced = "";
-    
     @Date
     private String discontinued = "";
-    
     @Min(0)
     private long companyId;
-    
     private String companyName = "";
 
     /**

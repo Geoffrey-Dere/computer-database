@@ -15,6 +15,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ControllerAdvice
 public class ErrorController {
 
+    /**
+     * @param httpRequest httpRequest
+     * @return the error page 404
+     */
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView renderErrorPageNotFound(HttpServletRequest httpRequest) {
@@ -23,6 +27,10 @@ public class ErrorController {
         return errorPage;
     }
 
+    /**
+     * @param httpRequest httpRequest
+     * @return the error page 403
+     */
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ModelAndView renderErrorAccessDenied(HttpServletRequest httpRequest) {
@@ -32,11 +40,15 @@ public class ErrorController {
         return errorPage;
     }
 
-    // @ExceptionHandler(Exception.class)
-    // @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    // public ModelAndView renderErrorPage(HttpServletRequest httpRequest) {
-    //
-    // ModelAndView errorPage = new ModelAndView("500");
-    // return errorPage;
-    // }
+    /**
+     * @param httpRequest httpRequest
+     * @return the error page 500
+     */
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ModelAndView renderErrorPage(HttpServletRequest httpRequest) {
+
+        ModelAndView errorPage = new ModelAndView("500");
+        return errorPage;
+    }
 }

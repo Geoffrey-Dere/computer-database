@@ -23,13 +23,17 @@ public class User {
     @Column(name = "password")
     private String password;
     @OneToMany(mappedBy = "user")
-    private Collection<Role> role ; 
+    private Collection<Role> role;
 
-    // private List<String> roles;
-
+    /**
+     */
     public User() {
     }
 
+    /**
+     * @param name name
+     * @param password password
+     */
     public User(String name, String password) {
         this.name = name;
         this.password = password;
@@ -78,5 +82,15 @@ public class User {
         User user2 = (User) obj;
 
         return name.equals(user2.name);
+    }
+
+    @Override
+    public int hashCode() {
+
+        final int prime = 73;
+        int result = 1;
+        result = prime * result + (name == null ? 0 : name.hashCode());
+        result = prime * result + (password == null ? 0 : password.hashCode());
+        return result;
     }
 }

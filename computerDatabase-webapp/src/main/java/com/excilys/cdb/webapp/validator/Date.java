@@ -15,9 +15,18 @@ import javax.validation.Payload;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Date {
 
+    /**
+     * @return the message
+     */
     String message() default "{Date.error.format}";
 
+    /**
+     * @return table of class
+     */
     Class<?>[] groups() default {};
 
+    /**
+     * @return class
+     */
     Class<? extends Payload>[] payload() default {};
 }

@@ -24,6 +24,10 @@ public class CompanyDAO {
     @PersistenceContext(name = "entityManagerFactory")
     EntityManager em;
 
+    /**
+     * @param id id of the company
+     * @return the company
+     */
     public Optional<Company> find(long id) {
 
         LOGGER.debug("find company with id = {}", id);
@@ -35,6 +39,9 @@ public class CompanyDAO {
         return Optional.ofNullable(em.createQuery(cq).getSingleResult());
     }
 
+    /**
+     * @return all companies
+     */
     public List<Company> findAll() {
 
         LOGGER.debug("find all companies");
@@ -45,6 +52,10 @@ public class CompanyDAO {
         return em.createQuery(cq).getResultList();
     }
 
+    /**
+     * @param obj the company
+     * @return true if the company has been deleted
+     */
     public boolean delete(Company obj) {
 
         LOGGER.debug("delete company {}", obj.toString());

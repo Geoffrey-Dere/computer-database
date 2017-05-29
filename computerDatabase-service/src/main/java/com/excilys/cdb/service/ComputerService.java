@@ -6,8 +6,6 @@ import java.util.Optional;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Pager;
 
-
-
 public interface ComputerService {
 
     /**
@@ -53,12 +51,30 @@ public interface ComputerService {
      */
     Pager<Computer> getPage(long limit, long offset, String column, String order);
 
+    /**
+     * @param listId list of id
+     */
     void remove(List<Integer> listId);
 
+    /**
+     * @return the number of computers
+     */
     int count();
 
+    /**
+     * @param limit limit
+     * @param l l
+     * @param regex regex
+     * @param column column
+     * @param order order
+     * @return the pager
+     */
     Pager<Computer> getPage(long limit, long l, String regex, String column, String order);
 
+    /**
+     * @param regex regex
+     * @return le number of computers
+     */
     int count(String regex);
 
 }

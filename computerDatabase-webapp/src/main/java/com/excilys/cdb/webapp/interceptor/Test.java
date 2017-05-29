@@ -14,7 +14,7 @@ import com.excilys.cdb.webapp.controller.Login;
 
 public class Test extends HandlerInterceptorAdapter {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(Test.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Test.class);
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
