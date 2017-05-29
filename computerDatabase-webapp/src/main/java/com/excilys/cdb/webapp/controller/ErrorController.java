@@ -39,16 +39,16 @@ public class ErrorController {
         ModelAndView errorPage = new ModelAndView("403");
         return errorPage;
     }
-
-    /**
-     * @param httpRequest httpRequest
-     * @return the error page 500
-     */
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ModelAndView renderErrorPage(HttpServletRequest httpRequest) {
-
-        ModelAndView errorPage = new ModelAndView("500");
-        return errorPage;
-    }
+//
+//    /**
+//     * @param httpRequest httpRequest
+//     * @return the error page 500
+//     */
+//    @ExceptionHandler(Exception.class)
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    public ModelAndView renderErrorPage(HttpServletRequest httpRequest) {
+//
+//        ModelAndView errorPage = new ModelAndView("500");
+//        return errorPage;
+//    }
 }

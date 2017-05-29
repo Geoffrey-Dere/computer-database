@@ -20,7 +20,6 @@ public class Interceptor extends HandlerInterceptorAdapter {
             throws Exception {
 
         if (Login.isUserLogged()) {
-            LOGGER.debug("user is connected");
             Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (object instanceof UserAuthenticated) {
                 request.setAttribute("user", object);

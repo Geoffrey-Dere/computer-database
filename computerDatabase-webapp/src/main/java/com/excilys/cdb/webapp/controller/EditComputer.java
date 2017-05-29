@@ -58,17 +58,19 @@ public class EditComputer {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String addComputer(@Valid @ModelAttribute("computer") ComputerDTO computerDTO, BindingResult bindingResult) {
+    public ModelAndView addComputer(@Valid @ModelAttribute("computer") ComputerDTO computerDTO, BindingResult bindingResult) {
 
-        LOGGER.debug("updatating object computerDTO  : {}", computerDTO);
+        LOGGER.debug("updatating computerDTO  : {}", computerDTO);
 
         if (bindingResult.hasErrors()) {
-            return "editComputer";
+            //return "editComputer";
+            return new ModelAndView("editComputer");
         }
 
         computerService.update(ComputerMapper.mapperToModel(computerDTO));
 
-        return "redirect:/";
+       // return "redirect:/";
+        return new ModelAndView("redirect:/dashboard");
     }
 
     /**

@@ -22,6 +22,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import com.excilys.cdb.webapp.interceptor.Interceptor;
+import com.excilys.cdb.webapp.interceptor.LanguageInterceptor;
 
 @EnableWebMvc
 @Configuration
@@ -91,7 +92,7 @@ public class AppConfiguration extends WebMvcConfigurerAdapter {
      */
     @Bean
     public LocaleChangeInterceptor localeInterceptor() {
-        LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
+        LocaleChangeInterceptor interceptor = new LanguageInterceptor();
         interceptor.setParamName("lang");
         return interceptor;
     }

@@ -1,25 +1,31 @@
 package com.excilys.cdb.core.util;
 
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class DateFormatter {
 
     /**
      */
-    private static final Map<DateTimeFormatter, String> PATTERN = new HashMap<DateTimeFormatter, String>();
+    private static final Map<Locale, DateTimeFormatter> PATTERN = new HashMap<Locale, DateTimeFormatter>();
+
+    private static final DateTimeFormatter DEFAULT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DateFormatter.class);
 
     private static DateTimeFormatter formatter;
 
     static {
-        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        PATTERN.put(formatter, "yyyy-MM-dd");
+        formatter = DEFAULT_FORMATTER;
+        PATTERN.put(Locale.FRANCE, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        PATTERN.put(Locale.ENGLISH, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     /**
@@ -37,24 +43,19 @@ public abstract class DateFormatter {
      * @throws DateTimeParseException if the text cannot be parsed
      */
     public static String localDateToString(LocalDate date) {
+
         return date.format(formatter);
     }
 
     /**
-     * @return current pattern
+     * @param language language
      */
-    public static String getCurrentPattern() {
-        return PATTERN.get(formatter);
-    }
+    public static void setFormatter(String language) {
 
-    /**
-     * @param date The date to be converted
-     * @return The date in format sql
-     * @throws ParseException the parse exception
-     */
-    public static Date sqlDate(String date) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        java.util.Date parsed = format.parse(date);
-        return new Date(parsed.getTime());
+        if (Locale.FRENCH.equals(new Locale(language))) {
+            formatter = PATTERN.get(Locale.FRANCE);
+        } else {
+            formatter = DEFAULT_FORMATTER;
+        }
     }
 }

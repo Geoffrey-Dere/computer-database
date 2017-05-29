@@ -31,29 +31,31 @@ public class AddComputer {
     private ComputerService computerService;
     @Autowired
     private CompanyService companyService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView homee() {
 
         ModelAndView mv = new ModelAndView("addComputer");
         List<Company> listCompany = companyService.getAll();
         mv.addObject("listCompany", CompanyMapper.mapperToDTO(listCompany));
-        mv.addObject("computerDTO", new ComputerDTO());
+        mv.addObject("computer", new ComputerDTO());
 
         return mv;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String addComputer(@Valid @ModelAttribute("computerDTO") ComputerDTO computerDTO,
+    public ModelAndView addComputer(@Valid @ModelAttribute("computer") ComputerDTO computerDTO,
             BindingResult bindingResult) {
 
         LOGGER.info("Controller add computer : {}", computerDTO);
 
         if (bindingResult.hasErrors()) {
-            return "redirect:/add";
+            LOGGER.debug("computer {} isn't valid", computerDTO);
+            return new ModelAndView("addComputer");
         }
         computerService.add(ComputerMapper.mapperToModel(computerDTO));
 
-        return "redirect:/";
+        return new ModelAndView("redirect:/dashboard");
     }
 
 }

@@ -27,7 +27,7 @@
 					var="placeholderDiscontinued" />
 
 				<form:form action="${pageContext.request.contextPath}/add"
-					method="POST" commandName="computerDTO">
+					method="POST" commandName="computer">
 					<fieldset>
 						<div class="form-group">
 							<label for="computerName"><spring:message
@@ -39,7 +39,7 @@
 						<div class="form-group">
 							<label for="introduced"><spring:message
 									code="addComputer.Computer.introduced" /></label>
-							<form:input type="date" class="form-control" id="introduced"
+							<form:input type="date" class="form-control" id="introduced" pattern="yyyy-MM-dd"
 								name="introduced" path="introduced"
 								placeholder='${placeholderIntroduced}' />
 							<form:errors path="introduced" cssClass="error" />
@@ -78,7 +78,7 @@
 		</div>
 	</div>
 </section>
-<script src="js/addComputer.js"></script>
+<!-- <script src="js/addComputer.js"></script> -->
 
 </body>
 </html>

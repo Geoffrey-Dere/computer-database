@@ -57,10 +57,10 @@ public class Security extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests().antMatchers("/ressources/**", "/i18/**", "/js/**", "/fonts/**", "/css/**").permitAll()
-                .antMatchers("/login*").anonymous().anyRequest().authenticated()
-                .antMatchers("dashboard", "/add", "/editComputer").access("hasAuthority('ADMIN') ").anyRequest()
-                .authenticated().and().formLogin().loginPage("/login").defaultSuccessUrl("/dashboard").and().logout()
-                .and().exceptionHandling().accessDeniedPage("/403");
+                .antMatchers("/login*").anonymous()
+                .antMatchers("/dashboard", "/editComputer", "/deleteComputer", "/add")
+                .access("hasAuthority('ADMIN') ").anyRequest().authenticated().and().formLogin().loginPage("/login")
+                .defaultSuccessUrl("/dashboard").and().logout().and().exceptionHandling().accessDeniedPage("/403");
     }
 
 }

@@ -1,11 +1,14 @@
 package com.excilys.cdb.webapp.validator;
 
+import java.time.LocalDate;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.cdb.core.util.DateFormatter;
 import com.excilys.cdb.webapp.dto.ComputerDTO;
 
 public class ComputerValidator implements ConstraintValidator<Computer, ComputerDTO> {
@@ -23,7 +26,7 @@ public class ComputerValidator implements ConstraintValidator<Computer, Computer
         String introduced = obj.getIntroduced();
         String discontinued = obj.getDiscontinued();
         //
-        if (introduced.isEmpty() && discontinued.isEmpty()) {
+        if (discontinued.isEmpty()) {
             return true;
         }
 
@@ -40,13 +43,14 @@ public class ComputerValidator implements ConstraintValidator<Computer, Computer
             return false;
         }
 
-//        LocalDate intro = DateFormatter.stringtoLocalDate(introduced);
-//        LocalDate discon = DateFormatter.stringtoLocalDate(discontinued);
-//
-//        if (intro.isAfter(discon)) {
-//            context.buildConstraintViolationWithTemplate("{addComputer.computer.intro.isAfter}")
-//                    .addConstraintViolation();
-//        }
+        LocalDate intro = DateFormatter.stringtoLocalDate(introduced);
+        LocalDate discon = DateFormatter.stringtoLocalDate(discontinued);
+        LOGGER.debug("TEST");
+
+        if (intro.isAfter(discon)) {
+            context.buildConstraintViolationWithTemplate("{addComputer.computer.intro.isAfter}")
+                    .addConstraintViolation();
+        }
 
         return true;
     }
