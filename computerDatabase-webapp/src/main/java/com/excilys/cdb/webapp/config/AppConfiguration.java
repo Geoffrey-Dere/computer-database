@@ -21,7 +21,7 @@ import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-import com.excilys.cdb.webapp.interceptor.Test;
+import com.excilys.cdb.webapp.interceptor.Interceptor;
 
 @EnableWebMvc
 @Configuration
@@ -99,7 +99,7 @@ public class AppConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeInterceptor());
-        registry.addInterceptor(new Test());
+        registry.addInterceptor(new Interceptor());
     }
 
 }

@@ -12,9 +12,9 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.excilys.cdb.service.UserAuthenticated;
 import com.excilys.cdb.webapp.controller.Login;
 
-public class Test extends HandlerInterceptorAdapter {
+public class Interceptor extends HandlerInterceptorAdapter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Test.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Interceptor.class);
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
@@ -26,11 +26,8 @@ public class Test extends HandlerInterceptorAdapter {
             if (object instanceof UserAuthenticated) {
                 LOGGER.debug("ICIIIII");
                 modelAndView.addObject("user", object);
-
             }
         }
-
         modelAndView.addObject("isUserLogged", Login.isUserLogged());
     }
-
 }
