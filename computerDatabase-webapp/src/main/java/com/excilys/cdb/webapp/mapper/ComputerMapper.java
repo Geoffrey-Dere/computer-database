@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Computer.BuilderComputer;
-import com.excilys.cdb.util.DateFormatter;
+import com.excilys.cdb.core.util.DateFormatter;
 import com.excilys.cdb.webapp.dto.CompanyDTO;
 import com.excilys.cdb.webapp.dto.ComputerDTO;
 

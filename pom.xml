@@ -152,7 +152,7 @@
                 <groupId>io.github.bonigarcia</groupId>
                 <artifactId>webdrivermanager</artifactId>
                 <version>${io.github.bonigarcia}</version>
-                <scope>test</scope>
+                 <scope>test</scope>
             </dependency>
 
             <dependency>

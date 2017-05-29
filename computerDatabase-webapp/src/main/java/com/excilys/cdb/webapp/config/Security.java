@@ -51,7 +51,7 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .antMatchers("dashboard","/add", "/editComputer").access("hasAuthority('ADMIN') ")
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login").defaultSuccessUrl("/dashboard")
-                .and().logout().logoutSuccessUrl("/login")
+                .and().logout()
                 .and().exceptionHandling().accessDeniedPage("/403");
     }
 

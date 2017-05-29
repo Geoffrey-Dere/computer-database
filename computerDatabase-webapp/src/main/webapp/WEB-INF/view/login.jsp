@@ -47,7 +47,7 @@
 							value="${_csrf.token}" />
 
 						<div class="form-actions">
-							<input type="submit"
+							<input type="submit" id="submit"
 								class="btn btn-block btn-primary btn-default" value="Log in">
 						</div>
 					</form>
