@@ -2,12 +2,14 @@ package com.excilys.cdb.webapp.config;
 
 import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.env.Environment;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.ViewResolver;
@@ -29,6 +31,9 @@ import com.excilys.cdb.webapp.interceptor.LanguageInterceptor;
 @Import(value = { com.excilys.cdb.service.AppConfiguration.class, com.excilys.cdb.persistence.AppConfiguration.class })
 @ComponentScan(basePackages = "com.excilys.cdb.webapp")
 public class AppConfiguration extends WebMvcConfigurerAdapter {
+
+//    @Autowired
+//    private Environment env;
 
     /**
      * @return the view resolver
