@@ -154,13 +154,6 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>verification</id>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                    <execution>
                         <id>stop-tomcat</id>
                         <phase>post-integration-test</phase>
                         <goals>
