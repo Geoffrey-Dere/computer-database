@@ -13,7 +13,8 @@ import com.excilys.cdb.persistence.CompanyDAO;
 import com.excilys.cdb.persistence.ComputerDAO;
 import com.excilys.cdb.service.CompanyService;
 
-@Service()
+@Service
+@Transactional
 public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
@@ -43,7 +44,6 @@ public class CompanyServiceImpl implements CompanyService {
      * @return success
      * @throws SQLException exception
      */
-    @Transactional
     public boolean removeCascade(Company company) throws SQLException {
 
         if (companyDAO.delete(company)) {

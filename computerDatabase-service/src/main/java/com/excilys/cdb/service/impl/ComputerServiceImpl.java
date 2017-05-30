@@ -7,15 +7,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Pager;
 import com.excilys.cdb.model.Pager.BuilderPage;
 import com.excilys.cdb.persistence.ComputerDAO;
+import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
 import com.excilys.cdb.service.ComputerService;
 
 @Service
+@Transactional
 public class ComputerServiceImpl implements ComputerService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerServiceImpl.class);
@@ -62,19 +65,16 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
-    @Transactional
     public boolean add(Computer c) {
         return computerDAO.create(c);
     }
 
     @Override
-    @Transactional
     public boolean update(Computer c) {
         return computerDAO.update(c);
     }
 
     @Override
-    @Transactional
     public boolean remove(Computer c) {
         return computerDAO.delete(c);
     }
@@ -83,7 +83,6 @@ public class ComputerServiceImpl implements ComputerService {
      * @param id id
      * @return boolean success
      */
-    @Transactional
     public boolean remove(int id) {
         Computer computer = new Computer();
         computer.setId(id);
@@ -109,7 +108,6 @@ public class ComputerServiceImpl implements ComputerService {
     /**
      * @param id id
      */
-    @Transactional
     public void removeByCompanyId(long id) {
         computerDAO.deleteByCompany(id);
     }
@@ -117,7 +115,6 @@ public class ComputerServiceImpl implements ComputerService {
     /**
      * @param listId list of id
      */
-    @Transactional
     public void remove(List<Integer> listId) {
         computerDAO.remove(listId);
     }
