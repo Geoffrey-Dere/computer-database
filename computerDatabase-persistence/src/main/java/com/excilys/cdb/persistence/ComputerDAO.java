@@ -9,7 +9,7 @@ public interface ComputerDAO extends DAO<Computer>{
 
     public void findAll(Pager<Computer> page);
     public boolean deleteByCompany(long companyId);
-    public void remove(List<Integer> listId);
+    public void remove(List<Long> listId);
     public boolean deleteById(long id);
     public List<Long> getIdByCompany(long companyId);
     public int count() ;

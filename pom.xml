@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.excilys.cdb</groupId>
     <artifactId>computerDatabase</artifactId>
@@ -192,6 +195,31 @@
                 <artifactId>spring-security-config</artifactId>
                 <version>${springframework.security}</version>
             </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.5.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>2.5.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>2.5.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-client</artifactId>
+                <version>2.25.1</version>
+            </dependency>
+                <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>2.25.1</version>
+        </dependency>
         </dependencies>
     </dependencyManagement>
     <!-- dependencies for all modules -->
@@ -238,7 +266,6 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
-
             <!-- JDK Java -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -295,6 +322,7 @@
         <module>computerDatabase-persistence</module>
         <module>computerDatabase-webapp</module>
         <module>computerDatabase-service</module>
-    <module>computerDatabase-binding</module>
-  </modules>
+        <module>computerDatabase-binding</module>
+        <module>computerDatabase-console</module>
+    </modules>
 </project>

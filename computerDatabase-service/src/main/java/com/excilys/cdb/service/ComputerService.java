@@ -40,7 +40,7 @@ public interface ComputerService {
     /**
      * @param listId list of id
      */
-    void remove(List<Integer> listId);
+    void remove(List<Long> listId);
 
     /**
      * @return the number of computers

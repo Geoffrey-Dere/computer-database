@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -21,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Pager;
 import com.excilys.cdb.persistence.ComputerDAO;
-import com.excilys.cdb.persistence.DAO;
+import com.excilys.cdb.persistence.ExceptionDAO;
 
 @Repository
 public class ComputerDAOImpl implements ComputerDAO {
@@ -91,7 +92,12 @@ public class ComputerDAOImpl implements ComputerDAO {
         r.fetch("company", JoinType.LEFT);
         cq.where(r.get("id").in(id));
 
-        return Optional.ofNullable(em.createQuery(cq).getSingleResult());
+        try {
+            return Optional.ofNullable(em.createQuery(cq).getSingleResult());
+        } catch (NoResultException e) {
+            LOGGER.warn("computer with id {} not found", id);
+            return Optional.empty();
+        }
     }
 
     /**
@@ -182,13 +188,16 @@ public class ComputerDAOImpl implements ComputerDAO {
      * @param listId list
      */
     @Transactional(propagation = Propagation.MANDATORY)
-    public void remove(List<Integer> listId) {
+    public void remove(List<Long> listId) {
 
         CriteriaBuilder builder = this.em.getCriteriaBuilder();
         CriteriaDelete<Computer> delete = builder.createCriteriaDelete(Computer.class);
         Root<Computer> r = delete.from(Computer.class);
         delete.where(r.get("id").in(listId));
 
-        em.createQuery(delete).executeUpdate();
+        int res = em.createQuery(delete).executeUpdate();
+        if (res != listId.size()) {
+            throw new ExceptionDAO("computers with id  " + listId + "  have not been deleted");
+        }
     }
 }

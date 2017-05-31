@@ -30,7 +30,7 @@ import com.excilys.cdb.webapp.interceptor.LanguageInterceptor;
 @Configuration
 @Import(value = { com.excilys.cdb.service.AppConfiguration.class, com.excilys.cdb.persistence.AppConfiguration.class,
         com.excilys.cdb.binding.AppConfiguration.class })
-@ComponentScan(basePackages = "com.excilys.cdb.webapp")
+@ComponentScan(basePackages = {"com.excilys.cdb"})
 public class AppConfiguration extends WebMvcConfigurerAdapter {
 
     // @Autowired

@@ -12,7 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Pager;
 import com.excilys.cdb.persistence.ComputerDAO;
+import com.excilys.cdb.persistence.ExceptionDAO;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.service.ServiceException;
 
 @Service
 @Transactional
@@ -24,7 +26,6 @@ public class ComputerServiceImpl implements ComputerService {
      */
     @Autowired
     private ComputerDAO computerDAO;
-
 
     @Override
     public Optional<Computer> get(long id) {
@@ -83,13 +84,17 @@ public class ComputerServiceImpl implements ComputerService {
     /**
      * @param listId list of id
      */
-    public void remove(List<Integer> listId) {
-        computerDAO.remove(listId);
+    public void remove(List<Long> listId) {
+        try {
+            computerDAO.remove(listId);
+        } catch (ExceptionDAO e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     @Override
     public void find(Pager<Computer> page) {
         computerDAO.findAll(page);
-        
+
     }
 }
