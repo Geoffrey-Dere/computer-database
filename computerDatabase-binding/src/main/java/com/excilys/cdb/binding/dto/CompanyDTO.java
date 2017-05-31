@@ -1,9 +1,9 @@
-package com.excilys.cdb.webapp.dto;
+package com.excilys.cdb.binding.dto;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
-import com.excilys.cdb.webapp.validator.Alphanumeric;
+import com.excilys.cdb.binding.validator.Alphanumeric;
 
 public class CompanyDTO {
 

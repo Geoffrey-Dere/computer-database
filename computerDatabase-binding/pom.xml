@@ -9,8 +9,8 @@
         <artifactId>computerDatabase</artifactId>
         <version>5.0.0-RELEASE</version>
     </parent>
-    <artifactId>computerDatabase-service</artifactId>
-    <name>computerDatabase-service</name>
+    <artifactId>computerDatabase-binding</artifactId>
+    <name>computerDatabase-binding</name>
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,12 +18,12 @@
     <dependencies>
         <dependency>
             <groupId>com.excilys.cdb</groupId>
-            <artifactId>computerDatabase-persistence</artifactId>
+            <artifactId>computerDatabase-core</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

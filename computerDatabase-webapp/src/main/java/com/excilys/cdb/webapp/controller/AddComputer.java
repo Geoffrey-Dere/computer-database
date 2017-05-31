@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.excilys.cdb.binding.dto.ComputerDTO;
+import com.excilys.cdb.binding.mapper.CompanyMapper;
+import com.excilys.cdb.binding.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
-import com.excilys.cdb.webapp.dto.ComputerDTO;
-import com.excilys.cdb.webapp.mapper.CompanyMapper;
-import com.excilys.cdb.webapp.mapper.ComputerMapper;
 
 @Controller
 @RequestMapping("/add")
@@ -33,7 +33,7 @@ public class AddComputer {
     private CompanyService companyService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView homee() {
+    public ModelAndView home() {
 
         ModelAndView mv = new ModelAndView("addComputer");
         List<Company> listCompany = companyService.getAll();

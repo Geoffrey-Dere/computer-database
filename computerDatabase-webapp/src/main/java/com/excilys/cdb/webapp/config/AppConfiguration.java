@@ -28,12 +28,13 @@ import com.excilys.cdb.webapp.interceptor.LanguageInterceptor;
 
 @EnableWebMvc
 @Configuration
-@Import(value = { com.excilys.cdb.service.AppConfiguration.class, com.excilys.cdb.persistence.AppConfiguration.class })
+@Import(value = { com.excilys.cdb.service.AppConfiguration.class, com.excilys.cdb.persistence.AppConfiguration.class,
+        com.excilys.cdb.binding.AppConfiguration.class })
 @ComponentScan(basePackages = "com.excilys.cdb.webapp")
 public class AppConfiguration extends WebMvcConfigurerAdapter {
 
-//    @Autowired
-//    private Environment env;
+    // @Autowired
+    // private Environment env;
 
     /**
      * @return the view resolver

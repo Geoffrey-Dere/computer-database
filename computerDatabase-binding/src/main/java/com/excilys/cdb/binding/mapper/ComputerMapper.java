@@ -1,4 +1,4 @@
-package com.excilys.cdb.webapp.mapper;
+package com.excilys.cdb.binding.mapper;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -8,12 +8,12 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.cdb.binding.dto.CompanyDTO;
+import com.excilys.cdb.binding.dto.ComputerDTO;
+import com.excilys.cdb.core.util.DateFormatter;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Computer.BuilderComputer;
-import com.excilys.cdb.core.util.DateFormatter;
-import com.excilys.cdb.webapp.dto.CompanyDTO;
-import com.excilys.cdb.webapp.dto.ComputerDTO;
 
 public class ComputerMapper {
 

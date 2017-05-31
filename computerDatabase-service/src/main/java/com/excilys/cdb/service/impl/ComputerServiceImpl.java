@@ -7,14 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Pager;
-import com.excilys.cdb.model.Pager.BuilderPage;
 import com.excilys.cdb.persistence.ComputerDAO;
-import com.excilys.cdb.persistence.impl.ComputerDAOImpl;
 import com.excilys.cdb.service.ComputerService;
 
 @Service
@@ -28,35 +25,6 @@ public class ComputerServiceImpl implements ComputerService {
     @Autowired
     private ComputerDAO computerDAO;
 
-    /**
-     */
-    @Override
-    public Pager<Computer> getAll() {
-        return getPage(Long.MAX_VALUE, 0, "", " ");
-    }
-
-    /**
-     */
-    @Override
-    public Pager<Computer> getPage(long limit, long offset, String column, String order) {
-        List<Computer> listComputer = computerDAO.findAll(limit, offset, column, order);
-        BuilderPage<Computer> builder = new BuilderPage<>(listComputer);
-        return builder.build();
-    }
-
-    /**
-     * @param limit limit
-     * @param offset offset
-     * @param regex regex
-     * @param column column
-     * @param order order
-     * @return page of computers
-     */
-    public Pager<Computer> getPage(long limit, long offset, String regex, String column, String order) {
-        List<Computer> listComputer = computerDAO.findByName(limit, offset, regex, column, order);
-        BuilderPage<Computer> builder = new BuilderPage<>(listComputer);
-        return builder.build();
-    }
 
     @Override
     public Optional<Computer> get(long id) {
@@ -117,5 +85,11 @@ public class ComputerServiceImpl implements ComputerService {
      */
     public void remove(List<Integer> listId) {
         computerDAO.remove(listId);
+    }
+
+    @Override
+    public void find(Pager<Computer> page) {
+        computerDAO.findAll(page);
+        
     }
 }

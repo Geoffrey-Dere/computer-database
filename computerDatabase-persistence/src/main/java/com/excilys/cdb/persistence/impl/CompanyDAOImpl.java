@@ -46,6 +46,7 @@ public class CompanyDAOImpl implements CompanyDAO {
     /**
      * @return all companies
      */
+    @Override
     @Transactional(propagation = Propagation.MANDATORY, readOnly = true)
     public List<Company> findAll() {
 

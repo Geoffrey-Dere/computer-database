@@ -1,4 +1,4 @@
-package com.excilys.cdb.webapp.validator;
+package com.excilys.cdb.binding.validator;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -10,15 +10,15 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 
 @Documented
-@Constraint(validatedBy = ComputerValidator.class)
-@Target({ ElementType.TYPE })
+@Constraint(validatedBy = DateValidator.class)
+@Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Computer {
+public @interface Date {
 
     /**
      * @return the message
      */
-    String message() default "";
+    String message() default "{Date.error.format}";
 
     /**
      * @return table of class

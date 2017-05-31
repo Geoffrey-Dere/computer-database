@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.model.Pager;
 import com.excilys.cdb.persistence.ComputerDAO;
 import com.excilys.cdb.persistence.DAO;
 
@@ -93,18 +94,6 @@ public class ComputerDAOImpl implements ComputerDAO {
         return Optional.ofNullable(em.createQuery(cq).getSingleResult());
     }
 
-    @Transactional(propagation = Propagation.MANDATORY, readOnly = true)
-    public List<Computer> findAll() {
-
-        LOGGER.debug("find all computer");
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<Computer> cq = builder.createQuery(Computer.class);
-        Root<Computer> r = cq.from(Computer.class);
-        r.fetch("company", JoinType.LEFT);
-
-        return em.createQuery(cq).getResultList();
-    }
-
     /**
      * @param companyId company id
      * @return list of computer
@@ -121,52 +110,19 @@ public class ComputerDAOImpl implements ComputerDAO {
 
     }
 
-    /**
-     * @param limit the limit
-     * @param offset the offset
-     * @param column column
-     * @param order order
-     * @return the list of computers
-     */
+    @Override
     @Transactional(propagation = Propagation.MANDATORY, readOnly = true)
-    public List<Computer> findAll(long limit, long offset, String column, String order) {
-
-        LOGGER.debug("find all limit = {}, offset = {}, column = {}, order = {}", limit, offset, column, order);
-
+    public void findAll(Pager<Computer> page) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Computer> cq = builder.createQuery(Computer.class);
         Root<Computer> r = cq.from(Computer.class);
         r.fetch("company", JoinType.LEFT);
         cq.select(r);
 
-        if (order.equals("DESC")) {
-            cq.orderBy(builder.desc(r.get(column)));
-        } else {
-            cq.orderBy(builder.asc(r.get(column)));
-        }
-
-        return em.createQuery(cq).setFirstResult((int) offset).setMaxResults((int) limit).getResultList();
-    }
-
-    /**
-     * @param limit limit
-     * @param offset offset
-     * @param regex regex
-     * @param column column
-     * @param order order
-     * @return list of computer
-     */
-    @Transactional(propagation = Propagation.MANDATORY, readOnly = true)
-    public List<Computer> findByName(long limit, long offset, String regex, String column, String order) {
-
-        LOGGER.debug("find all limit = {}, offset = {}, column = {}, order = {}, regex = {}", limit, offset, column,
-                order, regex);
-
-        CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<Computer> cq = builder.createQuery(Computer.class);
-        Root<Computer> r = cq.from(Computer.class);
-        r.fetch("company", JoinType.LEFT);
-        cq.select(r).where(builder.like(r.get("name"), regex + "%"));
+        String order = page.getOrder();
+        String column = page.getColumn();
+        int limit = page.getLimit();
+        int offset = page.getOffset();
 
         if (order.equals("DESC")) {
             cq.orderBy(builder.desc(r.get(column)));
@@ -174,7 +130,9 @@ public class ComputerDAOImpl implements ComputerDAO {
             cq.orderBy(builder.asc(r.get(column)));
         }
 
-        return em.createQuery(cq).setFirstResult((int) offset).setMaxResults((int) limit).getResultList();
+        List<Computer> res = em.createQuery(cq).setFirstResult((int) offset).setMaxResults((int) limit).getResultList();
+        page.setListEntity(res);
+
     }
 
     /**
@@ -233,5 +191,4 @@ public class ComputerDAOImpl implements ComputerDAO {
 
         em.createQuery(delete).executeUpdate();
     }
-
 }

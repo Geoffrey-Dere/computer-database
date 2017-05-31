@@ -1,4 +1,4 @@
-package com.excilys.cdb.webapp.dto;
+package com.excilys.cdb.binding.dto;
 
 public class UserDTO {
     private String name;
