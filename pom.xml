@@ -9,7 +9,7 @@
     <name>computerDatabase Maven Webapp</name>
     <url>http://maven.apache.org</url>
     <packaging>pom</packaging>
-    <version>5.0.0-RELEASE</version>
+    <version>6.0.0-RELEASE</version>
     <properties>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
