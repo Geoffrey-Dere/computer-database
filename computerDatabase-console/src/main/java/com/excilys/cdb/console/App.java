@@ -66,9 +66,12 @@ public class App {
     /**
      */
     private void displayComputers() {
-        // for (Computer computer : this.computerService.getAllComputers()) {
-        // System.out.println(computer);
-        // }
+//       
+//        Client client = ClientBuilder.newClient();
+//        WebTarget webTarget = client.target(API).path("company/").path(String.valueOf(id));
+//        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+        
+        
     }
 
     /**

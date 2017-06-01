@@ -3,7 +3,6 @@ package com.excilys.cdb.webapp.rest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -25,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.excilys.cdb.binding.dto.ComputerDTO;
 import com.excilys.cdb.binding.mapper.ComputerMapper;
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.model.Pager;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.service.ServiceException;
 
@@ -46,6 +46,18 @@ public class RestComputer {
         } else {
             return new ResponseEntity<>(new ComputerDTO(), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping(value = "/computer", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Pager<ComputerDTO>> getAllComputers() {
+
+        Pager<Computer> page = new Pager<>(Integer.MAX_VALUE);
+        computerService.find(page);
+        Pager<ComputerDTO> pageDTO = new Pager<>(Integer.MAX_VALUE);
+        pageDTO.setListEntity(ComputerMapper.mapperToDTO(page.getListEntity()));
+
+        return new ResponseEntity<>(pageDTO, HttpStatus.OK);
+
     }
 
     @DeleteMapping(value = "/computer/{id}")

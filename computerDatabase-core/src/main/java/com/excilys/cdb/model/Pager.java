@@ -22,6 +22,10 @@ public class Pager<T> {
         this.listEntity = listEntity;
     }
 
+    public Pager(int limit) {
+        this.limit = limit;
+    }
+
     public Pager(List<T> listEntity, int currentPage, int limit, String search, String order, String column) {
         super();
         this.listEntity = listEntity;
