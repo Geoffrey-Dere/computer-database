@@ -9,25 +9,25 @@
         <artifactId>computerDatabase</artifactId>
         <version>6.0.0-RELEASE</version>
     </parent>
-    <artifactId>computerDatabase-core</artifactId>
-    <name>computerDatabase-core</name>
+    <artifactId>computerDatabase-binding</artifactId>
+    <name>computerDatabase-binding</name>
+    <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
+            <groupId>com.excilys.cdb</groupId>
+            <artifactId>computerDatabase-core</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>persistence-api</artifactId>
-            <scope>provided</scope>
+            <artifactId>spring-context</artifactId>
         </dependency>
     </dependencies>
 </project>

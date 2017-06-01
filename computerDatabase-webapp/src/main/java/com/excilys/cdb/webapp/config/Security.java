@@ -57,9 +57,11 @@ public class Security extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/ressources/**", "/i18/**", "/js/**", "/fonts/**", "/css/**").permitAll()
                 .antMatchers("/login*").anonymous()
-                .antMatchers("/dashboard", "/editComputer", "/deleteComputer", "/add")
-                .access("hasAuthority('ADMIN') ").anyRequest().authenticated().and().formLogin().loginPage("/login")
-                .defaultSuccessUrl("/dashboard").and().logout().and().exceptionHandling().accessDeniedPage("/403");
+                .antMatchers("/dashboard", "/editComputer", "/deleteComputer", "/add").access("hasAuthority('ADMIN') ")
+                .antMatchers("/api/**").permitAll()
+                .anyRequest().authenticated().and().formLogin().loginPage("/login")            .defaultSuccessUrl("/dashboard").and().logout().and().exceptionHandling().accessDeniedPage("/403");
+        
+        http.csrf().ignoringAntMatchers("/api/**");
     }
 
 }

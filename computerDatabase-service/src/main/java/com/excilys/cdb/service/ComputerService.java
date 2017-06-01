@@ -8,11 +8,6 @@ import com.excilys.cdb.model.Pager;
 
 public interface ComputerService {
 
-    /**
-     * get all computers from the database.
-     * @return the list
-     */
-    Pager<Computer> getAll();
 
     /**
      * return a computer from the database identified by the id.
@@ -43,18 +38,9 @@ public interface ComputerService {
     boolean remove(Computer c);
 
     /**
-     * @param limit the limit
-     * @param offset the offset
-     * @param column column
-     * @param order order
-     * @return the pager with the companies
-     */
-    Pager<Computer> getPage(long limit, long offset, String column, String order);
-
-    /**
      * @param listId list of id
      */
-    void remove(List<Integer> listId);
+    void remove(List<Long> listId);
 
     /**
      * @return the number of computers
@@ -62,19 +48,11 @@ public interface ComputerService {
     int count();
 
     /**
-     * @param limit limit
-     * @param l l
-     * @param regex regex
-     * @param column column
-     * @param order order
-     * @return the pager
-     */
-    Pager<Computer> getPage(long limit, long l, String regex, String column, String order);
-
-    /**
      * @param regex regex
      * @return le number of computers
      */
     int count(String regex);
+
+    void find(Pager<Computer> page);
 
 }

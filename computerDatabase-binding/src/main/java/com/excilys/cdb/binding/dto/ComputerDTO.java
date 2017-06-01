@@ -1,14 +1,16 @@
-package com.excilys.cdb.webapp.dto;
+package com.excilys.cdb.binding.dto;
+
+import java.io.Serializable;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
-import com.excilys.cdb.webapp.validator.Alphanumeric;
-import com.excilys.cdb.webapp.validator.Computer;
-import com.excilys.cdb.webapp.validator.Date;
+import com.excilys.cdb.binding.validator.Alphanumeric;
+import com.excilys.cdb.binding.validator.Computer;
+import com.excilys.cdb.binding.validator.Date;
 
 @Computer
-public class ComputerDTO {
+public class ComputerDTO implements Serializable{
 
     private long id;
     @Size(min = 6, max = 15, message = "{size.name}")

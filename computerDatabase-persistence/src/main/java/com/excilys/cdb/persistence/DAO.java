@@ -36,6 +36,5 @@ public interface DAO<T> {
      * Returns all the elements of a table in the database.
      * @return List<T> the collection of theses objects
      */
-    List<T> findAll();
 
 }

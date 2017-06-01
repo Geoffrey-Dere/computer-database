@@ -11,11 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.model.Pager;
-import com.excilys.cdb.model.Pager.BuilderPage;
 import com.excilys.cdb.persistence.ComputerDAO;
+import com.excilys.cdb.persistence.ExceptionDAO;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.service.ServiceException;
 
 @Service
+@Transactional
 public class ComputerServiceImpl implements ComputerService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ComputerServiceImpl.class);
@@ -25,36 +27,6 @@ public class ComputerServiceImpl implements ComputerService {
     @Autowired
     private ComputerDAO computerDAO;
 
-    /**
-     */
-    @Override
-    public Pager<Computer> getAll() {
-        return getPage(Long.MAX_VALUE, 0, "", " ");
-    }
-
-    /**
-     */
-    @Override
-    public Pager<Computer> getPage(long limit, long offset, String column, String order) {
-        List<Computer> listComputer = computerDAO.findAll(limit, offset, column, order);
-        BuilderPage<Computer> builder = new BuilderPage<>(listComputer);
-        return builder.build();
-    }
-
-    /**
-     * @param limit limit
-     * @param offset offset
-     * @param regex regex
-     * @param column column
-     * @param order order
-     * @return page of computers
-     */
-    public Pager<Computer> getPage(long limit, long offset, String regex, String column, String order) {
-        List<Computer> listComputer = computerDAO.findByName(limit, offset, regex, column, order);
-        BuilderPage<Computer> builder = new BuilderPage<>(listComputer);
-        return builder.build();
-    }
-
     @Override
     public Optional<Computer> get(long id) {
         Optional<Computer> computer = computerDAO.find(id);
@@ -62,19 +34,16 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
-    @Transactional
     public boolean add(Computer c) {
         return computerDAO.create(c);
     }
 
     @Override
-    @Transactional
     public boolean update(Computer c) {
         return computerDAO.update(c);
     }
 
     @Override
-    @Transactional
     public boolean remove(Computer c) {
         return computerDAO.delete(c);
     }
@@ -83,7 +52,6 @@ public class ComputerServiceImpl implements ComputerService {
      * @param id id
      * @return boolean success
      */
-    @Transactional
     public boolean remove(int id) {
         Computer computer = new Computer();
         computer.setId(id);
@@ -109,7 +77,6 @@ public class ComputerServiceImpl implements ComputerService {
     /**
      * @param id id
      */
-    @Transactional
     public void removeByCompanyId(long id) {
         computerDAO.deleteByCompany(id);
     }
@@ -117,8 +84,17 @@ public class ComputerServiceImpl implements ComputerService {
     /**
      * @param listId list of id
      */
-    @Transactional
-    public void remove(List<Integer> listId) {
-        computerDAO.remove(listId);
+    public void remove(List<Long> listId) {
+        try {
+            computerDAO.remove(listId);
+        } catch (ExceptionDAO e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void find(Pager<Computer> page) {
+        computerDAO.findAll(page);
+
     }
 }

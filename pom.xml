@@ -43,6 +43,9 @@
         <javax.persistence>1.0.2</javax.persistence>
         <hibernate.javax>1.0.0.Final</hibernate.javax>
         <springframework.security>4.2.2.RELEASE</springframework.security>
+        <version.plugin.tomcat>2.2</version.plugin.tomcat>
+        <org.glassfish.jersey>2.25.1</org.glassfish.jersey>
+        <com.fasterxml.jackson>2.5.2</com.fasterxml.jackson>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -53,31 +56,9 @@
                 <scope>runtime</scope>
             </dependency>
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
-                <version>${org.mockito}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>jstl</groupId>
                 <artifactId>jstl</artifactId>
                 <version>1.2</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${org.slf4j}</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>${ch.qos.logback}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.taglibs</groupId>
@@ -216,8 +197,58 @@
                 <artifactId>spring-security-config</artifactId>
                 <version>${springframework.security}</version>
             </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${com.fasterxml.jackson}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${com.fasterxml.jackson}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${com.fasterxml.jackson}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-client</artifactId>
+                <version>${org.glassfish.jersey}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-json-jackson</artifactId>
+                <version>${org.glassfish.jersey}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+    <!-- dependencies for all modules -->
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${org.mockito}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${org.slf4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${ch.qos.logback}</version>
+        </dependency>
+    </dependencies>
     <build>
         <pluginManagement>
             <plugins>
@@ -229,6 +260,14 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
             <!-- JDK Java -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -285,5 +324,7 @@
         <module>computerDatabase-persistence</module>
         <module>computerDatabase-webapp</module>
         <module>computerDatabase-service</module>
+        <module>computerDatabase-binding</module>
+        <module>computerDatabase-console</module>
     </modules>
 </project>

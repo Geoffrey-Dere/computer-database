@@ -29,11 +29,11 @@ public class DeleteComputer {
         LOGGER.info("Controller delete computer with param {}", selection);
 
         String[] tabSelection = selection.split(",");
-        List<Integer> listId = new ArrayList<>(tabSelection.length);
+        List<Long> listId = new ArrayList<>(tabSelection.length);
 
         for (int i = 0; i < tabSelection.length; i++) {
             if (isInteger(tabSelection[i]) > 0) {
-                listId.add(Integer.parseInt(tabSelection[i]));
+                listId.add(Long.parseLong(tabSelection[i]));
             }
         }
         computerService.remove(listId);

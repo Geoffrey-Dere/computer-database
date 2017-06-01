@@ -1,4 +1,4 @@
-package com.excilys.cdb.webapp.validator;
+package com.excilys.cdb.binding.validator;
 
 import java.time.LocalDate;
 
@@ -8,8 +8,8 @@ import javax.validation.ConstraintValidatorContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.cdb.binding.dto.ComputerDTO;
 import com.excilys.cdb.core.util.DateFormatter;
-import com.excilys.cdb.webapp.dto.ComputerDTO;
 
 public class ComputerValidator implements ConstraintValidator<Computer, ComputerDTO> {
 
